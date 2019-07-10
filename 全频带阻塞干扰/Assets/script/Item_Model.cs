@@ -5,7 +5,7 @@ using System.IO;
 
 public class Item_Model : MonoBehaviour
 {
-    public List<GameObject> Models;
+    private List<GameObject> Models;
     public Transform Model_create;
     string File_name;
     AssetBundle load_model;
@@ -15,6 +15,7 @@ public class Item_Model : MonoBehaviour
 
     void Awake()
     {
+        Models = new List<GameObject>();
         item_Model = this;
     }
     private void Start()

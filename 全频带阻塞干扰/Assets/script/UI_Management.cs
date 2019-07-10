@@ -28,6 +28,9 @@ public class UI_Management : MonoBehaviour {
     public Transform Content;
     private GameObject[] List_Content;
 
+    public AudioClip Button_AUD;
+    public AudioClip Close_AUD;
+
 
     void Awake()
     {
@@ -42,13 +45,14 @@ public class UI_Management : MonoBehaviour {
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i] = Main_Button.GetChild(i).GetComponent<Button>();
+            buttons[i].onClick.AddListener(Audo_Button);
         }
         for (int i = 0; i < List_Content.Length; i++)
         {
             List_Content[i] = Content.transform.GetChild(i).gameObject;
             List_Content[i].SetActive(false);
         }
-       
+
 
         buttons[0].onClick.AddListener(Combat);
         buttons[1].onClick.AddListener(Demo);
@@ -78,6 +82,7 @@ public class UI_Management : MonoBehaviour {
     }
     public void Setting_Close()//关闭设置
     {
+        AudioSource.PlayClipAtPoint(Close_AUD, transform.position);
         Setting_Canvas.SetActive(false);
         Setting_Insert = Setting_Panel.DOLocalMoveX(Raw_point.localPosition.x, 0.3f);
         Setting_Insert.SetAutoKill(false);
@@ -90,6 +95,7 @@ public class UI_Management : MonoBehaviour {
     }
     public void List_Close()//关闭图鉴
     {
+        AudioSource.PlayClipAtPoint(Close_AUD, transform.position);
         StartCoroutine(List_OFF());
     }
 
@@ -97,6 +103,11 @@ public class UI_Management : MonoBehaviour {
     public void Exit()//退出
     {
         Application.Quit();
+    }
+
+    public void Audo_Button()//播放点击音效
+    {
+        AudioSource.PlayClipAtPoint(Button_AUD, transform.position);
     }
 
     public IEnumerator List_ON()
@@ -112,17 +123,13 @@ public class UI_Management : MonoBehaviour {
 
             if (a > 255)
             {
+                Item_Panel.item_Panel.Open_list();
                 List_Canvas.SetActive(true);
-
                 for (int i = 0; i < List_Content.Length; i++)
                 {
                     List_Content[i].SetActive(true);
                 }
                 b = b - 17;
-            }
-            if (b <= 204)
-            {
-                Item_Panel.item_Panel.Open_list();
             }
             if (b < 0)
             {
@@ -145,7 +152,6 @@ public class UI_Management : MonoBehaviour {
             List_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
             if (b>255)
             {
-                Item_Model.item_Model.Close_list();
                 List_Canvas.SetActive(false);
                 for (int i = 0; i < List_Content.Length; i++)
                 {
@@ -158,6 +164,7 @@ public class UI_Management : MonoBehaviour {
             {
                 Main_Canvas.SetActive(false);
                 Item_Panel.item_Panel.Close_list();
+                Item_Model.item_Model.Close_list();
             }
             yield return null;
         }

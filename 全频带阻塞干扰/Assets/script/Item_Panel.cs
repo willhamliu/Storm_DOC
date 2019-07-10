@@ -14,6 +14,9 @@ public class Item_Panel : MonoBehaviour {
     List<Item> Config_List_Tank;
     List<Item> Config_List_Plane;
 
+    public AudioClip Toggle_AUD;
+    public AudioClip Camp_AUD;
+
     public Item_Detail item_Detail;
     public Item_Model item_Model;
     public GameObject Data_Canvas;//控制描述淡入淡出的画布
@@ -56,7 +59,7 @@ public class Item_Panel : MonoBehaviour {
        
         CreateAllitem();
 
-        Camp_Rus.onValueChanged.AddListener(delegate { Toggle_Camp(); });
+        Camp_NATO.onValueChanged.AddListener( delegate{ Toggle_Camp(); });
         for (int i = 0; i < All_Item.Count; i++)
         {
             
@@ -134,6 +137,10 @@ public class Item_Panel : MonoBehaviour {
 
     public void Toggle_Camp()//阵营切换
     {
+        if (gameObject.activeInHierarchy == true)
+        {
+            AudioSource.PlayClipAtPoint(Camp_AUD, transform.position);
+        }
         if (Camp_Rus.isOn == true)
         {
             Camp_show(Camp_choose.RUS);
@@ -145,18 +152,18 @@ public class Item_Panel : MonoBehaviour {
     }
     public void Data_toggle(ref Item item ,ref bool value ,ref int index)//信息面板切换
     {
-
+        
         
         //由于当toggle有变动时才会调用，所以不用担心由于切换阵营后ison关闭
         if (Last_index != index && value==true)
         {
             if (All_Item[Last_index].GetComponent<Toggle>().isOn == true && All_Item[Last_index].activeInHierarchy == false)
             {
-              
                 All_Item[Last_index].GetComponent<Toggle>().isOn = false;
             }
             if (gameObject.activeInHierarchy==true)
             {
+                AudioSource.PlayClipAtPoint(Toggle_AUD, transform.position);
                 StartCoroutine(Data_Toggle(item, index, Last_index));
             }
             Last_index = index;
@@ -199,6 +206,7 @@ public class Item_Panel : MonoBehaviour {
     public void Open_list()//打开图鉴
     {
         Camp_Rus.isOn = true;
+        Camp_show(Camp_choose.RUS);
         All_Item[0].GetComponent<Toggle>().isOn = true;
         item_Detail.SetData(Config_item.Config_Item.Item_List_All[0]);
 
