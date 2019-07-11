@@ -107,7 +107,7 @@ public class UI_Management : MonoBehaviour {
 
     public void Audo_Button()//播放点击音效
     {
-        AudioSource.PlayClipAtPoint(Button_AUD, transform.position);
+        Audio_Management.Audio_management.SFXS_play("按钮点击");
     }
 
     public IEnumerator List_ON()
