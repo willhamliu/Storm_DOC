@@ -14,9 +14,6 @@ public class Item_Panel : MonoBehaviour {
     List<Item> Config_List_Tank;
     List<Item> Config_List_Plane;
 
-    public AudioClip Toggle_AUD;
-    public AudioClip Camp_AUD;
-
     public Item_Detail item_Detail;
     public Item_Model item_Model;
     public GameObject Data_Canvas;//控制描述淡入淡出的画布
@@ -139,7 +136,7 @@ public class Item_Panel : MonoBehaviour {
     {
         if (gameObject.activeInHierarchy == true)
         {
-            AudioSource.PlayClipAtPoint(Camp_AUD, transform.position);
+            Audio_Management.Audio_management.SFXS_play("阵营切换");
         }
         if (Camp_Rus.isOn == true)
         {
@@ -163,7 +160,7 @@ public class Item_Panel : MonoBehaviour {
             }
             if (gameObject.activeInHierarchy==true)
             {
-                AudioSource.PlayClipAtPoint(Toggle_AUD, transform.position);
+                Audio_Management.Audio_management.SFXS_play("单位切换");
                 StartCoroutine(Data_Toggle(item, index, Last_index));
             }
             Last_index = index;
@@ -227,7 +224,7 @@ public class Item_Panel : MonoBehaviour {
         while (b >= 0)
         {
             Data_Canvas.SetActive(true);
-            a = a + 15;
+            a = a + 25;
 
             if (a < 225)
             {
@@ -235,10 +232,10 @@ public class Item_Panel : MonoBehaviour {
             }
             else
             {
-                b = b - 15;
+                b = b - 25;
                 Data_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
             }
-            if (a==255)
+            if (a>255)
             {
                 item_Detail.SetData(item);
                 item_Model.Model_display(last_index, index);

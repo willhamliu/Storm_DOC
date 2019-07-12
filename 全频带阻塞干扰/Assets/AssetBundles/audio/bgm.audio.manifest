@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 907378122
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 357a68b5c6ca20e1d90f0aa25a271220
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8de51064219e4f947fb7fea9d09a4e34
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/Audio/BGM_prefabe/Home_BGM.prefab
+Dependencies: []

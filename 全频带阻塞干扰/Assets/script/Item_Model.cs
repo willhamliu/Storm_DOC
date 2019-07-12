@@ -15,13 +15,11 @@ public class Item_Model : MonoBehaviour
 
     void Awake()
     {
-        Models = new List<GameObject>();
         item_Model = this;
-    }
-    private void Start()
-    {
+        Models = new List<GameObject>();
         AB_path();
     }
+
     public void AB_path()
     {
         load_model = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/AssetBundles/ui/model.unity3d"));

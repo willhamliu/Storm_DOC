@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,12 +17,11 @@ public class Audio_Management : MonoBehaviour {
     GameObject sound_play_object;
 
 
-    public List<string> BGM_Path;
-    public List<string> SFXS_Path;
+    public Dictionary<string, AudioClip> Audio_BGM=new Dictionary<string, AudioClip>();
+    public Dictionary<string, AudioClip> Audio_SFXS=new Dictionary<string, AudioClip>();
 
-    public Dictionary<string, AudioSource> Audio_BGM=new Dictionary<string, AudioSource>();
-    public Dictionary<string, AudioSource> Audio_SFXS=new Dictionary<string, AudioSource>();
-
+    AssetBundle load_BGM;
+    AssetBundle load_SFXS;
 
     public static Audio_Management Audio_management;
 
@@ -29,52 +29,26 @@ public class Audio_Management : MonoBehaviour {
     {
         Audio_management = this;
 
-        BGM_Path = new List<string>();
-        BGM_Path.Add("/Audio/BGM/Home_BGM");
-
-
-        SFXS_Path = new List<string>();
-        SFXS_Path.Add("/Audio/SFXS/单位切换");
-        SFXS_Path.Add("/Audio/SFXS/阵营切换");
-        SFXS_Path.Add("/Audio/SFXS/按钮点击");
-        SFXS_Path.Add("/Audio/SFXS/返回");
-
-
-        for (int i = 0; i < BGM_Path.Count; i++)
-        {
-            AudioSource AS = Resources.Load(BGM_Path[i]) as AudioSource;
-            Audio_BGM.Add(i.ToString(), AS);
-            Debug.Log(Audio_BGM);
-        }
-
-        for (int i = 0; i < SFXS_Path.Count; i++)
-        {
-            AudioSource AS = Resources.Load(SFXS_Path[i]) as AudioSource;
-            Audio_SFXS.Add(i.ToString(), AS);
-            Debug.Log(Audio_SFXS);
-        }
+        load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/AssetBundles/audio/bgm.audio"));
+        load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/AssetBundles/audio/sfxs.audio"));
 
         if (PlayerPrefs.HasKey("BGM_value"))
         {
             BGM_Slider.value = PlayerPrefs.GetFloat("BGM_value");
-            //foreach (KeyValuePair<string, AudioSource> Audio_bgm in Audio_BGM)
-            //{
-            //    Audio_bgm.Value.volume = BGM_Slider.value;
-            //}
+            BGM.volume = BGM_Slider.value;
         }
         if (PlayerPrefs.HasKey("SFXS_value"))
         {
             SFXS_Slider.value = PlayerPrefs.GetFloat("SFXS_value");
-            //foreach (KeyValuePair<string, AudioSource> Audio_sfxs in Audio_SFXS)
-            //{
-            //    Audio_sfxs.Value.volume = SFXS_Slider.value;
-            //}
+            SFXS.volume = SFXS_Slider.value;
         }
     }
     void Start()
     {
         sound_play_object = this.gameObject;
         DontDestroyOnLoad(sound_play_object);//切换场景后不销毁
+        DontDestroyOnLoad(BGM);//切换场景后不销毁
+        DontDestroyOnLoad(SFXS);//切换场景后不销毁
 
         BGM_Value.text = ((int)(BGM_Slider.value*100)).ToString();
         BGM_Slider.onValueChanged.AddListener((float value) =>BGM_Adjust(value));
@@ -88,10 +62,8 @@ public class Audio_Management : MonoBehaviour {
 
         BGM_Value.text = ( (int)(value*100) ).ToString();
 
-        foreach (KeyValuePair<string, AudioSource> Audio_bgm in Audio_BGM)
-        {
-            Audio_bgm.Value.volume = BGM_Slider.value;
-        }
+        BGM.volume = BGM_Slider.value;
+
         PlayerPrefs.SetFloat("BGM_value",value);
         PlayerPrefs.Save();
     }
@@ -99,10 +71,9 @@ public class Audio_Management : MonoBehaviour {
     public void SFXS_Adjust(float value)//音效滑动条
     {
         SFXS_Value.text = ((int)(value*100)).ToString();
-        foreach (KeyValuePair<string, AudioSource> Audio_sfxs in Audio_SFXS)
-        {
-            Audio_sfxs.Value.volume = SFXS_Slider.value;
-        }
+
+        SFXS.volume = SFXS_Slider.value;
+
         PlayerPrefs.SetFloat("SFXS_value", value);
         PlayerPrefs.Save();
     }
@@ -111,24 +82,40 @@ public class Audio_Management : MonoBehaviour {
     {
         if (Audio_SFXS.ContainsKey(audio_name))
         {
-            SFXS.clip = Audio_SFXS[audio_name].clip;
+            SFXS.clip = Audio_SFXS[audio_name];
             SFXS.Play();//播放背景音乐
         }
         else
         {
+            GameObject load = load_SFXS.LoadAsset<GameObject>(audio_name);
+
+            AudioClip AC = load.GetComponent<AudioSource>().clip;
+
+            SFXS.clip = AC;
+            SFXS.Play();//播放背景音乐
+            
+            Audio_SFXS.Add(AC.name, AC);
             Debug.Log("检测不到这个key");
         }
     }
 
     public void BGM_play( string audio_name)
     {
-        if (Audio_SFXS.ContainsKey(audio_name))
+        if (Audio_BGM.ContainsKey(audio_name))
         {
-            SFXS.clip = Audio_SFXS[audio_name].clip;
-            SFXS.Play();//播放背景音乐
+            BGM.clip = Audio_BGM[audio_name];
+            BGM.Play();//播放背景音乐
         }
         else
         {
+            GameObject load = load_BGM.LoadAsset<GameObject>(audio_name);
+
+            AudioClip AC = load.GetComponent<AudioSource>().clip;
+
+            BGM.clip = AC;
+            BGM.Play();//播放背景音乐
+
+            Audio_BGM.Add(AC.name, AC);
             Debug.Log("检测不到这个key");
         }
     }

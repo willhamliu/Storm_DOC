@@ -1,7 +1,13 @@
 ManifestFileVersion: 0
-CRC: 3139225561
+CRC: 4154930783
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: ui/model.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: audio/bgm.audio
+      Dependencies: {}
+    Info_2:
+      Name: audio/sfxs.audio
       Dependencies: {}

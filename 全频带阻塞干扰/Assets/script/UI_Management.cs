@@ -28,10 +28,6 @@ public class UI_Management : MonoBehaviour {
     public Transform Content;
     private GameObject[] List_Content;
 
-    public AudioClip Button_AUD;
-    public AudioClip Close_AUD;
-
-
     void Awake()
     {
         Main_Canvas.SetActive(false);
@@ -40,6 +36,7 @@ public class UI_Management : MonoBehaviour {
     }
     void Start()
     {
+        Audio_Management.Audio_management.BGM_play("Home_BGM");
         buttons = new Button[Main_Button.childCount];
         List_Content = new GameObject[Content.childCount];
         for (int i = 0; i < buttons.Length; i++)
@@ -82,7 +79,7 @@ public class UI_Management : MonoBehaviour {
     }
     public void Setting_Close()//关闭设置
     {
-        AudioSource.PlayClipAtPoint(Close_AUD, transform.position);
+        Audio_Management.Audio_management.SFXS_play("返回");
         Setting_Canvas.SetActive(false);
         Setting_Insert = Setting_Panel.DOLocalMoveX(Raw_point.localPosition.x, 0.3f);
         Setting_Insert.SetAutoKill(false);
@@ -95,7 +92,7 @@ public class UI_Management : MonoBehaviour {
     }
     public void List_Close()//关闭图鉴
     {
-        AudioSource.PlayClipAtPoint(Close_AUD, transform.position);
+        Audio_Management.Audio_management.SFXS_play("返回");
         StartCoroutine(List_OFF());
     }
 
@@ -117,7 +114,7 @@ public class UI_Management : MonoBehaviour {
         float b = 255;
         while (b >= 0)
         {
-            a = a + 17;
+            a = a + 25;
             Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
             List_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
 
@@ -129,7 +126,7 @@ public class UI_Management : MonoBehaviour {
                 {
                     List_Content[i].SetActive(true);
                 }
-                b = b - 17;
+                b = b - 25;
             }
             if (b < 0)
             {
@@ -145,9 +142,9 @@ public class UI_Management : MonoBehaviour {
         List_Canvas.SetActive(true);
         float a = 255;
         float b = 0;
-        while (a >=0)
+        while (a >= 0)
         {
-            b = b + 17;
+            b = b + 25;
             Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
             List_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
             if (b>255)
@@ -157,7 +154,7 @@ public class UI_Management : MonoBehaviour {
                 {
                     List_Content[i].SetActive(false);
                 }
-                a = a - 17;
+                a = a - 25;
             }
             
             if (a<0)
