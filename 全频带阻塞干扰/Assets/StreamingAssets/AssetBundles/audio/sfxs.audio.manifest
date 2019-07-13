@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 907378122
+CRC: 713584784
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 357a68b5c6ca20e1d90f0aa25a271220
+    Hash: d119d34e39a1c29c6e63c79f0dae7bec
   TypeTreeHash:
     serializedVersion: 2
     Hash: 8de51064219e4f947fb7fea9d09a4e34
@@ -18,5 +18,8 @@ ClassTypes:
 - Class: 83
   Script: {instanceID: 0}
 Assets:
-- Assets/Audio/BGM_prefabe/Home_BGM.prefab
+- "Assets/Audio/SFXS_prefabe/\u6309\u94AE\u70B9\u51FB.prefab"
+- "Assets/Audio/SFXS_prefabe/\u8FD4\u56DE.prefab"
+- "Assets/Audio/SFXS_prefabe/\u9635\u8425\u5207\u6362.prefab"
+- "Assets/Audio/SFXS_prefabe/\u5355\u4F4D\u5207\u6362.prefab"
 Dependencies: []

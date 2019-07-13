@@ -22,7 +22,7 @@ public class Item_Model : MonoBehaviour
 
     public void AB_path()
     {
-        load_model = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/AssetBundles/ui/model.unity3d"));
+        load_model = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/ui/model.unity3d"));
     }
 
 

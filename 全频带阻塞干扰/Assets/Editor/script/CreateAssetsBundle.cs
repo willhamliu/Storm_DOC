@@ -9,7 +9,7 @@ public class CreateAssetsBundle
    [MenuItem("AssetBundle/Buile AssetBundle")]
     static void BuildAllAssetBundles()
     {
-        string assetBundleDirectory = "Assets/AssetBundles";
+        string assetBundleDirectory = "Assets/StreamingAssets/AssetBundles";
         if (Directory.Exists(assetBundleDirectory))
         {
             Directory.Delete(assetBundleDirectory, true);//为了保证资源为最新,所以每次加载需要删除旧的信息

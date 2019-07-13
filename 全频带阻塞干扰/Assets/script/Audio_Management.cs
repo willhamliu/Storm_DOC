@@ -17,8 +17,8 @@ public class Audio_Management : MonoBehaviour {
     GameObject sound_play_object;
 
 
-    public Dictionary<string, AudioClip> Audio_BGM=new Dictionary<string, AudioClip>();
-    public Dictionary<string, AudioClip> Audio_SFXS=new Dictionary<string, AudioClip>();
+    public Dictionary<string, AudioClip> Audio_BGM = new Dictionary<string, AudioClip>();
+    public Dictionary<string, AudioClip> Audio_SFXS = new Dictionary<string, AudioClip>();
 
     AssetBundle load_BGM;
     AssetBundle load_SFXS;
@@ -29,8 +29,8 @@ public class Audio_Management : MonoBehaviour {
     {
         Audio_management = this;
 
-        load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/AssetBundles/audio/bgm.audio"));
-        load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/AssetBundles/audio/sfxs.audio"));
+        load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/bgm.audio"));
+        load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/sfxs.audio"));
 
         if (PlayerPrefs.HasKey("BGM_value"))
         {
@@ -50,27 +50,27 @@ public class Audio_Management : MonoBehaviour {
         DontDestroyOnLoad(BGM);//切换场景后不销毁
         DontDestroyOnLoad(SFXS);//切换场景后不销毁
 
-        BGM_Value.text = ((int)(BGM_Slider.value*100)).ToString();
-        BGM_Slider.onValueChanged.AddListener((float value) =>BGM_Adjust(value));
+        BGM_Value.text = ((int)(BGM_Slider.value * 100)).ToString();
+        BGM_Slider.onValueChanged.AddListener((float value) => BGM_Adjust(value));
 
         SFXS_Value.text = ((int)(SFXS_Slider.value * 100)).ToString();
         SFXS_Slider.onValueChanged.AddListener((float value) => SFXS_Adjust(value));
     }
 
-    public void BGM_Adjust( float value)//背景音乐滑动条
+    public void BGM_Adjust(float value)//背景音乐滑动条
     {
 
-        BGM_Value.text = ( (int)(value*100) ).ToString();
+        BGM_Value.text = ((int)(value * 100)).ToString();
 
         BGM.volume = BGM_Slider.value;
 
-        PlayerPrefs.SetFloat("BGM_value",value);
+        PlayerPrefs.SetFloat("BGM_value", value);
         PlayerPrefs.Save();
     }
 
     public void SFXS_Adjust(float value)//音效滑动条
     {
-        SFXS_Value.text = ((int)(value*100)).ToString();
+        SFXS_Value.text = ((int)(value * 100)).ToString();
 
         SFXS.volume = SFXS_Slider.value;
 
@@ -78,7 +78,7 @@ public class Audio_Management : MonoBehaviour {
         PlayerPrefs.Save();
     }
 
-    public void SFXS_play( string audio_name)
+    public void SFXS_play(string audio_name)
     {
         if (Audio_SFXS.ContainsKey(audio_name))
         {
@@ -93,13 +93,13 @@ public class Audio_Management : MonoBehaviour {
 
             SFXS.clip = AC;
             SFXS.Play();//播放背景音乐
-            
+
             Audio_SFXS.Add(AC.name, AC);
             Debug.Log("检测不到这个key");
         }
     }
 
-    public void BGM_play( string audio_name)
+    public void BGM_play(string audio_name)
     {
         if (Audio_BGM.ContainsKey(audio_name))
         {
