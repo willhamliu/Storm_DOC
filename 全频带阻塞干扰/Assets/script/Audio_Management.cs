@@ -29,9 +29,15 @@ public class Audio_Management : MonoBehaviour {
     {
         Audio_management = this;
 
+#if UNITY_EDITOR_WIN
         load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/bgm.audio"));
         load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/sfxs.audio"));
+#endif
 
+#if UNITY_ANDROID
+        load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/bgm.audio"));
+        load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/sfxs.audio"));
+#endif
         if (PlayerPrefs.HasKey("BGM_value"))
         {
             BGM_Slider.value = PlayerPrefs.GetFloat("BGM_value");
@@ -95,7 +101,6 @@ public class Audio_Management : MonoBehaviour {
             SFXS.Play();//播放背景音乐
 
             Audio_SFXS.Add(AC.name, AC);
-            Debug.Log("检测不到这个key");
         }
     }
 
@@ -116,7 +121,6 @@ public class Audio_Management : MonoBehaviour {
             BGM.Play();//播放背景音乐
 
             Audio_BGM.Add(AC.name, AC);
-            Debug.Log("检测不到这个key");
         }
     }
 }

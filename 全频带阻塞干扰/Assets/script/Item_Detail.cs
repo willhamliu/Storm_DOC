@@ -15,6 +15,13 @@ public class Item_Detail : MonoBehaviour {
 
     public Text Desc;
 
+    public static Item_Detail item_Detail;
+
+    void Awake()
+    {
+        item_Detail = this;
+    }
+
     public void SetData(Item item)
     {
         this.Camp.text = item.Item_Camp.ToString();

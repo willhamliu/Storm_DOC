@@ -8,14 +8,13 @@ public class Item_Panel : MonoBehaviour {
 
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层
     List<GameObject> All_Item ;
+    List<Toggle> Camp;
 
     List<Item> Config_List_Building;
     List<Item> Config_List_People;
     List<Item> Config_List_Tank;
     List<Item> Config_List_Plane;
 
-    public Item_Detail item_Detail;
-    public Item_Model item_Model;
     public GameObject Data_Canvas;//控制描述淡入淡出的画布
 
     public GameObject Item_temp;//模板
@@ -28,7 +27,8 @@ public class Item_Panel : MonoBehaviour {
     public Transform Tank_item_create;
     public Transform Plane_item_create;
 
-    int Last_index=0;
+    int Last_Item_index=0;
+    int Last_Camp_index = 0;
     public enum Camp_choose
     {
         UnKown,
@@ -43,6 +43,9 @@ public class Item_Panel : MonoBehaviour {
         item_Panel = this;
         Data_Canvas.SetActive(false);
         All_Item = new List<GameObject>();
+        Camp = new List<Toggle>();
+        Camp.Add(Camp_Rus);
+        Camp.Add(Camp_NATO);
 
         Config_item.Config_Item.Configjson();
         Config_List_Building = Config_item.Config_Item.Item_List_Building;
@@ -55,14 +58,18 @@ public class Item_Panel : MonoBehaviour {
     {
        
         CreateAllitem();
+        for (int i = 0; i < Camp.Count; i++)
+        {
+            var index = Camp.IndexOf(Camp[i]);
 
-        Camp_NATO.onValueChanged.AddListener( delegate{ Toggle_Camp(); });
+            Camp[i].onValueChanged.AddListener((bool value) => { Toggle_Camp( ref value, ref index); });
+        }
         for (int i = 0; i < All_Item.Count; i++)
         {
             
             var item = Config_item.Config_Item.Item_List_All[i];
             var index = All_Item.IndexOf(All_Item[i]);
-            item_Model.Load_AB(item);
+            Item_Model.item_Model.Load_AB(item);
             All_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) =>  { Data_toggle(ref item ,ref value,ref index); });
         }
     }
@@ -132,19 +139,23 @@ public class Item_Panel : MonoBehaviour {
         }
     }
 
-    public void Toggle_Camp()//阵营切换
+    public void Toggle_Camp(ref bool value , ref int index)//阵营切换
     {
-        if (gameObject.activeInHierarchy == true)
+        if (Last_Camp_index !=index && value==true)
         {
-            Audio_Management.Audio_management.SFXS_play("阵营切换");
-        }
-        if (Camp_Rus.isOn == true)
-        {
-            Camp_show(Camp_choose.RUS);
-        }
-        else
-        {
-            Camp_show(Camp_choose.NATO);
+            if (gameObject.activeInHierarchy == true)
+            {
+                Audio_Management.Audio_management.SFXS_play("阵营切换");
+            }
+            if (Camp_Rus.isOn == true)
+            {
+                Camp_show(Camp_choose.RUS);
+            }
+            if (Camp_NATO.isOn == true)
+            {
+                Camp_show(Camp_choose.NATO);
+            }
+            Last_Camp_index = index;
         }
     }
     public void Data_toggle(ref Item item ,ref bool value ,ref int index)//信息面板切换
@@ -152,18 +163,18 @@ public class Item_Panel : MonoBehaviour {
         
         
         //由于当toggle有变动时才会调用，所以不用担心由于切换阵营后ison关闭
-        if (Last_index != index && value==true)
+        if (Last_Item_index != index && value==true)
         {
-            if (All_Item[Last_index].GetComponent<Toggle>().isOn == true && All_Item[Last_index].activeInHierarchy == false)
+            if (All_Item[Last_Item_index].GetComponent<Toggle>().isOn == true && All_Item[Last_Item_index].activeInHierarchy == false)
             {
-                All_Item[Last_index].GetComponent<Toggle>().isOn = false;
+                All_Item[Last_Item_index].GetComponent<Toggle>().isOn = false;
             }
             if (gameObject.activeInHierarchy==true)
             {
                 Audio_Management.Audio_management.SFXS_play("单位切换");
-                StartCoroutine(Data_Toggle(item, index, Last_index));
+                StartCoroutine(Data_Toggle(item, index, Last_Item_index));
             }
-            Last_index = index;
+            Last_Item_index = index;
         }
     }
 
@@ -205,9 +216,8 @@ public class Item_Panel : MonoBehaviour {
         Camp_Rus.isOn = true;
         Camp_show(Camp_choose.RUS);
         All_Item[0].GetComponent<Toggle>().isOn = true;
-        item_Detail.SetData(Config_item.Config_Item.Item_List_All[0]);
-
-        item_Model.Model_display(0, 0);
+        Item_Detail.item_Detail.SetData(Config_item.Config_Item.Item_List_All[0]);
+        Item_Model.item_Model.Model_display(0, 0);
     }
 
     public void Close_list()//关闭图鉴
@@ -237,8 +247,8 @@ public class Item_Panel : MonoBehaviour {
             }
             if (a>255)
             {
-                item_Detail.SetData(item);
-                item_Model.Model_display(last_index, index);
+                Item_Detail.item_Detail.SetData(item);
+                Item_Model.item_Model.Model_display(last_index, index);
             }
             if (b < 0)
             {
@@ -248,5 +258,4 @@ public class Item_Panel : MonoBehaviour {
         }
         yield return null;
     }
-
 }

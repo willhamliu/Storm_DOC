@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text;
 using LitJson;
 
-public class Config_item    {
+public class Config_item : MonoBehaviour{
 
     public List<Item> Item_List_All = new List<Item>();
     public List<Item> Item_List_Building = new List<Item>();
@@ -14,40 +13,32 @@ public class Config_item    {
     public List<Item> Item_List_Plane = new List<Item>();
 
 
-    private JsonData list_Data;
-    private string write_Data;
+    public JsonData list_Data=new JsonData();
 
-    private static Config_item config_Item;
+    public static Config_item Config_Item;
 
-    public static Config_item Config_Item
+    private void Awake()
     {
-        get
-        {
-            if (config_Item==null)
-            {
-                config_Item = new Config_item();
-            }
-            return config_Item;
-        }
-    }
-    
 
+        Config_Item = this;
+    }
 
     public void Configjson()
     {
 #if UNITY_EDITOR_WIN
-        list_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Item_Json.json", Encoding.GetEncoding("GB2312")));
+        list_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Item_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 
 #if UNITY_ANDROID
-        //WWW wWW = new WWW("file://" + File.ReadAllText(Application.dataPath + "!assets/Item_Json.json", Encoding.GetEncoding("GB2312")));
+        string path = "jar:file://" + Application.dataPath + "!/assets/Item_Json.json";
+        WWW www = new WWW(path);
+        while (!www.isDone) { }
 
-        //list_Data = JsonMapper.ToObject(wWW); 
-
+        list_Data = JsonMapper.ToObject(www.text);
 #endif
         Decodejson();
     }
-
+  
     public void Decodejson()
     {
         for (int i = 0; i < list_Data.Count; i++)

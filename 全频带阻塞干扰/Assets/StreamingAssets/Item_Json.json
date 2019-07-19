@@ -1,19 +1,19 @@
 [
   /*
-      ���ڱ�������(Item_Type):0�ǽ�����λ��1�ǲ�����λ��2��װ�׵�λ��3�Ƿ��е�λ
-      ���ڴ��Ŀ��(Item_Target):0������Ŀ�꣬1�ǵ���Ŀ�꣬2�ǿ���Ŀ�꣬3����쵥λ��4���޷�����
-      ������Ӫ(Item_Camp):0�Ǳ�Լ��1�Ƕ���˹
+      关于兵种属性(Item_Type):0是建筑单位，1是步兵单位，2是装甲单位，3是飞行单位
+      关于打击目标(Item_Target):0是所有目标，1是地面目标，2是空中目标，3是侦察单位，4是无法攻击
+      关于阵营(Item_Camp):0是北约，1是俄罗斯
 
-      �����淶 B_R000 b��ʾ���� RΪ����˹ ����Ϊ���
-      �����±���ʱ�ڶ�Ӧ�����������ӣ����Թ��ҽ�������(����˹�ڱ�Լǰ��)
+      命名规范 B_R000 b表示建筑 R为俄罗斯 数字为编号
+      添加新兵种时在对应类型下面添加，并对国家进行区分(俄罗斯在北约前面)
   */
   {
-    "Item_Model": "R_����",
+    "Item_Model": "R_机场",
     "Item_Number": "B_R_00",
     "Item_Type": 0,
     "Item_Target": 4,
     "Item_Camp": 1,
-    "Item_Name": "����",
+    "Item_Name": "机场",
     "Item_AP": 0,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -21,15 +21,15 @@
     "Item_Price": 600,
     "Item_HP": 400,
     "Item_Vision": 5,
-    "Item_Desc": "ս���ڼ���ʱ����Ļ����������ṩ����˹�վ��������͸�������װ����Ҳ�ɳ���ս��֧Ԯǰ�ߡ�"
+    "Item_Desc": "战争期间临时建造的机场，可以提供俄罗斯空军，运输送各种武器装备，也可出动战机支援前线。"
   },
   {
-    "Item_Model": "R_���ڻ���",
+    "Item_Model": "R_后勤基地",
     "Item_Number": "B_R_01",
     "Item_Type": 0,
     "Item_Target": 4,
     "Item_Camp": 1,
-    "Item_Name": "���ڻ���",
+    "Item_Name": "后勤基地",
     "Item_AP": 0,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -37,15 +37,15 @@
     "Item_Price": 450,
     "Item_HP": 300,
     "Item_Vision": 5,
-    "Item_Desc": "ս���ڼ���ʱ����ĺ��ڻ��أ�����Ϊǰ�߹�����Ա�����־���Ʒ����ȻҲ��������˹����ķ��ؼӣ�"
+    "Item_Desc": "战争期间临时建造的后勤基地，可以为前线供给人员及各种军需品，当然也包括俄罗斯人最爱的伏特加！"
   },
   {
-    "Item_Model": "R_�״�վ",
+    "Item_Model": "R_雷达站",
     "Item_Number": "B_R_02",
     "Item_Type": 0,
     "Item_Target": 4,
     "Item_Camp": 1,
-    "Item_Name": "�״�վ",
+    "Item_Name": "雷达站",
     "Item_AP": 0,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -53,16 +53,16 @@
     "Item_Price": 450,
     "Item_HP": 300,
     "Item_Vision": 5,
-    "Item_Desc": "ʹ���˶���˹���Ƚ��״�̽�⼼�������Լ�ⱱԼ���־���Ŀ��Ķ��򣬾�˵�����Է�������ս���������ױ�����ս�ɻ���ԡ�"
+    "Item_Desc": "使用了俄罗斯最先进雷达探测技术，可以监测北约各种军事目标的动向，据说还可以发现隐形战机，但容易被电子战飞机针对。"
   },
 
   {
-    "Item_Model": "N_����",
+    "Item_Model": "N_机场",
     "Item_Number": "B_N_00",
     "Item_Type": 0,
     "Item_Target": 4,
     "Item_Camp": 0,
-    "Item_Name": "����",
+    "Item_Name": "机场",
     "Item_AP": 0,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -70,15 +70,15 @@
     "Item_Price": 600,
     "Item_HP": 400,
     "Item_Vision": 5,
-    "Item_Desc": "ս���ڼ���ʱ����Ļ�������������ս����������𽵣��Ա�֤ǰ���Ӵ��ս�����ġ�"
+    "Item_Desc": "战争期间临时建造的机场，可以满足战略运输机的起降，以保证前线庞大的战争消耗。"
   },
   {
-    "Item_Model": "N_���ڻ���",
+    "Item_Model": "N_后勤基地",
     "Item_Number": "B_N_01",
     "Item_Type": 0,
     "Item_Target": 4,
     "Item_Camp": 0,
-    "Item_Name": "���ڻ���",
+    "Item_Name": "后勤基地",
     "Item_AP": 0,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -86,15 +86,15 @@
     "Item_Price": 450,
     "Item_HP": 300,
     "Item_Vision": 5,
-    "Item_Desc": "ս���ڼ���ʱ��ĺ��ڻ��أ�����Ϊ��Լ�����ṩ������Ա������װ����"
+    "Item_Desc": "战争期间临时搭建的后勤基地，可以为北约军队提供各种人员及地面装备。"
   },
   {
-    "Item_Model": "N_�״�վ",
+    "Item_Model": "N_雷达站",
     "Item_Number": "B_N_02",
     "Item_Type": 0,
     "Item_Target": 4,
     "Item_Camp": 0,
-    "Item_Name": "�״�վ",
+    "Item_Name": "雷达站",
     "Item_AP": 0,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -102,19 +102,19 @@
     "Item_Price": 400,
     "Item_HP": 300,
     "Item_Vision": 15,
-    "Item_Desc": "�ȹ̵��״���أ�Ϊ��Լʿ���ṩ�ǳ���������Ұ���ڱ�֤���ᱻ����ս�ɻ�̱��������¿��Խ�����"
+    "Item_Desc": "稳固的雷达阵地，为北约士兵提供非常广阔的视野，在保证不会被电子战飞机瘫痪的情况下可以建立。"
   },
 
 
 
 
   {
-    "Item_Model": "R_Ұս��",
+    "Item_Model": "R_野战军",
     "Item_Number": "I_R_00",
     "Item_Type": 1,
     "Item_Target": 1,
     "Item_Camp": 1,
-    "Item_Name": "Ұս��",
+    "Item_Name": "野战军",
     "Item_AP": 0,
     "Item_Attack": 30,
     "Item_Defense": 0,
@@ -122,15 +122,15 @@
     "Item_Price": 60,
     "Item_HP": 80,
     "Item_Vision": 5,
-    "Item_Desc": "����˹������沿�ӣ�����������̹������ʹ���Ǹ���Ч�ĶԸ��з�װ�׳���"
+    "Item_Desc": "俄罗斯常规地面部队，可以升级反坦克武器使他们更有效的对付敌方装甲车辆"
   },
   {
-    "Item_Model": "R_�ս���",
+    "Item_Model": "R_空降兵",
     "Item_Number": "I_R_01",
     "Item_Type": 1,
     "Item_Target": 1,
     "Item_Camp": 1,
-    "Item_Name": "�ս���",
+    "Item_Name": "空降兵",
     "Item_AP": 0,
     "Item_Attack": 45,
     "Item_Defense": 0,
@@ -138,16 +138,32 @@
     "Item_Price": 150,
     "Item_HP": 100,
     "Item_Vision": 5,
-    "Item_Desc": "һ���ɻ������������Ͷ�ͣ����Բ�������һ���״���̽�⵽�����򣬿��Կ���֧Ԯս��"
+    "Item_Desc": "一般由机场运输机进行投送，可以部署到任意一个雷达能探测到的区域，可以快速支援战场"
+  },
+  {
+    "Item_Model": "R_反坦克小组",
+    "Item_Number": "I_R_02",
+    "Item_Type": 1,
+    "Item_Target": 1,
+    "Item_Camp": 1,
+    "Item_Name": "反坦克小组",
+    "Item_AP": 4,
+    "Item_Attack": 50,
+    "Item_Defense": 0,
+    "Item_range": 1,
+    "Item_Price": 150,
+    "Item_HP": 100,
+    "Item_Vision": 1,
+    "Item_Desc": "装备反坦克武器的装甲车辆，可以更有效的攻击敌方装甲单位。"
   },
 
   {
-    "Item_Model": "N_�����",
+    "Item_Model": "N_游骑兵",
     "Item_Number": "I_N_00",
     "Item_Type": 1,
     "Item_Target": 1,
     "Item_Camp": 0,
-    "Item_Name": "�����",
+    "Item_Name": "游骑兵",
     "Item_AP": 3,
     "Item_Attack": 30,
     "Item_Defense": 0,
@@ -155,15 +171,15 @@
     "Item_Price": 60,
     "Item_HP": 80,
     "Item_Vision": 0,
-    "Item_Desc": "��Լ������沿�ӣ�����Э��̹�˵�װ�׳�����������û����������֧Ԯ����������ױ�����"
+    "Item_Desc": "北约常规地面部队，可以协助坦克等装甲车辆进攻，在没有其他武器支援的情况下容易被歼灭。"
   },
   {
-    "Item_Model": "N_�ս���",
+    "Item_Model": "N_空降兵",
     "Item_Number": "I_N_01",
     "Item_Type": 1,
     "Item_Target": 1,
     "Item_Camp": 0,
-    "Item_Name": "�ս���",
+    "Item_Name": "空降兵",
     "Item_AP": 4,
     "Item_Attack": 50,
     "Item_Defense": 0,
@@ -171,15 +187,15 @@
     "Item_Price": 150,
     "Item_HP": 100,
     "Item_Vision": 1,
-    "Item_Desc": "�ɱ�Լ�Ļ�������Ͷ�ͣ����Կ���֧Ԯս����װ��������������ս��������ͨ������ǿ��"
+    "Item_Desc": "由北约的机场进行投送，可以快速支援战场，装备各种武器，作战能力比普通步兵更强。"
   },
   {
-    "Item_Model": "N_��̹��С��",
+    "Item_Model": "N_反坦克小组",
     "Item_Number": "I_N_02",
     "Item_Type": 1,
     "Item_Target": 1,
     "Item_Camp": 0,
-    "Item_Name": "��̹��С��",
+    "Item_Name": "反坦克小组",
     "Item_AP": 4,
     "Item_Attack": 50,
     "Item_Defense": 0,
@@ -187,19 +203,19 @@
     "Item_Price": 150,
     "Item_HP": 100,
     "Item_Vision": 1,
-    "Item_Desc": "װ�����ա�ʽ��̹�˵�����С�飬���Կ���֧Ԯ���з�װ�ײ���ѹ�Ƶĵ�λ��"
+    "Item_Desc": "装备“陶”式反坦克导弹的小组，可以快速支援被敌方装甲部队压制的单位。"
   },
 
 
 
 
   {
-    "Item_Model": "R_��ս̹��",
+    "Item_Model": "R_主战坦克",
     "Item_Number": "T_R_00",
     "Item_Type": 2,
     "Item_Target": 1,
     "Item_Camp": 1,
-    "Item_Name": "��ս̹��",
+    "Item_Name": "主战坦克",
     "Item_AP": 3,
     "Item_Attack": 30,
     "Item_Defense": 5,
@@ -207,31 +223,31 @@
     "Item_Price": 200,
     "Item_HP": 200,
     "Item_Vision": 1,
-    "Item_Desc": "����˹��һ����վ̹�ˣ������ڶ���˹���ּ��������³�����ս��װ��125MM���ڣ��䱸���������������ȶ��ṩ��������"
+    "Item_Desc": "俄罗斯新一代主站坦克，可以在俄罗斯各种极端气候下持续作战，装备125MM火炮，配备无人炮塔，可以稳定提供持续火力"
   },
   {
-    "Item_Model": "R_���л���",
+    "Item_Model": "R_自行火炮",
     "Item_Number": "T_R_01",
     "Item_Type": 2,
     "Item_Target": 1,
     "Item_Camp": 1,
     "Item_AP": 1,
-    "Item_Name": "���л���",
+    "Item_Name": "自行火炮",
     "Item_Attack": 35,
     "Item_Defense": 5,
     "Item_range": 3,
     "Item_Price": 225,
     "Item_HP": 180,
     "Item_Vision": 1,
-    "Item_Desc": "����˹�������Ƶ����л��ڣ��Զ����̶ȼ��ߣ�ֻ��2�˱������ɼ�ʻ������Ĳ����������������ⵯҩ�������"
+    "Item_Desc": "俄罗斯最新研制的自行火炮，自动化程度极高，只需2人便可以完成驾驶和射击的操作，可以升级特殊弹药增加射程"
   },
   {
-    "Item_Model": "R_���з�����",
+    "Item_Model": "R_自行防空炮",
     "Item_Number": "T_R_02",
     "Item_Type": 2,
     "Item_Target": 0,
     "Item_Camp": 1,
-    "Item_Name": "���з�����",
+    "Item_Name": "自行防空炮",
     "Item_AP": 3,
     "Item_Attack": 45,
     "Item_Defense": 5,
@@ -239,15 +255,15 @@
     "Item_Price": 150,
     "Item_HP": 150,
     "Item_Vision": 3,
-    "Item_Desc": "ʹ��˫��װ���뵼�����й������ж��ֹ���ģʽ�������ز�ͬ����Ŀ���Ŀ�꣬Ҳ���������Ŀ�ꡣ"
+    "Item_Desc": "使用双联装炮与导弹进行攻击，有多种攻击模式可以拦截不同距离的空中目标，也可射击地面目标。"
   },
   {
-    "Item_Model": "R_�ƶ��״�վ",
+    "Item_Model": "R_移动雷达站",
     "Item_Number": "T_R_03",
     "Item_Type": 2,
     "Item_Target": 4,
     "Item_Camp": 1,
-    "Item_Name": "�ƶ��״�վ",
+    "Item_Name": "移动雷达站",
     "Item_AP": 4,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -255,16 +271,16 @@
     "Item_Price": 150,
     "Item_HP": 100,
     "Item_Vision": 5,
-    "Item_Desc": "������ս�ĳ����������ڸ�����Ϊ�ѷ���λ�����ṩ��Ұ��û���κι�������Ҳ�޷������󲿷�������������Ҫ������ս��λ������"
+    "Item_Desc": "辅助作战的车辆，可以在干扰下为友方单位持续提供视野，没有任何攻击力，也无法防御大部分武器攻击，需要其他作战单位保护。"
   },
 
   {
-    "Item_Model": "N_��ս̹��",
+    "Item_Model": "N_主战坦克",
     "Item_Number": "T_N_00",
     "Item_Type": 2,
     "Item_Target": 1,
     "Item_Camp": 0,
-    "Item_Name": "��ս̹��",
+    "Item_Name": "主战坦克",
     "Item_AP": 3,
     "Item_Attack": 30,
     "Item_Defense": 5,
@@ -272,31 +288,31 @@
     "Item_Price": 200,
     "Item_HP": 200,
     "Item_Vision": 1,
-    "Item_Desc": "��ǿ�����ս̹��֮һ��װ��120MM���ڣ����ԶԵз�װ�׵�λ������Ч���������ṩװ���׼���������ǿ�Գ�Ա�ķ�����"
+    "Item_Desc": "最强大的主战坦克之一，装备120MM火炮，可以对敌方装甲单位进行有效打击打击，提供装甲套件升级，加强对乘员的防御。"
   },
   {
-    "Item_Model": "N_���л���",
+    "Item_Model": "N_自行火炮",
     "Item_Number": "T_N_01",
     "Item_Type": 2,
     "Item_Target": 1,
     "Item_Camp": 0,
     "Item_AP": 1,
-    "Item_Name": "���л���",
+    "Item_Name": "自行火炮",
     "Item_Attack": 35,
     "Item_Defense": 5,
     "Item_range": 3,
     "Item_Price": 225,
     "Item_HP": 180,
     "Item_Vision": 1,
-    "Item_Desc": "��Լ����ʹ�ù㷺�����л��ڣ��ܶ෽�涼������ʵս���飬���Զ��ѷ���λ����Զ�̻���֧Ԯ���ṩ��ҩ��������ǿ��װ�׵�λ��ɱ�ˡ�"
+    "Item_Desc": "北约方面使用广泛的自行火炮，很多方面都经历过实战考验，可以对友方单位进行远程火力支援，提供弹药升级，加强对装甲单位的杀伤。"
   },
   {
-    "Item_Model": "N_���з�����",
+    "Item_Model": "N_自行防空炮",
     "Item_Number": "T_N_02",
     "Item_Type": 2,
     "Item_Target": 0,
     "Item_Camp": 0,
-    "Item_Name": "���з�����",
+    "Item_Name": "自行防空炮",
     "Item_AP": 3,
     "Item_Attack": 45,
     "Item_Defense": 5,
@@ -304,15 +320,15 @@
     "Item_Price": 150,
     "Item_HP": 150,
     "Item_Vision": 3,
-    "Item_Desc": "ʹ��˫��װ�ڽ��й���������������Խ�����������Ŀ�꣬Ҳ�����������Ŀ�꣬�������ڸ������ṩ׼ȷ��Ϣ��"
+    "Item_Desc": "使用双联装炮进行攻击，技术性能优越，可射击空中目标，也可以射击地面目标，并且能在干扰下提供准确信息。"
   },
   {
-    "Item_Model": "N_�ƶ��״�վ",
+    "Item_Model": "N_移动雷达站",
     "Item_Number": "T_N_03",
     "Item_Type": 2,
     "Item_Target": 4,
     "Item_Camp": 0,
-    "Item_Name": "�ƶ��״�վ",
+    "Item_Name": "移动雷达站",
     "Item_AP": 4,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -320,18 +336,18 @@
     "Item_Price": 150,
     "Item_HP": 100,
     "Item_Vision": 5,
-    "Item_Desc": "������ս�ĳ����������ڸ�����Ϊ�ѷ���λ�����ṩ��Ұ��û���κι�������Ҳ�޷������󲿷�������������Ҫ������ս��λ������"
+    "Item_Desc": "辅助作战的车辆，可以在干扰下为友方单位持续提供视野，没有任何攻击力，也无法防御大部分武器攻击，需要其他作战单位保护。"
   },
 
 
 
   {
-    "Item_Model": "R_ս����",
+    "Item_Model": "R_战斗机",
     "Item_Number": "P_R_00",
     "Item_Type": 3,
     "Item_Target": 1,
     "Item_Camp": 1,
-    "Item_Name": "ս����",
+    "Item_Name": "战斗机",
     "Item_AP": 9,
     "Item_Attack": 50,
     "Item_Defense": 0,
@@ -339,15 +355,15 @@
     "Item_Price": 200,
     "Item_HP": 80,
     "Item_Vision": 2,
-    "Item_Desc": "����˹��Ҫ�Ŀ�����ս�����������ڼ��̵�ʱ���ڽ��볬���ٷ��У�ͬʱ��֤�����ԣ�����Я����������"
+    "Item_Desc": "俄罗斯主要的空中作战力量，可以在极短的时间内进入超音速飞行，同时保证机动性，可以携带大量武器"
   },
   {
-    "Item_Model": "R_����ս�ɻ�",
+    "Item_Model": "R_电子战飞机",
     "Item_Number": "P_R_01",
     "Item_Type": 3,
     "Item_Target": 3,
     "Item_Camp": 1,
-    "Item_Name": "����ս�ɻ�",
+    "Item_Name": "电子战飞机",
     "Item_AP": 7,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -355,15 +371,15 @@
     "Item_Price": 225,
     "Item_HP": 70,
     "Item_Vision": 4,
-    "Item_Desc": "����˹����Ϊ��Ӧ�Ե���ս��ר�ſ�����֧Ԯ������ֻ�ܶԵз����״�������Ŀ����д������ֱ��̱���з��������豸��"
+    "Item_Desc": "俄罗斯方面为了应对电子战而专门开发的支援武器，只能对敌方的雷达搜索类目标进行打击，可直接瘫痪敌方的搜索设备。"
   },
   {
-    "Item_Model": "R_��ը��",
+    "Item_Model": "R_轰炸机",
     "Item_Number": "P_R_02",
     "Item_Type": 3,
     "Item_Target": 1,
     "Item_Camp": 1,
-    "Item_Name": "ս����ը��",
+    "Item_Name": "战斗轰炸机",
     "Item_AP": 15,
     "Item_Attack": 100,
     "Item_Defense": 0,
@@ -371,16 +387,16 @@
     "Item_Price": 225,
     "Item_HP": 80,
     "Item_Vision": 3,
-    "Item_Desc": "װ�������Եع���ը���ķ����������Ծ�ȷ������е���Ŀ�ꡣ"
+    "Item_Desc": "装备大量对地攻击炸弹的飞行器，可以精确打击所有地面目标。"
   },
 
   {
-    "Item_Model": "N_ս����",
+    "Item_Model": "N_战斗机",
     "Item_Number": "P_N_00",
     "Item_Type": 3,
     "Item_Target": 0,
     "Item_Camp": 0,
-    "Item_Name": "ս����",
+    "Item_Name": "战斗机",
     "Item_AP": 10,
     "Item_Attack": 50,
     "Item_Defense": 0,
@@ -388,15 +404,15 @@
     "Item_Price": 250,
     "Item_HP": 80,
     "Item_Vision": 3,
-    "Item_Desc": "��Լ��Ҫ�Ŀ�����ս���������������޺�����Ѹ�ٶԵп����Լ�����Ŀ��ʵʩ���������Ҳװ�������״���ڸ������ṩ��Ұ��"
+    "Item_Desc": "北约主要的空中作战力量，可以在有限航程内迅速对敌空中以及地面目标实施打击，自身也装备机载雷达，可在干扰下提供视野。"
   },
   {
-    "Item_Model": "N_����ս�ɻ�",
+    "Item_Model": "N_电子战飞机",
     "Item_Number": "P_N_01",
     "Item_Type": 3,
     "Item_Target": 3,
     "Item_Camp": 0,
-    "Item_Name": "����ս�ɻ�",
+    "Item_Name": "电子战飞机",
     "Item_AP": 7,
     "Item_Attack": 0,
     "Item_Defense": 0,
@@ -404,15 +420,15 @@
     "Item_Price": 225,
     "Item_HP": 70,
     "Item_Vision": 4,
-    "Item_Desc": "��Լ����Ϊ��Ӧ�Ե���ս��ר�ſ�����֧Ԯ������ֻ�ܶԵз����״�������Ŀ����д������ֱ��̱���з��������豸��"
+    "Item_Desc": "北约方面为了应对电子战而专门开发的支援武器，只能对敌方的雷达搜索类目标进行打击，可直接瘫痪敌方的搜索设备。"
   },
   {
-    "Item_Model": "N_��ը��",
+    "Item_Model": "N_轰炸机",
     "Item_Number": "P_N_02",
     "Item_Type": 3,
     "Item_Target": 1,
     "Item_Camp": 0,
-    "Item_Name": "ս����ը��",
+    "Item_Name": "战术轰炸机",
     "Item_AP": 15,
     "Item_Attack": 100,
     "Item_Defense": 0,
@@ -420,6 +436,6 @@
     "Item_Price": 275,
     "Item_HP": 100,
     "Item_Vision": 3,
-    "Item_Desc": "װ�������Եع���ը���ķ��������ܶԵз��������е���Ŀ����л����Դ����"
+    "Item_Desc": "装备大量对地攻击炸弹的飞行器，能对敌方几乎所有地面目标进行毁灭性打击。"
   }
 ]

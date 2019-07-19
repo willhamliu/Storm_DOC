@@ -22,7 +22,12 @@ public class Item_Model : MonoBehaviour
 
     public void AB_path()
     {
+#if UNITY_EDITOR_WIN
         load_model = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/ui/model.unity3d"));
+#endif
+#if UNITY_ANDROID
+        load_model = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/ui/model.unity3d"));
+#endif
     }
 
 
@@ -33,7 +38,7 @@ public class Item_Model : MonoBehaviour
         GameObject Model = Instantiate(model_prefab, Model_create);
         Models.Add(Model);
     }
-    public void Model_display(int lastindex ,int index)//显示指定模型
+    public void Model_display(int lastindex, int index)//显示指定模型
     {
         Models[lastindex].SetActive(false);
         Models[index].SetActive(true);
