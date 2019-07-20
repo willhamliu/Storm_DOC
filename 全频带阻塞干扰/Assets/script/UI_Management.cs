@@ -2,8 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +10,8 @@ public class UI_Management : MonoBehaviour {
     Tweener Setting_Insert;
     public GameObject Main_Canvas;//图鉴
     public GameObject List_Canvas;//控制图鉴淡入淡出画布
-    public GameObject Setting_Canvas;
+    public GameObject Button_Canvas;
+    public GameObject Quit_panel;
 
     public Transform Setting_Panel;
     public Transform Insert_point;//插入位置
@@ -20,6 +19,9 @@ public class UI_Management : MonoBehaviour {
 
     public Button List_close;
     public Button Setting_close;
+
+    public Button Quit_confrim;
+    public Button Quit_cancel;
 
 
     public Transform Main_Button;
@@ -30,9 +32,10 @@ public class UI_Management : MonoBehaviour {
 
     void Awake()
     {
+        Quit_panel.SetActive(false);
         Main_Canvas.SetActive(false);
         List_Canvas.SetActive(false);
-        Setting_Canvas.SetActive(false);
+        Button_Canvas.SetActive(false);
     }
     void Start()
     {
@@ -50,15 +53,17 @@ public class UI_Management : MonoBehaviour {
             List_Content[i].SetActive(false);
         }
 
-
         buttons[0].onClick.AddListener(Combat);
         buttons[1].onClick.AddListener(Demo);
         buttons[2].onClick.AddListener(Setting_Open);
         buttons[3].onClick.AddListener(List_Open);
-        buttons[4].onClick.AddListener(Exit);
+        buttons[4].onClick.AddListener(Quit);
 
         List_close.onClick.AddListener(List_Close);
         Setting_close.onClick.AddListener(Setting_Close);
+
+        Quit_cancel.onClick.AddListener(Quit_Cancel);
+        Quit_confrim.onClick.AddListener(Quit_Confrim);
     }
 
 
@@ -73,14 +78,14 @@ public class UI_Management : MonoBehaviour {
 
     public void Setting_Open()//打开设置
     {
-        Setting_Canvas.SetActive(true);
+        Button_Canvas.SetActive(true);
         Setting_Insert = Setting_Panel.DOLocalMoveX(Insert_point.localPosition.x, 0.3f);
         Setting_Insert.SetAutoKill(false);
     }
     public void Setting_Close()//关闭设置
     {
         Audio_Management.Audio_management.SFXS_play("返回");
-        Setting_Canvas.SetActive(false);
+        Button_Canvas.SetActive(false);
         Setting_Insert = Setting_Panel.DOLocalMoveX(Raw_point.localPosition.x, 0.3f);
         Setting_Insert.SetAutoKill(false);
     }
@@ -97,8 +102,20 @@ public class UI_Management : MonoBehaviour {
     }
 
 
-    public void Exit()//退出
+    public void Quit()//退出
     {
+        Button_Canvas.SetActive(true);
+        Quit_panel.SetActive(true);
+    }
+    public void Quit_Cancel()
+    {
+        Audio_Management.Audio_management.SFXS_play("按钮点击");
+        Button_Canvas.SetActive(false);
+        Quit_panel.SetActive(false);
+    }
+    public void Quit_Confrim()
+    {
+        Audio_Management.Audio_management.BGM_stop("Home_BGM");
         Application.Quit();
     }
 

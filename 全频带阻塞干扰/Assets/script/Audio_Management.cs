@@ -89,7 +89,7 @@ public class Audio_Management : MonoBehaviour {
         if (Audio_SFXS.ContainsKey(audio_name))
         {
             SFXS.clip = Audio_SFXS[audio_name];
-            SFXS.Play();//播放背景音乐
+            SFXS.Play();
         }
         else
         {
@@ -98,7 +98,7 @@ public class Audio_Management : MonoBehaviour {
             AudioClip AC = load.GetComponent<AudioSource>().clip;
 
             SFXS.clip = AC;
-            SFXS.Play();//播放背景音乐
+            SFXS.Play();
 
             Audio_SFXS.Add(AC.name, AC);
         }
@@ -121,6 +121,23 @@ public class Audio_Management : MonoBehaviour {
             BGM.Play();//播放背景音乐
 
             Audio_BGM.Add(AC.name, AC);
+        }
+    }
+    public void BGM_stop(string audio_name)
+    {
+        if (Audio_BGM.ContainsKey(audio_name))
+        {
+            BGM.clip = Audio_BGM[audio_name];
+            BGM.Play();//播放背景音乐
+        }
+        else
+        {
+            GameObject load = load_BGM.LoadAsset<GameObject>(audio_name);
+
+            AudioClip AC = load.GetComponent<AudioSource>().clip;
+
+            BGM.clip = AC;
+            BGM.Stop();//播放背景音乐
         }
     }
 }
