@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class Item_Panel : MonoBehaviour {
 
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层
-    List<GameObject> All_Item ;
+    //Item item;
+    List<GameObject> All_Item = new List<GameObject>();
     List<Toggle> Camp;
 
     List<Item> Config_List_Building;
@@ -36,27 +37,27 @@ public class Item_Panel : MonoBehaviour {
         NATO
     }
 
-    public static Item_Panel item_Panel;
+    public static Item_Panel Item_panel;
   
     void Awake()
     {
-        item_Panel = this;
-        Data_Canvas.SetActive(false);
-        All_Item = new List<GameObject>();
-        Camp = new List<Toggle>();
-        Camp.Add(Camp_Rus);
-        Camp.Add(Camp_NATO);
-
-        Config_item.Config_Item.Configjson();
+        Config_item.Config_Item.Config_Item_Json();
         Config_List_Building = Config_item.Config_Item.Item_List_Building;
         Config_List_People = Config_item.Config_Item.Item_List_People;
         Config_List_Tank = Config_item.Config_Item.Item_List_Tank;
         Config_List_Plane = Config_item.Config_Item.Item_List_Plane;
+
+        Item_panel = this;
+
+        Camp_Rus.isOn = true;
+        Data_Canvas.SetActive(false);
+        Camp = new List<Toggle>();
+        Camp.Add(Camp_Rus);
+        Camp.Add(Camp_NATO);
     }
 
     void Start()
     {
-       
         CreateAllitem();
         for (int i = 0; i < Camp.Count; i++)
         {
@@ -69,12 +70,13 @@ public class Item_Panel : MonoBehaviour {
             
             var item = Config_item.Config_Item.Item_List_All[i];
             var index = All_Item.IndexOf(All_Item[i]);
-            Item_Model.item_Model.Load_AB(item);
-            All_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) =>  { Data_toggle(ref item ,ref value,ref index); });
+            Item_Model.Item_model.Load_AB(item);
+            All_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) =>  { Data_toggle(ref value,ref index); });
         }
+
+        All_Item[0].GetComponent<Toggle>().isOn = true;
     }
 
-    
 
     public GameObject Createitem(Item.Type type)
     {
@@ -158,10 +160,8 @@ public class Item_Panel : MonoBehaviour {
             Last_Camp_index = index;
         }
     }
-    public void Data_toggle(ref Item item ,ref bool value ,ref int index)//信息面板切换
+    public void Data_toggle(ref bool value ,ref int index)//信息面板切换
     {
-        
-        
         //由于当toggle有变动时才会调用，所以不用担心由于切换阵营后ison关闭
         if (Last_Item_index != index && value==true)
         {
@@ -172,7 +172,7 @@ public class Item_Panel : MonoBehaviour {
             if (gameObject.activeInHierarchy==true)
             {
                 Audio_Management.Audio_management.SFXS_play("单位切换");
-                StartCoroutine(Data_Toggle(item, index, Last_Item_index));
+                StartCoroutine(Data_Toggle(index, Last_Item_index));
             }
             Last_Item_index = index;
         }
@@ -213,21 +213,21 @@ public class Item_Panel : MonoBehaviour {
 
     public void Open_list()//打开图鉴
     {
-        Camp_Rus.isOn = true;
         Camp_show(Camp_choose.RUS);
-        All_Item[0].GetComponent<Toggle>().isOn = true;
-        Item_Detail.item_Detail.SetData(Config_item.Config_Item.Item_List_All[0]);
-        Item_Model.item_Model.Model_display(0, 0);
+        Item_Detail.Item_detail.SetData(Config_item.Config_Item.Item_List_All[0]);
+        Item_Model.Item_model.Model_display(0, 0);
     }
 
     public void Close_list()//关闭图鉴
     {
         Camp_NATO.isOn = false;
+        Camp_Rus.isOn = true;
+        Camp[0].isOn = true;
         All_Item[0].GetComponent<Toggle>().isOn = true;
     }
 
 
-    public IEnumerator Data_Toggle( Item item, int index, int last_index)
+    public IEnumerator Data_Toggle(int index, int last_index)//单位切换时的淡入淡出效果
     {
         float a = 0;
         float b = 255;
@@ -245,10 +245,11 @@ public class Item_Panel : MonoBehaviour {
                 b = b - 25;
                 Data_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
             }
-            if (a>255)
+            if (a==250)
             {
-                Item_Detail.item_Detail.SetData(item);
-                Item_Model.item_Model.Model_display(last_index, index);
+                var item = Config_item.Config_Item.Item_List_All[index];
+                Item_Detail.Item_detail.SetData(item);
+                Item_Model.Item_model.Model_display(last_index, index);
             }
             if (b < 0)
             {

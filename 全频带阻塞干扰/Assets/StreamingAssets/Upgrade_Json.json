@@ -1,0 +1,72 @@
+[
+  {
+    "Customize_Name": "防弹衣",
+    "Customize_Desc": "步兵单位增加5点生命值",
+    "Customize_Price": 500,
+    "Customize_Unlockindex": -1,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "穿甲弹头",
+    "Customize_Desc": "自行火炮对装甲单位增加10点杀伤",
+    "Customize_Price": 1250,
+    "Customize_Unlockindex": 0,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "红点镜",
+    "Customize_Desc": "步兵单位增加3点杀伤",
+    "Customize_Price": 1100,
+    "Customize_Unlockindex": 0,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "燃烧弹",
+    "Customize_Desc": "飞行单位增加10点生杀伤",
+    "Customize_Price": 2000,
+    "Customize_Unlockindex": 0,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "反应装甲",
+    "Customize_Desc": "装甲单位增加10点生命值",
+    "Customize_Price": 1300,
+    "Customize_Unlockindex": 1,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "榴弹发射器",
+    "Customize_Desc": "步兵单位增加7点杀伤",
+    "Customize_Price": 1400,
+    "Customize_Unlockindex": 2,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "精确制导",
+    "Customize_Desc": "飞行单位攻击力加15",
+    "Customize_Price": 1400,
+    "Customize_Unlockindex": 3,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "快速装填",
+    "Customize_Desc": "装甲单位有10%几率可以进行两次攻击",
+    "Customize_Price": 1400,
+    "Customize_Unlockindex": 4,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "附加燃油",
+    "Customize_Desc": "装甲单位行动点数加1",
+    "Customize_Price": 1400,
+    "Customize_Unlockindex": 5,
+    "Customize_Purchase_Status": false
+  },
+  {
+    "Customize_Name": "机身强化",
+    "Customize_Desc": "飞行单位增加15点生命值",
+    "Customize_Price": 2400,
+    "Customize_Unlockindex": 6,
+    "Customize_Purchase_Status": false
+  }
+]

@@ -65,7 +65,6 @@ public class Audio_Management : MonoBehaviour {
 
     public void BGM_Adjust(float value)//背景音乐滑动条
     {
-
         BGM_Value.text = ((int)(value * 100)).ToString();
 
         BGM.volume = BGM_Slider.value;

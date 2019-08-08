@@ -10,12 +10,12 @@ public class Item_Model : MonoBehaviour
     string File_name;
     AssetBundle load_model;
 
-    public static Item_Model item_Model;
+    public static Item_Model Item_model;
     public int index;
 
     void Awake()
     {
-        item_Model = this;
+        Item_model = this;
         Models = new List<GameObject>();
         AB_path();
     }
