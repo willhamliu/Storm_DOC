@@ -16,45 +16,49 @@ public class Audio_Management : MonoBehaviour {
 
     GameObject sound_play_object;
 
+    static Dictionary<string, AudioClip> Audio_BGM = new Dictionary<string, AudioClip>();
+    static Dictionary<string, AudioClip> Audio_SFXS = new Dictionary<string, AudioClip>();
 
-    public Dictionary<string, AudioClip> Audio_BGM = new Dictionary<string, AudioClip>();
-    public Dictionary<string, AudioClip> Audio_SFXS = new Dictionary<string, AudioClip>();
-
-    AssetBundle load_BGM;
-    AssetBundle load_SFXS;
+    static AssetBundle load_BGM;
+    static AssetBundle load_SFXS;
 
     public static Audio_Management Audio_management;
+
+    public static bool isNoDestroyHandler = true;//是否没有DontDestroyOnLoad处理
 
     void Awake()
     {
         Audio_management = this;
+        sound_play_object = this.gameObject;
+        if (isNoDestroyHandler)
+        {
+            isNoDestroyHandler = false;
 
 #if UNITY_EDITOR_WIN
-        load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/bgm.audio"));
-        load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/sfxs.audio"));
+            load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/bgm.audio"));
+            load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/sfxs.audio"));
 #endif
 
 #if UNITY_ANDROID
         load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/bgm.audio"));
         load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/sfxs.audio"));
 #endif
+        }
+
+
         if (PlayerPrefs.HasKey("BGM_value"))
         {
-            BGM_Slider.value = PlayerPrefs.GetFloat("BGM_value");
-            BGM.volume = BGM_Slider.value;
+            BGM.volume = PlayerPrefs.GetFloat("BGM_value");
+            BGM_Slider.value = BGM.volume;
         }
         if (PlayerPrefs.HasKey("SFXS_value"))
         {
-            SFXS_Slider.value = PlayerPrefs.GetFloat("SFXS_value");
-            SFXS.volume = SFXS_Slider.value;
+            SFXS.volume = PlayerPrefs.GetFloat("SFXS_value");
+            SFXS_Slider.value = SFXS.volume;
         }
     }
     void Start()
     {
-        sound_play_object = this.gameObject;
-        DontDestroyOnLoad(sound_play_object);//切换场景后不销毁
-        DontDestroyOnLoad(BGM);//切换场景后不销毁
-        DontDestroyOnLoad(SFXS);//切换场景后不销毁
 
         BGM_Value.text = ((int)(BGM_Slider.value * 100)).ToString();
         BGM_Slider.onValueChanged.AddListener((float value) => BGM_Adjust(value));

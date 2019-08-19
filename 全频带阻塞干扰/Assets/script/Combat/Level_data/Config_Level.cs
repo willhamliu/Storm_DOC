@@ -5,17 +5,22 @@ using System.Text;
 using LitJson;
 using UnityEngine.UI;
 
-public class Config_Level : MonoBehaviour
+public class Config_Level
 {
     public List<Level> Level_Data_All = new List<Level>();
-    public JsonData Level_Json_Data = new JsonData();
-    public static Config_Level Config_level;
+    JsonData Level_Json_Data;
 
-    private void Awake()
+    private static Config_Level config_Level;
+    public static Config_Level Config_level
     {
-        Config_level = this;
+        get
+        {
+            if (config_Level == null) config_Level = new Config_Level();
+            return config_Level;
+        }
     }
 
+   
     public void Config_Level_Json()
     {
 #if UNITY_EDITOR_WIN
@@ -38,7 +43,9 @@ public class Config_Level : MonoBehaviour
         {
             string level_Name = Level_Json_Data[i]["Level_Name"].ToString();
             string level_Desc = Level_Json_Data[i]["Level_Desc"].ToString();
-            Level level = new Level(level_Name, level_Desc);
+            string load_Scene = Level_Json_Data[i]["Load_Scene"].ToString();
+            int level_Point =(int) Level_Json_Data[i]["Level_Point"];
+            Level level = new Level(level_Name, level_Desc, load_Scene, level_Point);
 
             Level_Data_All.Add(level);
         }

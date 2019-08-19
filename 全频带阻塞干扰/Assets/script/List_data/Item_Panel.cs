@@ -70,7 +70,6 @@ public class Item_Panel : MonoBehaviour {
             
             var item = Config_item.Config_Item.Item_List_All[i];
             var index = All_Item.IndexOf(All_Item[i]);
-            Item_Model.Item_model.Load_AB(item);
             All_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) =>  { Data_toggle(ref value,ref index); });
         }
 
@@ -215,7 +214,7 @@ public class Item_Panel : MonoBehaviour {
     {
         Camp_show(Camp_choose.RUS);
         Item_Detail.Item_detail.SetData(Config_item.Config_Item.Item_List_All[0]);
-        Item_Model.Item_model.Model_display(0, 0);
+        Item_Model.Item_model.Model_display(0, 0, "R_机场");
     }
 
     public void Close_list()//关闭图鉴
@@ -249,7 +248,7 @@ public class Item_Panel : MonoBehaviour {
             {
                 var item = Config_item.Config_Item.Item_List_All[index];
                 Item_Detail.Item_detail.SetData(item);
-                Item_Model.Item_model.Model_display(last_index, index);
+                Item_Model.Item_model.Model_display(last_index, index, item.Item_Model);
             }
             if (b < 0)
             {

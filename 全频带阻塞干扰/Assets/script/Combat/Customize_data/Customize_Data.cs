@@ -25,14 +25,18 @@ public class Customize_Data : MonoBehaviour
     public static Customize_Data Customize_data;
     private void Awake()
     {
-        point = 9000;
-        Point.text = point.ToString();
-
+       
         Customize_data = this;
         if (PlayerPrefs.HasKey("point"))
         {
             Point.text = PlayerPrefs.GetInt("point").ToString();
         }
+        else
+        {
+            point = 200;
+        }
+        Point.text = point.ToString();
+
     }
     private void Start()
     {
@@ -62,6 +66,9 @@ public class Customize_Data : MonoBehaviour
         buy.SetActive(false);
         point_buy = point - customize.Customize_Price;
         StartCoroutine(use_point());
+
+        PlayerPrefs.SetInt("point", point);
+        PlayerPrefs.Save();
     }
     IEnumerator use_point()
     {

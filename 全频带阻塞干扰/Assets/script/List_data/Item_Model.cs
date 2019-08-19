@@ -5,19 +5,24 @@ using System.IO;
 
 public class Item_Model : MonoBehaviour
 {
-    private List<GameObject> Models;
+    public Dictionary<int, GameObject> Models = new Dictionary<int, GameObject>();
     public Transform Model_create;
     string File_name;
-    AssetBundle load_model;
+    static AssetBundle load_model;
 
     public static Item_Model Item_model;
-    public int index;
+    private int index;
+
+    public static bool Notload = true;
 
     void Awake()
     {
         Item_model = this;
-        Models = new List<GameObject>();
-        AB_path();
+        if (Notload == true)
+        {
+            AB_path();
+            Notload = false;
+        }
     }
 
     public void AB_path()
@@ -30,18 +35,22 @@ public class Item_Model : MonoBehaviour
 #endif
     }
 
+    public void Model_display(int lastindex, int index, string name)//显示指定模型
+    {
+        if (Models.ContainsKey(index))
+        {
+            Models[lastindex].SetActive(false);
+            Models[index].SetActive(true);
+        }
+        else
+        {
+            GameObject model_prefab = load_model.LoadAsset<GameObject>(name);
+            GameObject Model = Instantiate(model_prefab, Model_create);
+            Models.Add(index, Model);
 
-    public void Load_AB(Item item)
-    {
-        this.File_name = item.Item_Model;
-        GameObject model_prefab = load_model.LoadAsset<GameObject>(File_name);
-        GameObject Model = Instantiate(model_prefab, Model_create);
-        Models.Add(Model);
-    }
-    public void Model_display(int lastindex, int index)//显示指定模型
-    {
-        Models[lastindex].SetActive(false);
-        Models[index].SetActive(true);
+            Models[lastindex].SetActive(false);
+            Model.SetActive(true);
+        }
         this.index = index;
     }
     public void Close_list()

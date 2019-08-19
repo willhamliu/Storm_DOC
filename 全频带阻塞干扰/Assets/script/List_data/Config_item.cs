@@ -7,7 +7,8 @@ using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System;
 
-public class Config_item : MonoBehaviour{
+public class Config_item
+{
 
     public List<Item> Item_List_All = new List<Item>();
     public List<Item> Item_List_Building = new List<Item>();
@@ -19,15 +20,18 @@ public class Config_item : MonoBehaviour{
     public Dictionary<string, int> Upgrade_item = new Dictionary<string, int>();
 
 
-    public JsonData Item_Json_Data=new JsonData();
+    JsonData Item_Json_Data;
 
     bool update_object=true;//更新对象层，只需要执行一次
 
-    public static Config_item Config_Item;
-
-    private void Awake()
+    private static Config_item config_Item;
+    public static Config_item Config_Item
     {
-        Config_Item = this;
+        get
+        {
+            if (config_Item == null) config_Item = new Config_item();
+            return config_Item;
+        }
     }
 
     public void Config_Item_Json()
@@ -75,20 +79,20 @@ public class Config_item : MonoBehaviour{
         {
             string item_Model = Item_Json_Data[i]["Item_Model"].ToString();
 
-            string item_Number = (string)Item_Json_Data[i]["Item_Number"];
+            string item_Number = Item_Json_Data[i]["Item_Number"].ToString();
             int item_Type = (int)Item_Json_Data[i]["Item_Type"];
             int item_Target = (int)Item_Json_Data[i]["Item_Target"];
             int item_Camp = (int)Item_Json_Data[i]["Item_Camp"];
 
-            string item_Name = (string)Item_Json_Data[i]["Item_Name"];
-            int item_AP = (int)Item_Json_Data[i]["Item_AP"];
-            int item_Attack = (int)Item_Json_Data[i]["Item_Attack"];
-            int item_Defense = (int)Item_Json_Data[i]["Item_Defense"];
-            int iten_range = (int)Item_Json_Data[i]["Item_range"];
+            string item_Name = Item_Json_Data[i]["Item_Name"].ToString();
+            string item_AP = Item_Json_Data[i]["Item_AP"].ToString();
+            string item_Attack = Item_Json_Data[i]["Item_Attack"].ToString();
+            string item_Defense = Item_Json_Data[i]["Item_Defense"].ToString();
+            string iten_range = Item_Json_Data[i]["Item_range"].ToString();
 
-            int item_Price = (int)Item_Json_Data[i]["Item_Price"];
-            int item_HP = (int)Item_Json_Data[i]["Item_HP"];
-            int item_Vision = (int)Item_Json_Data[i]["Item_Vision"];
+            string item_Price = Item_Json_Data[i]["Item_Price"].ToString();
+            string item_HP = Item_Json_Data[i]["Item_HP"].ToString();
+            string item_Vision = Item_Json_Data[i]["Item_Vision"].ToString();
 
             string item_Desc = Item_Json_Data[i]["Item_Desc"].ToString();
 

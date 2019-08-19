@@ -7,15 +7,19 @@ using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System;
 
-public class Config_Customize : MonoBehaviour
+public class Config_Customize
 {
     public List<Customize> Customize_Data_All = new List<Customize>();
-    public JsonData Customize_Json_Data = new JsonData();
-    public static Config_Customize Config_customize;
+    JsonData Customize_Json_Data;
 
-    private void Awake()
+    private static Config_Customize config_Customize;
+    public static Config_Customize Config_customize
     {
-        Config_customize = this;
+        get
+        {
+            if (config_Customize == null) config_Customize = new Config_Customize();
+            return config_Customize;
+        }
     }
 
     public void Confing_Customize_Json()
@@ -50,7 +54,7 @@ public class Config_Customize : MonoBehaviour
             write.Close();
             write.Dispose();
             Customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.persistentDataPath + "Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
-            //安卓端必须写入后再次调用，否则升级时无法写入(查了好久。。。)
+            //安卓端必须写入后再次赋值，否则升级时第一次无法写入(查了好久。。。)
         }
 
 #endif

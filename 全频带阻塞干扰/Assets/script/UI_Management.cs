@@ -20,6 +20,8 @@ public class UI_Management : MonoBehaviour {
     public GameObject List_Content;
     public GameObject Combat_Content;
 
+    public GameObject FX;
+
 
     public Transform Setting_Panel;
     public Transform Insert_point;//插入位置
@@ -46,6 +48,7 @@ public class UI_Management : MonoBehaviour {
         List_Main_Canvas.SetActive(false);
         List_Canvas.SetActive(false);
         Button_Canvas.SetActive(false);
+        FX.SetActive(true);
     }
     void Start()
     {
@@ -81,19 +84,18 @@ public class UI_Management : MonoBehaviour {
     {
         Button_Canvas.SetActive(true);
         Setting_Insert = Setting_Panel.DOLocalMoveX(Insert_point.localPosition.x, 0.3f);
-        Setting_Insert.SetAutoKill(false);
     }
     public void Setting_Close()//关闭设置
     {
         Audio_Management.Audio_management.SFXS_play("返回");
         Button_Canvas.SetActive(false);
         Setting_Insert = Setting_Panel.DOLocalMoveX(Raw_point.localPosition.x, 0.3f);
-        Setting_Insert.SetAutoKill(false);
     }
 
 
     public void List_Open()//打开图鉴
     {
+        FX.SetActive(false);
         StartCoroutine(List_ON());
     }
     public void List_Close()//关闭图鉴
@@ -105,6 +107,7 @@ public class UI_Management : MonoBehaviour {
 
     public void Combat_Open()//开启战斗面板
     {
+        FX.SetActive(false);
         StartCoroutine(Combat_ON());
     }
     public void Combat_Close()//关闭战斗面板
@@ -184,6 +187,7 @@ public class UI_Management : MonoBehaviour {
                 {
                     Combat_Canvas.SetActive(false);
                     Combat_Content.SetActive(false);
+                    FX.SetActive(true);
                 }
             }
 
@@ -244,6 +248,7 @@ public class UI_Management : MonoBehaviour {
                 {
                     List_Canvas.SetActive(false);
                     List_Content.SetActive(false);
+                    FX.SetActive(true);
                 }
             }
 
