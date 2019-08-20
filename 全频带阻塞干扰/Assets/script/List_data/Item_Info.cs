@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Item_Info : MonoBehaviour {
 
-    public Text Name;
-    public string Item_Camp;
+    public Text item_Name;
+    public string item_Camp;
     private Item item;
     public void Namedata(Item item)
     {
@@ -15,8 +15,8 @@ public class Item_Info : MonoBehaviour {
             return;
         }
         this.item = item;
-        this.Item_Camp = this.item.Item_Camp.ToString();
-        this.Name.text = this.item.Item_Name;
+        this.item_Camp = this.item.Item_Camp.ToString();
+        this.item_Name.text = this.item.Item_Name;
     }
 
 }

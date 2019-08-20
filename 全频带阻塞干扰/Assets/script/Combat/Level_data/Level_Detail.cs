@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class Level_Detail : MonoBehaviour
 {
-    public Text Desc;
+    public Text desc;
     public Text point;
-    public Button Star;
+    public Button star;
     private Level level;
     public static Level_Detail Level_detail;
     void Awake()
@@ -17,7 +17,7 @@ public class Level_Detail : MonoBehaviour
     }
     void Start()
     {
-        Star.onClick.AddListener(Load_level);
+        star.onClick.AddListener(Load_level);
     }
     public void SetData(Level level)
     {
@@ -26,12 +26,12 @@ public class Level_Detail : MonoBehaviour
             return;
         }
         this.level = level;
-        Desc.text ="\u3000\u3000"+this.level.Level_Desc;
+        desc.text ="\u3000\u3000"+this.level.Level_Desc;
         point.text = this.level.Level_Point.ToString();
     }
     public void Load_level()
     {
         SceneManager.LoadScene("Load_level");
-        Level_Management.level_management.Load_level(level);
+        Level_Get.Level_get.Load_level(level);
     }
 }

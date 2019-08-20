@@ -6,21 +6,21 @@ using LitJson;
 using System.IO;
 using System.Text;
 
-public class Config_Prompt : MonoBehaviour
+public class Config_Prompt
 {
-    public Text prompt_Text;
-    List<string> prompts = new List<string>();
+    public List<string> prompts = new List<string>();
     JsonData prompt;
 
-    void Awake()
+    private static Config_Prompt config_Prompt;
+    public static Config_Prompt Config_prompt
     {
-        Config_Prompt_Json();
+        get
+        {
+            if (config_Prompt == null) config_Prompt = new Config_Prompt();
+            return config_Prompt;
+        }
     }
-    private void Start()
-    {
-        int i = Random.Range(0, prompts.Count);
-        prompt_Text.text = prompts[i];
-    }
+   
     public void Config_Prompt_Json()
     {
 #if UNITY_EDITOR_WIN

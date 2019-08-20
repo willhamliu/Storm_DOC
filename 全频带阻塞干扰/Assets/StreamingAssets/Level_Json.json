@@ -3,12 +3,14 @@
     "Level_Name": "0-1 零星抵抗",
     "Level_Desc": "在北约战斧导弹精确的打击下，俄罗斯军队被迫撤离到城市中心进行防守，防线也不复存在，北约军队的进攻态势已经无法阻挡。",
     "Load_Scene": "level_0_1",
-    "Level_Point":  400
+    "Load_Scene_Dialogue": "Dialogue_0_1",
+    "Level_Point": 400
   },
   {
     "Level_Name": "1-1 炼狱",
     "Level_Desc": "失陷的城市已经看不见了，战线一夜之间后退了40公里，最后的防御部队集结完毕，准备在黎明迎来最后一战 ......",
     "Load_Scene": "level_1_1",
+    "Load_Scene_Dialogue": "Dialogue_1_1",
     "Level_Point": 600
   }
 ]

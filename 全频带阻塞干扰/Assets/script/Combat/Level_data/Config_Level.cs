@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class Config_Level
 {
-    public List<Level> Level_Data_All = new List<Level>();
-    JsonData Level_Json_Data;
+    public List<Level> level_Data_All = new List<Level>();
+    JsonData level_Json_Data;
 
     private static Config_Level config_Level;
     public static Config_Level Config_level
@@ -24,7 +24,7 @@ public class Config_Level
     public void Config_Level_Json()
     {
 #if UNITY_EDITOR_WIN
-        Level_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Level_Json.json", Encoding.GetEncoding("UTF-8")));
+        level_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Level_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 
 #if UNITY_ANDROID
@@ -32,22 +32,23 @@ public class Config_Level
         WWW www = new WWW(path);
         while (!www.isDone) { }
 
-        Level_Json_Data = JsonMapper.ToObject(www.text);
+        level_Json_Data = JsonMapper.ToObject(www.text);
 #endif
 
         Decode_Level_Json();
     }
     private void Decode_Level_Json()
     {
-        for (int i = 0; i < Level_Json_Data.Count; i++)
+        for (int i = 0; i < level_Json_Data.Count; i++)
         {
-            string level_Name = Level_Json_Data[i]["Level_Name"].ToString();
-            string level_Desc = Level_Json_Data[i]["Level_Desc"].ToString();
-            string load_Scene = Level_Json_Data[i]["Load_Scene"].ToString();
-            int level_Point =(int) Level_Json_Data[i]["Level_Point"];
-            Level level = new Level(level_Name, level_Desc, load_Scene, level_Point);
+            string level_Name = level_Json_Data[i]["Level_Name"].ToString();
+            string level_Desc = level_Json_Data[i]["Level_Desc"].ToString();
+            string load_Scene = level_Json_Data[i]["Load_Scene"].ToString();
+            string load_Scene_Dialogue = level_Json_Data[i]["Load_Scene_Dialogue"].ToString();
+            int level_Point =(int) level_Json_Data[i]["Level_Point"];
+            Level level = new Level(level_Name, level_Desc, load_Scene, load_Scene_Dialogue, level_Point);
 
-            Level_Data_All.Add(level);
+            level_Data_All.Add(level);
         }
     }
 }

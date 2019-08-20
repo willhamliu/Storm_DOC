@@ -6,22 +6,31 @@ using UnityEngine.UI;
 
 public class Level_Receipt : MonoBehaviour
 {
-    public Slider Load_value;
+    public Slider load_Value;
     public Text value;
-    public float Simulation_value=0;
+    public Text prompt_Text;
+    public float simulation_Value=0;
     AsyncOperation async;
 
-    public static Level_Receipt level_Receipt;
+    public static Level_Receipt Level_receipt;
     void Awake()
     {
-        level_Receipt = this;
+        Level_receipt = this;
+        Config_Prompt.Config_prompt.Config_Prompt_Json();
+    }
+    void Start()
+    {
+        Level_Get.Level_get.Load();
+
+        int i = Random.Range(0, Config_Prompt.Config_prompt.prompts.Count);
+        prompt_Text.text = Config_Prompt.Config_prompt.prompts[i];
     }
     void Update()
     {
         UI_display();
     }
 
-    public void level_load(string level_name)
+    public void Level_load(string level_name)
     {
         async = SceneManager.LoadSceneAsync(level_name);
         async.allowSceneActivation = false;
@@ -29,13 +38,13 @@ public class Level_Receipt : MonoBehaviour
     }
     public void UI_display()
     {
-        Simulation_value = Mathf.Lerp(Simulation_value, async.progress, Time.deltaTime);
+        simulation_Value = Mathf.Lerp(simulation_Value, async.progress, Time.deltaTime);
        
 
-        if (Simulation_value>= 0.85)
+        if (simulation_Value>= 0.85)
         {
             value.text = 100 +"%";
-            Load_value.value = 1;
+            load_Value.value = 1;
             async.allowSceneActivation = true;
         }
     }
@@ -44,8 +53,8 @@ public class Level_Receipt : MonoBehaviour
     {
         while (true)
         {
-            value.text = ((int)(Simulation_value / 9 * 10 * 100)).ToString() + "%";
-            Load_value.value = (Simulation_value) / 9 * 10;
+            value.text = ((int)(simulation_Value / 9 * 10 * 100)).ToString() + "%";
+            load_Value.value = (simulation_Value) / 9 * 10;
             yield return new WaitForSeconds(1f);
         }
     }

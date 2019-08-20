@@ -773,24 +773,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29f7763fcba2614aa8a2c7df7d00ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  List_Main_Canvas: {fileID: 222795518}
-  List_Canvas: {fileID: 1509554382}
-  Combat_Main_Canvas: {fileID: 559151108}
-  Combat_Canvas: {fileID: 354876398}
-  Button_Canvas: {fileID: 1289796687}
-  Quit_panel: {fileID: 1408892051}
-  List_Content: {fileID: 44361823}
-  Combat_Content: {fileID: 563418860}
-  FX: {fileID: 1829087748}
-  Setting_Panel: {fileID: 28631001}
-  Insert_point: {fileID: 1324375524}
-  Raw_point: {fileID: 489051805}
-  Combat_close: {fileID: 2099808161}
-  List_close: {fileID: 846090012}
-  Setting_close: {fileID: 645522976}
-  Quit_confrim: {fileID: 1085209494}
-  Quit_cancel: {fileID: 1363479643}
-  Main_Button: {fileID: 2125152398}
+  list_Main_Canvas: {fileID: 222795518}
+  list_Canvas: {fileID: 1509554382}
+  combat_Main_Canvas: {fileID: 559151108}
+  combat_Canvas: {fileID: 354876398}
+  button_Canvas: {fileID: 1289796687}
+  quit_Panel: {fileID: 1408892051}
+  list_Content: {fileID: 44361823}
+  combat_Content: {fileID: 563418860}
+  fx: {fileID: 1829087748}
+  setting_Panel: {fileID: 28631001}
+  insert_point: {fileID: 1324375524}
+  raw_point: {fileID: 489051805}
+  combat_Close: {fileID: 2099808161}
+  list_Close: {fileID: 846090012}
+  setting_Close: {fileID: 645522976}
+  quit_Confrim: {fileID: 1085209494}
+  quit_Cancel: {fileID: 1363479643}
+  main_Button: {fileID: 2125152398}
 --- !u!4 &104471027
 Transform:
   m_ObjectHideFlags: 0
@@ -870,12 +870,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2ceb19a5ac5644a8d27da7933b4628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGM_Value: {fileID: 70409465}
-  BGM_Slider: {fileID: 276305751}
-  BGM: {fileID: 790192940}
-  SFXS_Value: {fileID: 744131631}
-  SFXS_Slider: {fileID: 803938618}
-  SFXS: {fileID: 1811759721}
+  bgm_Value: {fileID: 70409465}
+  bgm_Slider: {fileID: 276305751}
+  bgm: {fileID: 790192940}
+  sfxs_Value: {fileID: 744131631}
+  sfxs_Slider: {fileID: 803938618}
+  sfxs: {fileID: 1811759721}
 --- !u!4 &127039618
 Transform:
   m_ObjectHideFlags: 0
@@ -1953,7 +1953,7 @@ RectTransform:
   m_Children:
   - {fileID: 798354787}
   m_Father: {fileID: 1642520879}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -3515,7 +3515,7 @@ GameObject:
   - component: {fileID: 419220127}
   - component: {fileID: 419220126}
   m_Layer: 5
-  m_Name: Text (2)
+  m_Name: point_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4149,6 +4149,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519497060}
   m_CullTransparentMesh: 0
+--- !u!114 &521727696 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3978741560586967301, guid: 168f3396b7f6a1c4eb36257775ed133e,
+    type: 3}
+  m_PrefabInstance: {fileID: 9190638506505440431}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &523086836
 GameObject:
   m_ObjectHideFlags: 0
@@ -4563,14 +4575,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd5dbaa5d6a6ac44b79d5e384c425d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data_Canvas: {fileID: 1428446934}
-  Item_temp: {fileID: 5273181491357845218}
-  Camp_Rus: {fileID: 821751779}
-  Camp_NATO: {fileID: 1259598350}
-  Building_item_create: {fileID: 1748789979}
-  People_item_create: {fileID: 1521146790}
-  Tank_item_create: {fileID: 2080511559}
-  Plane_item_create: {fileID: 1456144761}
+  data_Canvas: {fileID: 1428446934}
+  item_Temp: {fileID: 5273181491357845218}
+  camp_Rus: {fileID: 821751779}
+  camp_NATO: {fileID: 1259598350}
+  building_item_create: {fileID: 1748789979}
+  people_item_create: {fileID: 1521146790}
+  tank_item_create: {fileID: 2080511559}
+  plane_item_create: {fileID: 1456144761}
 --- !u!114 &548453092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4583,14 +4595,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1f19d2a2839354babb1b49bddb1181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camp: {fileID: 798354788}
-  AP: {fileID: 1728629224}
-  Attack: {fileID: 1602928365}
-  Defense: {fileID: 891575046}
-  Target: {fileID: 557657354}
+  camp: {fileID: 798354788}
+  target: {fileID: 557657354}
+  ap: {fileID: 1728629224}
+  attack: {fileID: 1602928365}
+  defense: {fileID: 891575046}
   range: {fileID: 1150260924}
-  HP: {fileID: 821778430}
-  Desc: {fileID: 1745969392}
+  hp: {fileID: 821778430}
+  desc: {fileID: 1745969392}
 --- !u!1 &557657352
 GameObject:
   m_ObjectHideFlags: 0
@@ -5306,6 +5318,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645522974}
   m_CullTransparentMesh: 0
+--- !u!114 &653207630 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2737411039572285346, guid: 405dede3aeb0c3b4d90e2c1225fd1266,
+    type: 3}
+  m_PrefabInstance: {fileID: 2624406111439798273}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &658695383
 GameObject:
   m_ObjectHideFlags: 0
@@ -7406,7 +7430,7 @@ GameObject:
   - component: {fileID: 880629099}
   - component: {fileID: 880629098}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17082,7 +17106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5, y: -0.000057935715}
+  m_AnchoredPosition: {x: 5, y: -0.000027418137}
   m_SizeDelta: {x: 435, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1456144762
@@ -17326,7 +17350,7 @@ GameObject:
   - component: {fileID: 1497422084}
   - component: {fileID: 1497422083}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Data_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17951,7 +17975,7 @@ GameObject:
   - component: {fileID: 1584291952}
   - component: {fileID: 1584291951}
   m_Layer: 5
-  m_Name: Combat
+  m_Name: Buy_Button
   m_TagString: Ui_Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18707,8 +18731,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2958624}
-  - {fileID: 1978462015}
   - {fileID: 221681523}
+  - {fileID: 1978462015}
   m_Father: {fileID: 1787028294}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19263,17 +19287,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac9e528d80be7f45897cddb96a7f57c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Option_Mission: {fileID: 182922959}
-  Option_Customize: {fileID: 523086838}
-  Mission_Content: {fileID: 1799902881}
-  Customize_Content: {fileID: 1673772396}
-  Level_temp: {fileID: 2625536114637325546}
-  Option_Canvas: {fileID: 853724365}
-  Level_canvas: {fileID: 1372477}
-  Upgrade_Canvas: {fileID: 991463266}
+  option_Mission: {fileID: 182922959}
+  option_Customize: {fileID: 523086838}
+  mission_Content: {fileID: 1799902881}
+  customize_Content: {fileID: 1673772396}
+  level_Temp: {fileID: 2625536114637325546}
+  option_Canvas: {fileID: 853724365}
+  level_canvas: {fileID: 1372477}
+  upgrade_Canvas: {fileID: 991463266}
   level_create: {fileID: 212916339}
-  Upgrade_create: {fileID: 1968886519}
-  Last_Level_index: 0
+  upgrade_create: {fileID: 1968886519}
 --- !u!114 &1702789192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19286,9 +19309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6720f42027055184fb857e392054969e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Desc: {fileID: 1026965636}
+  desc: {fileID: 1026965636}
   point: {fileID: 2067653277}
-  Star: {fileID: 1093684081}
+  star: {fileID: 1093684081}
 --- !u!114 &1702789193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19301,18 +19324,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7fc185921ebf0541988312f956e35c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 1497422083}
-  Price: {fileID: 419220126}
-  Point: {fileID: 2020068389}
+  data: {fileID: 1497422083}
+  price: {fileID: 419220126}
+  point_Count: {fileID: 2020068389}
   point: 0
-  point_buy: 0
-  Purchase_index: 0
-  buy_panel_name: {fileID: 508706198}
-  buy_confrim: {fileID: 1177233344}
-  buy_cancel: {fileID: 1292604092}
+  point_Buy: 0
+  Purchase_Index: 0
+  buy_Panel_Name: {fileID: 508706198}
+  buy_Bonfrim: {fileID: 1177233344}
+  buy_Cancel: {fileID: 1292604092}
   buy: {fileID: 1584291949}
-  attention_buy: {fileID: 1405566726}
-  buy_panel: {fileID: 1630368267}
+  attention_Buy: {fileID: 1405566726}
+  buy_Panel: {fileID: 1630368267}
 --- !u!1 &1728629222
 GameObject:
   m_ObjectHideFlags: 0
@@ -26428,7 +26451,7 @@ RectTransform:
   m_Children:
   - {fileID: 557657353}
   m_Father: {fileID: 1642520879}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -27251,7 +27274,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5, y: -0.000057935715}
+  m_AnchoredPosition: {x: 5, y: -0.000027418137}
   m_SizeDelta: {x: 434.99997, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2080511560
@@ -27779,7 +27802,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2141132758}
   - component: {fileID: 2141132759}
-  - component: {fileID: 2141132757}
   m_Layer: 0
   m_Name: Load
   m_TagString: Untagged
@@ -27787,18 +27809,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2141132757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141132756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f07c0da129c8f342afc1e48c4ff947a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2141132758
 Transform:
   m_ObjectHideFlags: 0
@@ -27825,7 +27835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6de40719c2c0b4a9c013db7f0061fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Model_create: {fileID: 2958624}
+  model_Create: {fileID: 2958624}
 --- !u!224 &224682226004742093 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2843451691081174988, guid: 405dede3aeb0c3b4d90e2c1225fd1266,
@@ -27954,6 +27964,11 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 673331969}
+    - target: {fileID: 1983345672369487679, guid: 405dede3aeb0c3b4d90e2c1225fd1266,
+        type: 3}
+      propertyPath: lecel_Name
+      value: 
+      objectReference: {fileID: 653207630}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 405dede3aeb0c3b4d90e2c1225fd1266, type: 3}
 --- !u!1 &2625536114637325546 stripped
@@ -28096,5 +28111,10 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 1186310795}
+    - target: {fileID: 3978417479274724163, guid: 168f3396b7f6a1c4eb36257775ed133e,
+        type: 3}
+      propertyPath: item_Name
+      value: 
+      objectReference: {fileID: 521727696}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 168f3396b7f6a1c4eb36257775ed133e, type: 3}

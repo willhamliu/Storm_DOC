@@ -9,8 +9,8 @@ using System;
 
 public class Config_Customize
 {
-    public List<Customize> Customize_Data_All = new List<Customize>();
-    JsonData Customize_Json_Data;
+    public List<Customize> customize_Data_All = new List<Customize>();
+    JsonData customize_Json_Data;
 
     private static Config_Customize config_Customize;
     public static Config_Customize Config_customize
@@ -25,7 +25,7 @@ public class Config_Customize
     public void Confing_Customize_Json()
     {
 #if UNITY_EDITOR_WIN
-        Customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
+        customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 
 #if UNITY_ANDROID
@@ -33,7 +33,7 @@ public class Config_Customize
         if (file.Exists)
         {
             string path = Application.persistentDataPath + "Upgrade_Json.json";
-            Customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(path, Encoding.GetEncoding("UTF-8")));
+            customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(path, Encoding.GetEncoding("UTF-8")));
 
         }
         else
@@ -42,7 +42,7 @@ public class Config_Customize
             WWW www = new WWW(path);
             while (!www.isDone) { }
 
-            Customize_Json_Data = JsonMapper.ToObject(www.text);
+            customize_Json_Data = JsonMapper.ToObject(www.text);
 
 
             StreamWriter write = file.CreateText();
@@ -53,7 +53,7 @@ public class Config_Customize
 
             write.Close();
             write.Dispose();
-            Customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.persistentDataPath + "Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
+            customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.persistentDataPath + "Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
             //安卓端必须写入后再次赋值，否则升级时第一次无法写入(查了好久。。。)
         }
 
@@ -63,22 +63,22 @@ public class Config_Customize
 
     private void Decode_Confing_Json()
     {
-        for (int i = 0; i < Customize_Json_Data.Count; i++)
+        for (int i = 0; i < customize_Json_Data.Count; i++)
         {
-            string Customize_Name = Customize_Json_Data[i]["Customize_Name"].ToString();
-            string Customize_Desc = Customize_Json_Data[i]["Customize_Desc"].ToString();
-            int Customize_Price = (int)Customize_Json_Data[i]["Customize_Price"];
-            int Customize_Unlockindex = (int)Customize_Json_Data[i]["Customize_Unlockindex"];
-            bool Customize_Purchase_Status = (bool)Customize_Json_Data[i]["Customize_Purchase_Status"];
+            string Customize_Name = customize_Json_Data[i]["Customize_Name"].ToString();
+            string Customize_Desc = customize_Json_Data[i]["Customize_Desc"].ToString();
+            int Customize_Price = (int)customize_Json_Data[i]["Customize_Price"];
+            int Customize_Unlockindex = (int)customize_Json_Data[i]["Customize_Unlockindex"];
+            bool Customize_Purchase_Status = (bool)customize_Json_Data[i]["Customize_Purchase_Status"];
             Customize customize = new Customize(Customize_Name, Customize_Desc, Customize_Price, Customize_Unlockindex,Customize_Purchase_Status);
 
-            Customize_Data_All.Add(customize);
+            customize_Data_All.Add(customize);
         }
     }
     public void Purchase_Status_Modify(int index)
     {
         FileInfo file;
-        Customize_Json_Data[index]["Customize_Purchase_Status"] = true;
+        customize_Json_Data[index]["Customize_Purchase_Status"] = true;
 #if UNITY_EDITOR_WIN
         file = new FileInfo(Application.streamingAssetsPath + "/Upgrade_Json.json");
 #endif
@@ -88,7 +88,7 @@ public class Config_Customize
 #endif
         StreamWriter write = file.CreateText();
 
-        string json =JsonMapper.ToJson(Customize_Json_Data);
+        string json =JsonMapper.ToJson(customize_Json_Data);
         Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
         json = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
         write.Write(json);
@@ -96,7 +96,7 @@ public class Config_Customize
         write.Close();
         write.Dispose();
 
-        Customize_Data_All.Clear();//更新数据
+        customize_Data_All.Clear();//更新数据
         Confing_Customize_Json();
 
         Item.Type type;
@@ -108,52 +108,52 @@ public class Config_Customize
             case 0:
                 type = Item.Type.步兵单位;
                 value = 5;
-                Config_item.Config_Item.Upgrade_HP(ref type, ref value);
+                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
                 break;
             case 1:
                 name = "自行火炮";
                 value = 10;
-                Config_item.Config_Item.Upgrade_Attack(ref name, ref value);
+                Config_Item.Config_item.Upgrade_Attack(ref name, ref value);
                 break;
             case 2:
                 type = Item.Type.步兵单位;
                 value = 3;
-                Config_item.Config_Item.Upgrade_Attack(ref type, ref value);
+                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
                 break;
             case 3:
                 type = Item.Type.飞行单位;
                 value = 10;
-                Config_item.Config_Item.Upgrade_Attack(ref type, ref value);
+                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
                 break;
             case 4:
                 type = Item.Type.装甲单位;
                 value = 10;
-                Config_item.Config_Item.Upgrade_HP(ref type, ref value);
+                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
                 break;
             case 5:
                 type = Item.Type.步兵单位;
                 value = 7;
-                Config_item.Config_Item.Upgrade_Attack(ref type, ref value);
+                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
                 break;
             case 6:
                 type = Item.Type.飞行单位;
                 value = 15;
-                Config_item.Config_Item.Upgrade_Attack(ref type, ref value);
+                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
                 break;
             case 7:
                 type = Item.Type.装甲单位;
                 value = 10;
-                Config_item.Config_Item.Upgrade_HP(ref type, ref value);
+                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
                 break;
             case 8:
                 type = Item.Type.装甲单位;
                 value = 1;
-                Config_item.Config_Item.Upgrade_AP(ref type, ref value);
+                Config_Item.Config_item.Upgrade_AP(ref type, ref value);
                 break;
             case 9:
                 type = Item.Type.飞行单位;
                 value = 15;
-                Config_item.Config_Item.Upgrade_HP(ref type, ref value);
+                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
                 break;
         }
     }

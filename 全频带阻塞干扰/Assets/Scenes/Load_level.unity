@@ -201,9 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 329761573}
-  - component: {fileID: 329761572}
   - component: {fileID: 329761574}
-  - component: {fileID: 329761575}
   m_Layer: 0
   m_Name: Level_Management
   m_TagString: Untagged
@@ -211,18 +209,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &329761572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 329761571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f07c0da129c8f342afc1e48c4ff947a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &329761573
 Transform:
   m_ObjectHideFlags: 0
@@ -249,22 +235,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff91fd6486aa3df4f8dbbc6e0d4ac47b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Load_value: {fileID: 1640676777}
+  load_Value: {fileID: 1640676777}
   value: {fileID: 481014889}
-  Simulation_value: 0
---- !u!114 &329761575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 329761571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a286d2543fda934fa69590ea96ee107, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   prompt_Text: {fileID: 439410414}
+  simulation_Value: 0
 --- !u!1 &357173702
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,33 +6,33 @@ using UnityEngine.UI;
 
 public class Audio_Management : MonoBehaviour {
 
-    public Text BGM_Value;
-    public Slider BGM_Slider;
-    public AudioSource BGM;
+    public Text bgm_Value;
+    public Slider bgm_Slider;
+    public AudioSource bgm;
 
-    public Text SFXS_Value;
-    public Slider SFXS_Slider;
-    public AudioSource SFXS;
+    public Text sfxs_Value;
+    public Slider sfxs_Slider;
+    public AudioSource sfxs;
 
     GameObject sound_play_object;
 
-    static Dictionary<string, AudioClip> Audio_BGM = new Dictionary<string, AudioClip>();
-    static Dictionary<string, AudioClip> Audio_SFXS = new Dictionary<string, AudioClip>();
+    static Dictionary<string, AudioClip> audio_BGM = new Dictionary<string, AudioClip>();
+    static Dictionary<string, AudioClip> audio_SFXS = new Dictionary<string, AudioClip>();
 
     static AssetBundle load_BGM;
     static AssetBundle load_SFXS;
 
     public static Audio_Management Audio_management;
 
-    public static bool isNoDestroyHandler = true;//是否没有DontDestroyOnLoad处理
+    public static bool notload = true;
 
     void Awake()
     {
         Audio_management = this;
         sound_play_object = this.gameObject;
-        if (isNoDestroyHandler)
+        if (notload)
         {
-            isNoDestroyHandler = false;
+            notload = false;
 
 #if UNITY_EDITOR_WIN
             load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/bgm.audio"));
@@ -48,30 +48,30 @@ public class Audio_Management : MonoBehaviour {
 
         if (PlayerPrefs.HasKey("BGM_value"))
         {
-            BGM.volume = PlayerPrefs.GetFloat("BGM_value");
-            BGM_Slider.value = BGM.volume;
+            bgm.volume = PlayerPrefs.GetFloat("BGM_value");
+            bgm_Slider.value = bgm.volume;
         }
         if (PlayerPrefs.HasKey("SFXS_value"))
         {
-            SFXS.volume = PlayerPrefs.GetFloat("SFXS_value");
-            SFXS_Slider.value = SFXS.volume;
+            sfxs.volume = PlayerPrefs.GetFloat("SFXS_value");
+            sfxs_Slider.value = sfxs.volume;
         }
     }
     void Start()
     {
 
-        BGM_Value.text = ((int)(BGM_Slider.value * 100)).ToString();
-        BGM_Slider.onValueChanged.AddListener((float value) => BGM_Adjust(value));
+        bgm_Value.text = ((int)(bgm_Slider.value * 100)).ToString();
+        bgm_Slider.onValueChanged.AddListener((float value) => BGM_Adjust(value));
 
-        SFXS_Value.text = ((int)(SFXS_Slider.value * 100)).ToString();
-        SFXS_Slider.onValueChanged.AddListener((float value) => SFXS_Adjust(value));
+        sfxs_Value.text = ((int)(sfxs_Slider.value * 100)).ToString();
+        sfxs_Slider.onValueChanged.AddListener((float value) => SFXS_Adjust(value));
     }
 
     public void BGM_Adjust(float value)//背景音乐滑动条
     {
-        BGM_Value.text = ((int)(value * 100)).ToString();
+        bgm_Value.text = ((int)(value * 100)).ToString();
 
-        BGM.volume = BGM_Slider.value;
+        bgm.volume = bgm_Slider.value;
 
         PlayerPrefs.SetFloat("BGM_value", value);
         PlayerPrefs.Save();
@@ -79,9 +79,9 @@ public class Audio_Management : MonoBehaviour {
 
     public void SFXS_Adjust(float value)//音效滑动条
     {
-        SFXS_Value.text = ((int)(value * 100)).ToString();
+        sfxs_Value.text = ((int)(value * 100)).ToString();
 
-        SFXS.volume = SFXS_Slider.value;
+        sfxs.volume = sfxs_Slider.value;
 
         PlayerPrefs.SetFloat("SFXS_value", value);
         PlayerPrefs.Save();
@@ -89,10 +89,10 @@ public class Audio_Management : MonoBehaviour {
 
     public void SFXS_play(string audio_name)
     {
-        if (Audio_SFXS.ContainsKey(audio_name))
+        if (audio_SFXS.ContainsKey(audio_name))
         {
-            SFXS.clip = Audio_SFXS[audio_name];
-            SFXS.Play();
+            sfxs.clip = audio_SFXS[audio_name];
+            sfxs.Play();
         }
         else
         {
@@ -100,19 +100,19 @@ public class Audio_Management : MonoBehaviour {
 
             AudioClip AC = load.GetComponent<AudioSource>().clip;
 
-            SFXS.clip = AC;
-            SFXS.Play();
+            sfxs.clip = AC;
+            sfxs.Play();
 
-            Audio_SFXS.Add(AC.name, AC);
+            audio_SFXS.Add(AC.name, AC);
         }
     }
 
     public void BGM_play(string audio_name)
     {
-        if (Audio_BGM.ContainsKey(audio_name))
+        if (audio_BGM.ContainsKey(audio_name))
         {
-            BGM.clip = Audio_BGM[audio_name];
-            BGM.Play();//播放背景音乐
+            bgm.clip = audio_BGM[audio_name];
+            bgm.Play();//播放背景音乐
         }
         else
         {
@@ -120,18 +120,18 @@ public class Audio_Management : MonoBehaviour {
 
             AudioClip AC = load.GetComponent<AudioSource>().clip;
 
-            BGM.clip = AC;
-            BGM.Play();//播放背景音乐
+            bgm.clip = AC;
+            bgm.Play();//播放背景音乐
 
-            Audio_BGM.Add(AC.name, AC);
+            audio_BGM.Add(AC.name, AC);
         }
     }
     public void BGM_stop(string audio_name)
     {
-        if (Audio_BGM.ContainsKey(audio_name))
+        if (audio_BGM.ContainsKey(audio_name))
         {
-            BGM.clip = Audio_BGM[audio_name];
-            BGM.Play();//播放背景音乐
+            bgm.clip = audio_BGM[audio_name];
+            bgm.Play();//播放背景音乐
         }
         else
         {
@@ -139,8 +139,8 @@ public class Audio_Management : MonoBehaviour {
 
             AudioClip AC = load.GetComponent<AudioSource>().clip;
 
-            BGM.clip = AC;
-            BGM.Stop();//播放背景音乐
+            bgm.clip = AC;
+            bgm.Stop();//播放背景音乐
         }
     }
 }

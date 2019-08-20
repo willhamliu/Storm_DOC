@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Level_Info : MonoBehaviour
 {
-    public Text Name;
+    public Text lecel_Name;
     private Level level;
     public void Namedata(Level level)
     {
@@ -14,6 +14,6 @@ public class Level_Info : MonoBehaviour
             return;
         }
         this.level = level;
-        Name.text = this.level.Level_Name;
+        lecel_Name.text = this.level.Level_Name;
     }
 }
