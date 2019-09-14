@@ -78,7 +78,6 @@ public class Customize_Data : MonoBehaviour
             point_Count.text = point.ToString();
             yield return null;
         }
-        yield return null;
     }
     public void SetData(ref Customize customize, ref int index)
     {

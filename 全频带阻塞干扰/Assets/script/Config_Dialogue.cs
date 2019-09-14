@@ -7,8 +7,8 @@ using System.Text;
 
 public class Config_Dialogue
 {
-    public List<string> dialogues = new List<string>();
-    JsonData dialogue;
+    public List<Dialogue> dialogues = new List<Dialogue>();
+    JsonData dialogue_Json_Data;
 
     private static Config_Dialogue config_Dialogue;
     public static Config_Dialogue Config_dialogue
@@ -22,10 +22,10 @@ public class Config_Dialogue
 
     public void Config_Dialogue_Json()
     {
-        string file_Name = Level_Get.Level_get.Dialogue_name;
+        string file_Name = Level_State.Level_state.Dialogue_name;
 
 #if UNITY_EDITOR_WIN
-        dialogue = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));
+        dialogue_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));
 #endif
 
 #if UNITY_ANDROID
@@ -33,16 +33,20 @@ public class Config_Dialogue
         WWW www = new WWW(path);
         while (!www.isDone) { }
 
-        dialogue = JsonMapper.ToObject(www.text);
+        dialogue_Json_Data = JsonMapper.ToObject(www.text);
 #endif
         Decode_Dialogue_Json();
     }
     public void Decode_Dialogue_Json()
     {
-        for (int i = 0; i < dialogue.Count; i++)
+        for (int i = 0; i < dialogue_Json_Data.Count; i++)
         {
-            string dialogue_desc = dialogue[i]["Dialogue"].ToString();
-            dialogues.Add(dialogue_desc);
+            string dialogue_desc = this.dialogue_Json_Data[i]["Dialogue"].ToString();
+            string speaker = this.dialogue_Json_Data[i]["Speaker"].ToString();
+
+            Dialogue Dialogue = new Dialogue(dialogue_desc, speaker);
+
+            dialogues.Add(Dialogue);
         }
     }
 }

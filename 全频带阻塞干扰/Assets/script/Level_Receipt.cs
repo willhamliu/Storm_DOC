@@ -20,8 +20,7 @@ public class Level_Receipt : MonoBehaviour
     }
     void Start()
     {
-        Level_Get.Level_get.Load();
-
+        Level_load();
         int i = Random.Range(0, Config_Prompt.Config_prompt.prompts.Count);
         prompt_Text.text = Config_Prompt.Config_prompt.prompts[i];
     }
@@ -30,9 +29,9 @@ public class Level_Receipt : MonoBehaviour
         UI_display();
     }
 
-    public void Level_load(string level_name)
+    public void Level_load()
     {
-        async = SceneManager.LoadSceneAsync(level_name);
+        async = SceneManager.LoadSceneAsync(Level_State.Level_state.Level_Name);
         async.allowSceneActivation = false;
         StartCoroutine(Wait_load());
     }

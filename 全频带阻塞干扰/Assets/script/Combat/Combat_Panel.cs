@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class Combat_Panel : MonoBehaviour
 {
-    List<Toggle> option;
+    List<Toggle> option = new List<Toggle>();
 
-    List<Level> level_Data_All;
+    List<Level> level_Data_All = new List<Level>();
 
     List<Toggle> upgrade_All = new List<Toggle>();
     List<GameObject> level_All =new List<GameObject>();
@@ -39,7 +39,7 @@ public class Combat_Panel : MonoBehaviour
 
         level_Data_All = Config_Level.Config_level.level_Data_All;
 
-       
+
         if (PlayerPrefs.HasKey("level_index"))
         {
             last_Level_index = PlayerPrefs.GetInt("level_index");
@@ -50,7 +50,6 @@ public class Combat_Panel : MonoBehaviour
             upgrade_All.Add(upgrade_create.GetChild(i).GetComponent<Toggle>());
         }
 
-        option = new List<Toggle>();
         option.Add(option_Mission);
         option.Add(option_Customize);
 
@@ -81,7 +80,6 @@ public class Combat_Panel : MonoBehaviour
             var index = upgrade_All.IndexOf(upgrade_All[i]);
             upgrade_All[i].onValueChanged.AddListener((bool value) => { Toggle_Upgrade(ref index, ref value); });
         }
-
         level_All[last_Level_index].GetComponent<Toggle>().isOn = true;
         upgrade_All[0].isOn = true;
     }
@@ -194,7 +192,6 @@ public class Combat_Panel : MonoBehaviour
             }
             yield return null;
         }
-        yield return null;
     }
     public IEnumerator Upgrade_level(int index)
     {
@@ -224,7 +221,6 @@ public class Combat_Panel : MonoBehaviour
             }
             yield return null;
         }
-        yield return null;
     }
     public IEnumerator Toggle_option(int index)
     {
@@ -262,6 +258,5 @@ public class Combat_Panel : MonoBehaviour
             }
             yield return null;
         }
-        yield return null;
     }
 }

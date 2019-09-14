@@ -30,7 +30,7 @@ public class Config_Customize
 
 #if UNITY_ANDROID
         FileInfo file = new FileInfo(Application.persistentDataPath + "Upgrade_Json.json");
-        if (file.Exists)
+        if (file.Exists)//如果之前存过就不用再存了
         {
             string path = Application.persistentDataPath + "Upgrade_Json.json";
             customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(path, Encoding.GetEncoding("UTF-8")));
@@ -45,11 +45,11 @@ public class Config_Customize
             customize_Json_Data = JsonMapper.ToObject(www.text);
 
 
-            StreamWriter write = file.CreateText();
-            string json = JsonMapper.ToJson(Customize_Json_Data);
+            StreamWriter write = file.CreateText();//创建一个文件夹
+            string json = JsonMapper.ToJson(customize_Json_Data);
             Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
             json = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
-            write.Write(json);
+            write.Write(json);//写入
 
             write.Close();
             write.Dispose();
@@ -63,6 +63,7 @@ public class Config_Customize
 
     private void Decode_Confing_Json()
     {
+        customize_Data_All.Clear();//更新数据
         for (int i = 0; i < customize_Json_Data.Count; i++)
         {
             string Customize_Name = customize_Json_Data[i]["Customize_Name"].ToString();
@@ -96,7 +97,6 @@ public class Config_Customize
         write.Close();
         write.Dispose();
 
-        customize_Data_All.Clear();//更新数据
         Confing_Customize_Json();
 
         Item.Type type;

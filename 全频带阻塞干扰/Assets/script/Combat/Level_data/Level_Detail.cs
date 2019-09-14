@@ -32,6 +32,6 @@ public class Level_Detail : MonoBehaviour
     public void Load_level()
     {
         SceneManager.LoadScene("Load_level");
-        Level_Get.Level_get.Load_level(level);
+        Level_State.Level_state.Load_level(level);
     }
 }

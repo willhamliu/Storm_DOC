@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class Item_Model : MonoBehaviour
+public class Item_Model_Management : MonoBehaviour
 {
     public Dictionary<int, GameObject> models = new Dictionary<int, GameObject>();
     public Transform model_Create;
     static AssetBundle load_Model;
 
-    public static Item_Model Item_model;
+    public static Item_Model_Management Item_model_management;
     private int index;
 
     public static bool notload = true;
 
     void Awake()
     {
-        Item_model = this;
+        Item_model_management = this;
         if (notload == true)
         {
             AB_path();

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_Management : MonoBehaviour {
@@ -13,7 +14,7 @@ public class UI_Management : MonoBehaviour {
     public GameObject combat_Main_Canvas;//遮挡主页
     public GameObject combat_Canvas;//控制战斗面板淡入淡出画布
 
-    public GameObject button_Canvas;
+    public GameObject home_Canvas;
 
     public GameObject quit_Panel;
 
@@ -40,18 +41,31 @@ public class UI_Management : MonoBehaviour {
   
     void Awake()
     {
-        combat_Content.SetActive(false);
-        list_Content.SetActive(false);
-        quit_Panel.SetActive(false);
-        combat_Main_Canvas.SetActive(false);
-        combat_Canvas.SetActive(false);
-        list_Main_Canvas.SetActive(false);
-        list_Canvas.SetActive(false);
-        button_Canvas.SetActive(false);
-        fx.SetActive(true);
+        if (Level_State.Level_state.Lecel_quit == false)
+        {
+            combat_Content.SetActive(false);
+            list_Content.SetActive(false);
+            quit_Panel.SetActive(false);
+            combat_Main_Canvas.SetActive(false);
+            combat_Canvas.SetActive(false);
+            list_Main_Canvas.SetActive(false);
+            list_Canvas.SetActive(false);
+            home_Canvas.SetActive(false);
+            fx.SetActive(true);
+        }
+        else
+        {
+            fx.SetActive(false);
+            list_Main_Canvas.SetActive(false);
+
+            StartCoroutine(Level_Quit());
+            Level_State.Level_state.Lecel_quit = false;
+        }
     }
     void Start()
     {
+
+
         Audio_Management.Audio_management.BGM_play("Home_BGM");
         buttons = new Button[main_Button.childCount];
         for (int i = 0; i < buttons.Length; i++)
@@ -75,20 +89,20 @@ public class UI_Management : MonoBehaviour {
     }
 
 
-    public void Demo()//demo
+    public void Demo()//打开Demo场景
     {
-        Debug.Log("demo");
+        SceneManager.LoadScene("Demo");
     }
 
     public void Setting_Open()//打开设置
     {
-        button_Canvas.SetActive(true);
+        home_Canvas.SetActive(true);
         setting_Insert = setting_Panel.DOLocalMoveX(insert_point.localPosition.x, 0.3f);
     }
     public void Setting_Close()//关闭设置
     {
         Audio_Management.Audio_management.SFXS_play("返回");
-        button_Canvas.SetActive(false);
+        home_Canvas.SetActive(false);
         setting_Insert = setting_Panel.DOLocalMoveX(raw_point.localPosition.x, 0.3f);
     }
 
@@ -119,16 +133,16 @@ public class UI_Management : MonoBehaviour {
 
     public void Quit()//退出
     {
-        button_Canvas.SetActive(true);
+        home_Canvas.SetActive(true);
         quit_Panel.SetActive(true);
     }
-    public void Quit_Cancel()
+    public void Quit_Cancel()//取消退出
     {
         Audio_Management.Audio_management.SFXS_play("按钮点击");
-        button_Canvas.SetActive(false);
+        home_Canvas.SetActive(false);
         quit_Panel.SetActive(false);
     }
-    public void Quit_Confrim()
+    public void Quit_Confrim()//确认退出
     {
         Audio_Management.Audio_management.BGM_stop("Home_BGM");
         Application.Quit();
@@ -167,7 +181,6 @@ public class UI_Management : MonoBehaviour {
             }
             yield return null;
         }
-        yield return null;
     }
     public IEnumerator Combat_OFF()
     {
@@ -198,7 +211,6 @@ public class UI_Management : MonoBehaviour {
             }
             yield return null;
         }
-        yield return null;
     }
 
     public IEnumerator List_ON()
@@ -228,7 +240,6 @@ public class UI_Management : MonoBehaviour {
             }
             yield return null;
         }
-        yield return null;
     }
     public IEnumerator List_OFF()
     {
@@ -256,10 +267,35 @@ public class UI_Management : MonoBehaviour {
             {
                 list_Main_Canvas.SetActive(false);
                 Item_Panel.Item_panel.Close_list();
-                Item_Model.Item_model.Close_list();
+                Item_Model_Management.Item_model_management.Close_list();
             }
             yield return null;
         }
-        yield return null;
+    }
+
+    public IEnumerator Level_Quit()
+    {
+        combat_Main_Canvas.SetActive(true);
+        combat_Canvas.SetActive(true);
+        combat_Content.SetActive(true);
+        combat_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, 255 / 255);
+
+        float b = 255;
+
+        while (b >= 0)
+        {
+            combat_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
+
+            b = b - 25;
+            if (b == 205)
+            {
+                Combat_Panel.Combat_panel.Open_Combat();
+            }
+            if (b < 0)
+            {
+                combat_Canvas.SetActive(false);
+            }
+            yield return null;
+        }
     }
 }

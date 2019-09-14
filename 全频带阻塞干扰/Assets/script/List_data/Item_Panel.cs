@@ -7,9 +7,8 @@ using UnityEngine.UI;
 public class Item_Panel : MonoBehaviour {
 
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层
-    //Item item;
     List<GameObject> all_Item = new List<GameObject>();
-    List<Toggle> camp;
+    List<Toggle> camp = new List<Toggle>();
 
     List<Item> config_List_Building;
     List<Item> config_List_People;
@@ -49,11 +48,10 @@ public class Item_Panel : MonoBehaviour {
 
         Item_panel = this;
 
-        camp_Rus.isOn = true;
         data_Canvas.SetActive(false);
-        camp = new List<Toggle>();
         camp.Add(camp_Rus);
         camp.Add(camp_NATO);
+        camp[0].isOn = true;
     }
 
     void Start()
@@ -214,7 +212,7 @@ public class Item_Panel : MonoBehaviour {
     {
         Camp_show(Camp_choose.RUS);
         Item_Detail.Item_detail.SetData(Config_Item.Config_item.item_List_All[0]);
-        Item_Model.Item_model.Model_display(0, 0, "R_机场");
+        Item_Model_Management.Item_model_management.Model_display(0, 0, "R_机场");
     }
 
     public void Close_list()//关闭图鉴
@@ -248,7 +246,7 @@ public class Item_Panel : MonoBehaviour {
             {
                 var item = Config_Item.Config_item.item_List_All[index];
                 Item_Detail.Item_detail.SetData(item);
-                Item_Model.Item_model.Model_display(last_index, index, item.Item_Model);
+                Item_Model_Management.Item_model_management.Model_display(last_index, index, item.Item_Model);
             }
             if (b < 0)
             {
@@ -256,6 +254,5 @@ public class Item_Panel : MonoBehaviour {
             }
             yield return null;
         }
-        yield return null;
     }
 }

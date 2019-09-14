@@ -38,6 +38,7 @@ public class Config_Prompt
     }
     public void Decode_Prompt_Json()
     {
+        prompts.Clear();//更新数据
         for (int i = 0; i < prompt.Count; i++)
         {
             string prompt_desc = prompt[i]["prompt"].ToString();

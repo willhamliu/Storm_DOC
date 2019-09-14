@@ -39,6 +39,7 @@ public class Config_Level
     }
     private void Decode_Level_Json()
     {
+        level_Data_All.Clear();
         for (int i = 0; i < level_Json_Data.Count; i++)
         {
             string level_Name = level_Json_Data[i]["Level_Name"].ToString();
