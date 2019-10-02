@@ -13,7 +13,7 @@ public class Dialogue_Management : MonoBehaviour
 
     bool log_Open = false;//文本查看状态
     bool text_Ponit_Start = false;//逐字显示状态
-    bool dialogue_end = false;//对话结束
+    public bool dialogue_end { get; private set; } = false;
 
     int dialogues_Index=0;
     int index = 0;

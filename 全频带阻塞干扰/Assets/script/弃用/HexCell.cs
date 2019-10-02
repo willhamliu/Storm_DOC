@@ -35,7 +35,7 @@ public class HexCell : MonoBehaviour//绘制六边形网格(已弃用)
         for (int i = 0; i < 6; i++)
         {
             Vector3 center = cell.transform.localPosition;//每个六边形的中心点
-            AddTriangle(center, center + Draw_Map.corners[i], center + Draw_Map.corners[i + 1]);//得到中心点与偏移量
+            AddTriangle(center, center + Draw_Map.corners[i], center + Draw_Map.corners[i + 1]);//传递中心点与偏移量
         }
     }
     void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
