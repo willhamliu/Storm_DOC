@@ -43,7 +43,7 @@ public class Camera_Control : MonoBehaviour
     int oldDistance;//上一次触摸点1，2之间的距离
     int newDistance; //当前触摸点1，2之间的距离
 
-    bool canera_lock=false;
+    bool canera_lock = false;
     bool oldTouch_update = false;
 
 
@@ -68,14 +68,14 @@ public class Camera_Control : MonoBehaviour
     {
         Control();
     }
-   
+
     public void MIX_scale()
     {
         float scaleMAX_height = (map_border.y - transform.position.y) / Mathf.Tan(halfFOV);//不考虑 Y 轴得到的最远缩放距离
-        float scaleMAX_width = ((map_border.x - transform.position.x)/ aspect) / Mathf.Tan(halfFOV);//不考虑x轴得到的最远缩放距离
+        float scaleMAX_width = ((map_border.x - transform.position.x) / aspect) / Mathf.Tan(halfFOV);//不考虑x轴得到的最远缩放距离
         scaleMAX_Y = Mathf.Max(scaleMAX_height, scaleMAX_width);//由于摄像机z坐标为负数，因此取最大值作为极限高度
     }
-  
+
     private void Update_camera_FOV()//更新摄像机视野
     {
         halfFOV = (Camera.main.fieldOfView * 0.5f) * Mathf.Deg2Rad;
@@ -83,7 +83,7 @@ public class Camera_Control : MonoBehaviour
         height = Mathf.Abs(camera_Height - map_point.position.z) * Mathf.Tan(halfFOV);
         width = height * aspect;
     }
-   
+
     private void Control()//移动,改变视野(模拟量)
     {
 #if UNITY_EDITOR_WIN
@@ -165,6 +165,8 @@ public class Camera_Control : MonoBehaviour
             Update_camera_FOV();
             transform.position = new Vector3(touch_middle.x - (width * start_zoom_x), touch_middle.y - (height * start_zoom_y), camera_Height);
         }
+    
+
 
 #endif
 
@@ -279,6 +281,10 @@ public class Camera_Control : MonoBehaviour
             canera_lock = false;
             oldTouch_update = false;
         }
-    }
 #endif
+
+    }
 }
+    
+    
+

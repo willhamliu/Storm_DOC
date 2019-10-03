@@ -133,8 +133,8 @@ public class Dialogue_Management : MonoBehaviour
             else
             {
                 log_Panel.SetActive(false);
-                log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 0), 0.4f);
-                log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 330), 0.3f);
+                log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 20), 0.4f);
+                log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 0), 0.3f);
 
                 Invoke("Log_Close", 0.5f);
             }
@@ -219,7 +219,7 @@ public class Dialogue_Management : MonoBehaviour
         dialogue_Animation = dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 0), 0.3f);
         dialogue_Animation = dialogue_Image_Background.DOSizeDelta(new Vector2(dialogue_Image_Background.sizeDelta.x, 0), 0.3f);
 
-        log_Image.sizeDelta = new Vector2(log_Image.sizeDelta.x, 0);
+        log_Image.sizeDelta = new Vector2(log_Image.sizeDelta.x, 20);
         log_Image_Background.sizeDelta = new Vector2(log_Image_Background.sizeDelta.x, 0);
 
         dialogue_end = true;
@@ -235,7 +235,15 @@ public class Dialogue_Management : MonoBehaviour
         {
             if (text_Ponit_Start == true)
             {
-                desc = desc + (dialogues[dialogues_Index].Dialogue_Desc)[i].ToString();
+                if ((dialogues[dialogues_Index].Dialogue_Desc)[i].ToString()=="/")
+                {
+                    desc = desc + "\r\n";
+                    
+                }
+                else
+                {
+                    desc = desc + (dialogues[dialogues_Index].Dialogue_Desc)[i].ToString();
+                }
                 dialogue_Text.text = desc;
                 i++;
             }

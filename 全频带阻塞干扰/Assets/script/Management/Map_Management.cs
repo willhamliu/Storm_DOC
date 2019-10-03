@@ -11,10 +11,7 @@ public class Map_Management : MonoBehaviour
     public int width;//x轴长度
     public int height;//z轴长度
 
-    public Text cell_Label_Prefab;
     public GameObject hex_Prefab;//六边形预制体
-
-    public Transform gridCanvas;//ui坐标父物体
 
     public List<Vector3> Hex_point { get; private set; } = new List<Vector3>();//所有六边形的列表
 
@@ -41,8 +38,5 @@ public class Map_Management : MonoBehaviour
         GameObject hex = Instantiate(hex_Prefab, transform);
         hex.transform.localPosition = position;
 
-        Text coordinate = Instantiate(cell_Label_Prefab, gridCanvas.transform);
-        coordinate.rectTransform.anchoredPosition = new Vector3(position.x, position.z);
-        coordinate.text = x.ToString() + "\n" + y.ToString();
     }
 }

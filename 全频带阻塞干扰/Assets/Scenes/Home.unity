@@ -19325,13 +19325,13 @@ MonoBehaviour:
   data: {fileID: 1497422083}
   price: {fileID: 419220126}
   point_Count: {fileID: 2020068389}
-  point: 0
   point_Buy: 0
   Purchase_Index: 0
   buy_Panel_Name: {fileID: 508706198}
   buy_Bonfrim: {fileID: 1177233344}
   buy_Cancel: {fileID: 1292604092}
   buy: {fileID: 1584291949}
+  item_price: {fileID: 880629096}
   attention_Buy: {fileID: 1405566726}
   buy_Panel: {fileID: 1630368267}
 --- !u!1 &1728629222

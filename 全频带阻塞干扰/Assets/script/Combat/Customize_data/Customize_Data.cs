@@ -9,7 +9,7 @@ public class Customize_Data : MonoBehaviour
     public Text data;
     public Text price;
     public Text point_Count;
-    public int point;
+    int point;
     public int point_Buy;
     public int Purchase_Index;
 
@@ -18,6 +18,7 @@ public class Customize_Data : MonoBehaviour
     public Button buy_Cancel;
 
     public GameObject buy;
+    public GameObject item_price;
     public GameObject attention_Buy;
     public GameObject buy_Panel;
 
@@ -27,16 +28,18 @@ public class Customize_Data : MonoBehaviour
     {
        
         Customize_data = this;
+
         if (PlayerPrefs.HasKey("point"))
         {
             point_Count.text = PlayerPrefs.GetInt("point").ToString();
         }
         else
         {
-            point = 200;
+            point = 3000;
+            PlayerPrefs.SetInt("point", point);
+            PlayerPrefs.Save();
         }
-        point_Count.text = point.ToString();
-
+        point_Count.text = PlayerPrefs.GetInt("point").ToString();
     }
     private void Start()
     {
@@ -64,6 +67,7 @@ public class Customize_Data : MonoBehaviour
         Config_Customize.Config_customize.Purchase_Status_Modify(Purchase_Index);
         buy_Panel.SetActive(false);
         buy.SetActive(false);
+        item_price.SetActive(false);
         point_Buy = point - customize.Customize_Price;
         StartCoroutine(use_point());
 
@@ -79,6 +83,7 @@ public class Customize_Data : MonoBehaviour
             yield return null;
         }
     }
+  
     public void SetData(ref Customize customize, ref int index)
     {
         Purchase_Index = index;
@@ -97,6 +102,7 @@ public class Customize_Data : MonoBehaviour
             {
                 if (Config_Customize.Config_customize.customize_Data_All[index].Customize_Purchase_Status == true)
                 {
+                    item_price.SetActive(false);
                     buy.SetActive(false);
                     attention_Buy.SetActive(false);
                 }
@@ -104,11 +110,13 @@ public class Customize_Data : MonoBehaviour
                 {
                     if (point < customize.Customize_Price)
                     {
+                        item_price.SetActive(true);
                         buy.SetActive(false);
                         attention_Buy.SetActive(false);
                     }
                     else
                     {
+                        item_price.SetActive(true);
                         buy.SetActive(true);
                         attention_Buy.SetActive(false);
                     }
@@ -117,6 +125,7 @@ public class Customize_Data : MonoBehaviour
             else
             {
                 buy.SetActive(false);
+                item_price.SetActive(true);
                 attention_Buy.SetActive(true);
             }
         }
@@ -124,6 +133,7 @@ public class Customize_Data : MonoBehaviour
         {
             if (Config_Customize.Config_customize.customize_Data_All[index].Customize_Purchase_Status == true)
             {
+                item_price.SetActive(false);
                 buy.SetActive(false);
                 attention_Buy.SetActive(false);
             }
@@ -131,11 +141,13 @@ public class Customize_Data : MonoBehaviour
             {
                 if (point < customize.Customize_Price)
                 {
+                    item_price.SetActive(true);
                     buy.SetActive(false);
                     attention_Buy.SetActive(false);
                 }
                 else
                 {
+                    item_price.SetActive(true);
                     buy.SetActive(true);
                     attention_Buy.SetActive(false);
                 }
