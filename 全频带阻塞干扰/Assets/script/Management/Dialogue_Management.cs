@@ -237,8 +237,7 @@ public class Dialogue_Management : MonoBehaviour
             {
                 if ((dialogues[dialogues_Index].Dialogue_Desc)[i].ToString()=="/")
                 {
-                    desc = desc + "\r\n";
-                    
+                    desc = desc + "\r\n";                    
                 }
                 else
                 {
@@ -251,7 +250,7 @@ public class Dialogue_Management : MonoBehaviour
             {
                 i = Dialogue_Length;
             }
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
         text_Ponit_Start = false;
     }

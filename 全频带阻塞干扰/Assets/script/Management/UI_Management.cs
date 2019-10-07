@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_Management : MonoBehaviour {
+    public static UI_Management UI_management;
 
     Tweener setting_Insert;
     public GameObject list_Main_Canvas;//遮挡主页
@@ -41,6 +42,10 @@ public class UI_Management : MonoBehaviour {
   
     void Awake()
     {
+        if (UI_management==null)
+        {
+            UI_management = this;
+        }
         if (Level_State.Level_state.Lecel_quit == false)
         {
             combat_Content.SetActive(false);
@@ -64,8 +69,6 @@ public class UI_Management : MonoBehaviour {
     }
     void Start()
     {
-
-
         Audio_Management.Audio_management.BGM_play("Home_BGM");
         buttons = new Button[main_Button.childCount];
         for (int i = 0; i < buttons.Length; i++)
@@ -73,19 +76,6 @@ public class UI_Management : MonoBehaviour {
             buttons[i] = main_Button.GetChild(i).GetComponent<Button>();
             buttons[i].onClick.AddListener(Audo_Button);
         }
-    
-        buttons[0].onClick.AddListener(Combat_Open);
-        buttons[1].onClick.AddListener(Demo);
-        buttons[2].onClick.AddListener(Setting_Open);
-        buttons[3].onClick.AddListener(List_Open);
-        buttons[4].onClick.AddListener(Quit);
-
-        combat_Close.onClick.AddListener(Combat_Close);
-        list_Close.onClick.AddListener(List_Close);
-        setting_Close.onClick.AddListener(Setting_Close);
-
-        quit_Cancel.onClick.AddListener(Quit_Cancel);
-        quit_Confrim.onClick.AddListener(Quit_Confrim);
     }
 
 

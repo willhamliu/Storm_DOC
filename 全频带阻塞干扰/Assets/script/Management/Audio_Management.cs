@@ -128,19 +128,7 @@ public class Audio_Management : MonoBehaviour {
     }
     public void BGM_stop(string audio_name)
     {
-        if (audio_BGM.ContainsKey(audio_name))
-        {
-            bgm.clip = audio_BGM[audio_name];
-            bgm.Play();//播放背景音乐
-        }
-        else
-        {
-            GameObject load = load_BGM.LoadAsset<GameObject>(audio_name);
-
-            AudioClip AC = load.GetComponent<AudioSource>().clip;
-
-            bgm.clip = AC;
-            bgm.Stop();//播放背景音乐
-        }
+        bgm.clip = audio_BGM[audio_name];
+        bgm.Stop();//停止播放背景音乐
     }
 }

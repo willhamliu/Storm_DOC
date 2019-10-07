@@ -33,7 +33,7 @@ public class Map_Management : MonoBehaviour
         position.x = x * (sidelength * 1.5f) + ((-width / 2) * (sidelength * 1.5f));//左右距离为1.5倍边长,再加上偏移量
         position.y = (y + ((x * 0.5f) - (x / 2))) * (innerRadius * 2f) + ((-height / 2) * (innerRadius * 2f));//上下距离为2倍内半径
         position.z = 0f;
-        //(x / 2为小数时会直接移除小数，因此当x为偶数时(z+ ((x*0.5f)-(x/2)) )为z   (2+ ((4*0.5f)- (4/2)) ) =2
+        //(x / 2为小数时会直接移除小数，因此当x为偶数时(y+ ((x*0.5f)-(x/2)) )为   (2+ ((4*0.5f)- (4/2)) ) =2
         Hex_point.Add(position);
         GameObject hex = Instantiate(hex_Prefab, transform);
         hex.transform.localPosition = position;

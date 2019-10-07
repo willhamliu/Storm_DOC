@@ -16,7 +16,7 @@ public class CreateAssetsBundle
         }
 
         Directory.CreateDirectory(assetBundleDirectory);
-        AssetDatabase.Refresh();//刷新导入的资源
+        AssetDatabase.Refresh();//刷新刚删除了旧资源的文件夹
 
 
 #if UNITY_EDITOR_WIN
