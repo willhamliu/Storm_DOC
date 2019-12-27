@@ -32,12 +32,12 @@ public class Item_Detail : MonoBehaviour {
         }
         this.item = item;
         this.camp.text =this.item.Item_Camp.ToString();
-        this.ap.text = this.item.Item_AP;
-        this.attack.text = this.item.Item_Attack;
-        this.defense.text = this.item.Item_Defense;
+        this.ap.text = this.item.Item_AP.ToString();
+        this.attack.text = this.item.Item_Attack.ToString();
+        this.defense.text = this.item.Item_Defense.ToString();
         this.target.text = this.item.Item_Target.ToString();
-        this.range.text = this.item.Iten_Range;
-        this.hp.text = this.item.Item_HP;
+        this.range.text = this.item.Iten_Range.ToString();
+        this.hp.text = this.item.Item_HP.ToString();
 
         this.desc.text = "\u3000\u3000" + this.item.Item_Desc;
     }

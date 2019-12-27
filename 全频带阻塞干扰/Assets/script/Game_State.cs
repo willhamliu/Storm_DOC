@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
@@ -22,6 +24,9 @@ public class Game_State : MonoBehaviour
     public Button quit_Cancel;
 
     List<Button> buttons = new List<Button>();
+
+    public Action<PointerEventData, GameObject> onClickDown { get; set; }
+
     public enum Gamestate
     {
         UnKown = -1,
@@ -50,7 +55,6 @@ public class Game_State : MonoBehaviour
             var button_name = buttons[buttons.IndexOf(buttons[i])].name;
 
             buttons[i].onClick.AddListener(delegate() { State_Change(button_name);});
-
         }
     }
 
@@ -139,6 +143,5 @@ public class Game_State : MonoBehaviour
                 UI_Management.UI_management.Quit_Cancel();
                 break;
         }
-
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using System;
 
 public class Dialogue_Management : MonoBehaviour
 {
@@ -25,25 +26,46 @@ public class Dialogue_Management : MonoBehaviour
     public RectTransform log_Image;
     public RectTransform log_Image_Background;
     public GameObject log_Panel;
+    public GameObject Task_Panel;
 
+    public GameObject interface_Canvas;
     public GameObject scene_Canvas;
 
-    public Text dialogue_Text;
+    public Text dialogue_Text;//对话内容
     public Text speaker_Text;
-    public Text log_Text;
+    public Text log_Text;//对话列表
+
+    public Text main_TaskGoal_Text_SettingPanel;//首要目标(设置面板显示)
+    public Text secondary_TaskGoal_Text_SettingPanel;//次要目标(设置面板显示)  
+
+    public Text main_TaskGoal_Text_TaskPanel;//首要目标(任务面板显示)
+    public Text secondary_TaskGoal_Text_TaskPanel;//次要目标(任务面板显示)
+
+
 
     public Button log_Button;//对话列表
+    public Button close_TaskPanel_Button;//关闭任务面板
 
     Tween log_Animation;
     Tween dialogue_Animation;
+
+    public bool on;
 
     void Awake()
     {
         scene_Canvas.SetActive(true);
 
         log_Panel.SetActive(false);
+        Task_Panel.SetActive(false);
         log_Image.gameObject.SetActive(false);
         dialogue_Image.gameObject.SetActive(true);
+        if (on==true)
+        {
+            StartCoroutine(Scene_Initialization());
+
+            End_Dialogue();
+            return;
+        }
 
         Config_Dialogue.Config_dialogue.Config_Dialogue_Json();
         this.dialogues = Config_Dialogue.Config_dialogue.dialogues;
@@ -55,7 +77,12 @@ public class Dialogue_Management : MonoBehaviour
         dialogue_Animation = dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 350), 0.3f);
         dialogue_Animation = dialogue_Image_Background.DOSizeDelta(new Vector2(dialogue_Image_Background.sizeDelta.x, 330), 0.3f);
 
+        main_TaskGoal_Text_SettingPanel.text =main_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Config_dialogue.Main_TaskGoal.ToString();
+        secondary_TaskGoal_Text_SettingPanel.text = secondary_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Config_dialogue.Secondary_TaskGoal.ToString();
+
+
         log_Button.onClick.AddListener(Log_State);
+        close_TaskPanel_Button.onClick.AddListener(Close_TaskPanel);
 
         Invoke("Log_Start", 0.5f);//为了满足渐变效果延迟调用
     }
@@ -110,6 +137,17 @@ public class Dialogue_Management : MonoBehaviour
         }
 #endif
     }
+    private void Close_TaskPanel()
+    {
+        Task_Panel.SetActive(false);
+        interface_Canvas.SetActive(false);
+    }
+    private void Open_TaskPanel()
+    {
+        Task_Panel.SetActive(true);
+        interface_Canvas.SetActive(true);
+    }
+
 
     public void Log_State()
     {
@@ -223,6 +261,7 @@ public class Dialogue_Management : MonoBehaviour
         log_Image_Background.sizeDelta = new Vector2(log_Image_Background.sizeDelta.x, 0);
 
         dialogue_end = true;
+        Invoke("Open_TaskPanel",0.4f);//打开任务目标面板
     }
 
     IEnumerator Show_Text(int Dialogue_Length)

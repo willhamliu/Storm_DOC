@@ -19,6 +19,8 @@ public class Config_Item
     public Dictionary<int, Item.Type> upgrade_type_item = new Dictionary<int, Item.Type>();
     public Dictionary<string, int> upgrade_item = new Dictionary<string, int>();
 
+    public Dictionary<string, int> unit_info = new Dictionary<string, int>();
+
 
     JsonData item_Json_Data;
 
@@ -87,14 +89,14 @@ public class Config_Item
             int item_Camp = (int)item_Json_Data[i]["Item_Camp"];
 
             string item_Name = item_Json_Data[i]["Item_Name"].ToString();
-            string item_AP = item_Json_Data[i]["Item_AP"].ToString();
-            string item_Attack = item_Json_Data[i]["Item_Attack"].ToString();
-            string item_Defense = item_Json_Data[i]["Item_Defense"].ToString();
-            string iten_range = item_Json_Data[i]["Item_range"].ToString();
+            int item_AP = (int)item_Json_Data[i]["Item_AP"];
+            int item_Attack = (int)item_Json_Data[i]["Item_Attack"];
+            int item_Defense = (int)item_Json_Data[i]["Item_Defense"];
+            int iten_range = (int)item_Json_Data[i]["Item_range"];
 
-            string item_Price = item_Json_Data[i]["Item_Price"].ToString();
-            string item_HP = item_Json_Data[i]["Item_HP"].ToString();
-            string item_Vision = item_Json_Data[i]["Item_Vision"].ToString();
+            int item_Price = (int)item_Json_Data[i]["Item_Price"];
+            int item_HP = (int)item_Json_Data[i]["Item_HP"];
+            int item_Vision = (int)item_Json_Data[i]["Item_Vision"];
 
             string item_Desc = item_Json_Data[i]["Item_Desc"].ToString();
 
@@ -102,7 +104,9 @@ public class Config_Item
             Item item = new Item(item_Model, item_Number, item_Type,item_Target,item_Camp,item_Name,item_AP, item_Attack, item_Defense, iten_range, item_Price,
                                   item_HP, item_Vision, item_Desc);
 
-            item_List_All.Add(item);
+            item_List_All.Add(item);//使ui图鉴获取单位信息
+            unit_info.Add(item.Item_Model, i);//使游戏单位获得自己的各种信息
+
             if (update_Object==true)
             {
                 if (item.Item_Type == Item.Type.建筑单位)
@@ -129,6 +133,20 @@ public class Config_Item
             }
         }
         update_Object = false;
+    }
+
+    public int Config_unity_info(string name )
+    {
+        if (unit_info.ContainsKey(name))
+        {
+
+            int index = unit_info[name];
+            return index;
+        }
+        else
+        {
+            return -1;
+        }
     }
   
     public void Upgrade_Attack(ref Item.Type type, ref int value)//批量升级攻击

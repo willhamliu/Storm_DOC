@@ -8,6 +8,10 @@ using System.Text;
 public class Config_Dialogue
 {
     public List<Dialogue> dialogues = new List<Dialogue>();
+
+    public string Main_TaskGoal;
+    public string Secondary_TaskGoal;
+
     JsonData dialogue_Json_Data;
 
     private static Config_Dialogue config_Dialogue;
@@ -39,7 +43,7 @@ public class Config_Dialogue
     }
     public void Decode_Dialogue_Json()
     {
-        for (int i = 0; i < dialogue_Json_Data.Count; i++)
+        for (int i = 0; i < dialogue_Json_Data.Count-1; i++)//任务信息在最后
         {
             string dialogue_desc = this.dialogue_Json_Data[i]["Dialogue"].ToString();
             string speaker = this.dialogue_Json_Data[i]["Speaker"].ToString();
@@ -48,5 +52,7 @@ public class Config_Dialogue
 
             dialogues.Add(Dialogue);
         }
+        Main_TaskGoal = this.dialogue_Json_Data[dialogue_Json_Data.Count-1]["Main_TaskGoal"].ToString();
+        Secondary_TaskGoal = this.dialogue_Json_Data[dialogue_Json_Data.Count-1]["Secondary_TaskGoal"].ToString();
     }
 }

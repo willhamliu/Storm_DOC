@@ -31,6 +31,7 @@ public class Customize_Data : MonoBehaviour
 
         if (PlayerPrefs.HasKey("point"))
         {
+            point = PlayerPrefs.GetInt("point");
             point_Count.text = PlayerPrefs.GetInt("point").ToString();
         }
         else
@@ -141,6 +142,7 @@ public class Customize_Data : MonoBehaviour
             {
                 if (point < customize.Customize_Price)
                 {
+                    Debug.Log(point+" "+customize.Customize_Price);
                     item_price.SetActive(true);
                     buy.SetActive(false);
                     attention_Buy.SetActive(false);

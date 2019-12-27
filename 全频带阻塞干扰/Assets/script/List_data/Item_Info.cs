@@ -18,5 +18,4 @@ public class Item_Info : MonoBehaviour {
         this.item_Camp = this.item.Item_Camp.ToString();
         this.item_Name.text = this.item.Item_Name;
     }
-
 }

@@ -3,10 +3,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_Management : MonoBehaviour {
+public class UI_Management : MonoBehaviour
+{
     public static UI_Management UI_management;
 
     Tweener setting_Insert;
@@ -37,9 +40,6 @@ public class UI_Management : MonoBehaviour {
     public Button quit_Cancel;
 
 
-    public Transform main_Button;
-    private Button[] buttons;
-  
     void Awake()
     {
         if (UI_management==null)
@@ -70,12 +70,6 @@ public class UI_Management : MonoBehaviour {
     void Start()
     {
         Audio_Management.Audio_management.BGM_play("Home_BGM");
-        buttons = new Button[main_Button.childCount];
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i] = main_Button.GetChild(i).GetComponent<Button>();
-            buttons[i].onClick.AddListener(Audo_Button);
-        }
     }
 
 
@@ -136,12 +130,6 @@ public class UI_Management : MonoBehaviour {
     {
         Audio_Management.Audio_management.BGM_stop("Home_BGM");
         Application.Quit();
-    }
-
-
-    public void Audo_Button()//播放点击音效
-    {
-        Audio_Management.Audio_management.SFXS_play("按钮点击");
     }
 
     public IEnumerator Combat_ON()

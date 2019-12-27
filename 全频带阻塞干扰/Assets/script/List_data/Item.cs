@@ -37,20 +37,20 @@ public class Item  {
     public Camp Item_Camp=Camp.UnKown;
 
     public string Item_Name;//名字
-    public string Item_AP;//行动点数
-    public string Item_Attack;//攻击力
+    public int Item_AP;//行动点数
+    public int Item_Attack;//攻击力
 
-    public string Item_Defense;//防御力
+    public int Item_Defense;//防御力
 
-    public string Iten_Range;//射程
+    public int Iten_Range;//射程
 
-    public string Item_Price;//价格
-    public string Item_HP;//血量
-    public string Item_Vision;//视野范围
+    public int Item_Price;//价格
+    public int Item_HP;//血量
+    public int Item_Vision;//视野范围
     public string Item_Desc;//描述信息
 
-    public Item(string item_Model, string item_Number, int item_Type, int item_Target, int item_Camp, string item_Name, string item_AP, string item_Attack, string item_Defense,
-                string iten_Range, string item_Price, string item_HP, string item_Vision, string item_Desc)
+    public Item(string item_Model, string item_Number, int item_Type, int item_Target, int item_Camp, string item_Name, int item_AP, int item_Attack, int item_Defense,
+                int iten_Range, int item_Price, int item_HP, int item_Vision, string item_Desc)
     {
         this.Item_Model = item_Model;
         this.Item_Number = item_Number;

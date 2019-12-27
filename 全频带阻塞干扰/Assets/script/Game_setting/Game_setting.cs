@@ -114,7 +114,7 @@ public class Game_setting : MonoBehaviour
             return;
         }
         insert = true;
-        Audio_Management.Audio_management.SFXS_play("按钮点击");
+        //Audio_Management.Audio_management.SFXS_play("按钮点击");
         setting_Canvas.SetActive(true);
         setting_Insert = setting_Panel.DOLocalMoveX(insert_point.localPosition.x, 0.3f);
     }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Audio_Management : MonoBehaviour {
+public class Audio_Management : MonoBehaviour
+{
 
     public Text bgm_Value;
     public Slider bgm_Slider;

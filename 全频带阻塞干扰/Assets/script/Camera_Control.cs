@@ -32,22 +32,20 @@ public class Camera_Control : MonoBehaviour
     float halfFOV;//相机视野角度
     float aspect;//摄像机长宽比
     float height;//画面高度（/2）
-    float width;//画面宽度
+    float width;//画面宽度（/2）
 
     float update_x;//拖动时x轴位置
     float update_y;//拖动时y轴位置
 
-    float start_zoom_x;
+    float start_zoom_x;//触摸点在屏幕的占比
     float start_zoom_y;
 
     int oldDistance;//上一次触摸点1，2之间的距离
     int newDistance; //当前触摸点1，2之间的距离
 
-    bool canera_lock = false;
-    bool oldTouch_update = false;
+    bool canera_lock = false;//检测是否为多指触碰
+    bool oldTouch_update = false;//检测多指触碰时是否更新过旧的触摸点
 
-
-    public Map_Management map_Management;
 
     //public Dialogue_Management Dialogue_management;
     float currentScale;
@@ -55,7 +53,7 @@ public class Camera_Control : MonoBehaviour
     void Start()
     {
         camera_Height = transform.position.z;
-        map_border = map_Management.Hex_point[0];
+        map_border =Map_Management.map_Management.boundary;
         Update_camera_FOV();
         MIX_scale();
 
@@ -106,18 +104,26 @@ public class Camera_Control : MonoBehaviour
                 camera_offset = transform.position - hit.point;//偏移量
 
                 update_x = Mathf.Clamp(Single_Touch.x + camera_offset.x, map_border.x + (width), -map_border.x - (width));
-                update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.innerRadius);
+                update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.map_Management.innerRadius);
 
                 if ((update_x == map_border.x + (width) || update_x == -map_border.x - (width) ||
-                  update_y == map_border.y + (height) || update_y == -map_border.y - (height) + Map_Management.innerRadius))
+                  update_y == map_border.y + (height) || update_y == -map_border.y - (height) + Map_Management.map_Management.innerRadius))
                 {
                     Single_Touch = start_Single_Touch;
                     update_x = Mathf.Clamp(Single_Touch.x + camera_offset.x, map_border.x + (width), -map_border.x - (width));
-                    update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.innerRadius);
+                    update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.map_Management.innerRadius);
+                }
+                if (Vector3.Distance(transform.position, new Vector3(update_x, update_y, transform.position.z)) > 1)
+                {
+                    Unit_Management.Unit_management.order_lock = true;
                 }
                 transform.position = new Vector3(update_x, update_y, transform.position.z);
             }
             start_Single_Touch = transform.position - camera_offset;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            Unit_Management.Unit_management.order_lock = false;
         }
 
         currentScale = Input.GetAxis("Mouse ScrollWheel") * 50f;
@@ -141,7 +147,7 @@ public class Camera_Control : MonoBehaviour
 
             if (transform.position.y + height >= -map_border.y)//上边溢出
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_border.y) + Map_Management.innerRadius)), camera_Height);
+                transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_border.y) + Map_Management.map_Management.innerRadius)), camera_Height);
             }
             else if (transform.position.y - height <= map_border.y)//下边溢出
             {
@@ -165,7 +171,7 @@ public class Camera_Control : MonoBehaviour
             Update_camera_FOV();
             transform.position = new Vector3(touch_middle.x - (width * start_zoom_x), touch_middle.y - (height * start_zoom_y), camera_Height);
         }
-    
+
 
 
 #endif
@@ -185,6 +191,7 @@ public class Camera_Control : MonoBehaviour
             }
             if (Input.touches[0].phase == TouchPhase.Moved) //手指在屏幕上移动
             {
+                Unit_Management.Unit_management.order_lock = true;
                 Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit))
@@ -210,6 +217,7 @@ public class Camera_Control : MonoBehaviour
         if (Input.touchCount == 2)//多指触碰
         {
             canera_lock = true;
+            Unit_Management.Unit_management.order_lock = true;
             if (Input.GetTouch(0).phase == TouchPhase.Moved)
             {
                 Ray Touch1_ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -280,6 +288,7 @@ public class Camera_Control : MonoBehaviour
         {
             canera_lock = false;
             oldTouch_update = false;
+            Unit_Management.Unit_management.order_lock = false;
         }
 #endif
 
