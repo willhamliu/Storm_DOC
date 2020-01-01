@@ -22,7 +22,7 @@ public class Map_Pool : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 48; i++)
+        for (int i = 0; i < 100; i++)
         {
             GameObject hex = Instantiate(hex_Prefab, MAP_create);
             hex.SetActive(false);

@@ -11,6 +11,9 @@ public class Unit_Management : MonoBehaviour
     public bool order_lock { get; set; } = false;
     GameObject choose_unit;
     int target_index;//目标索引
+    private GameObject[] Unit_array_object;
+    public List<int> Unit_list { get; private set; } = new List<int>();
+    private int Unit_index=-1;//选中单位索引
 
 
     void Awake()
@@ -23,17 +26,34 @@ public class Unit_Management : MonoBehaviour
 
     private void Start()
     {
+        revocation_Button.transform.gameObject.SetActive(false);
         revocation_Button.onClick.AddListener(Revocation);
-
+        Invoke("Unit_update", 1);
     }
-    private void Revocation()
-    {
-        choose_unit.GetComponent<Unit_Info>().Revocation();
-    }
-
+  
     void Update()
     {
         Unit_selected();
+    }
+    public void Unit_update()
+    {
+        Unit_array_object = GameObject.FindGameObjectsWithTag("Unit");
+        Unit_list.Clear();
+        for (int i = 0; i < Unit_array_object.Length; i++)
+        {
+            Unit_list.Add(Unit_array_object[i].transform.GetComponent<Unit_Info>().unity_position_index);
+        }
+    }
+
+    public void Revocation_allow()//允许撤销
+    {
+        revocation_Button.transform.gameObject.SetActive(true);
+    }
+
+    private void Revocation()
+    {
+        revocation_Button.transform.gameObject.SetActive(false);
+        choose_unit.GetComponent<Unit_Info>().Revocation();
     }
 
     private void Unit_selected()
@@ -45,10 +65,17 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.tag=="Unit")
+                if (hit.transform.tag=="Unit"&& Unit_index != hit.transform.GetComponent<Unit_Info>().unity_position_index)
                 {
-                    hit.transform.GetComponent<Unit_Info>().BFS();
+                    Map_Pool.Map_pool.Recycle();//回收对象
                     choose_unit = hit.transform.gameObject;
+                    choose_unit.GetComponent<Unit_Info>().BFS();
+                    Unit_index = choose_unit.GetComponent<Unit_Info>().unity_position_index;
+                    revocation_Button.transform.gameObject.SetActive(false);
+                }
+                if (hit.transform.tag == "Untagged")
+                {
+                    revocation_Button.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Map")
                 {
@@ -66,7 +93,23 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-               
+                if (hit.transform.tag == "Unit" && Unit_index != hit.transform.GetComponent<Unit_Info>().unity_position_index)
+                {
+                    Map_Pool.Map_pool.Recycle();//回收对象
+                    choose_unit = hit.transform.gameObject;
+                    choose_unit.GetComponent<Unit_Info>().BFS();
+                    Unit_index = choose_unit.GetComponent<Unit_Info>().unity_position_index;
+                    revocation_Button.transform.gameObject.SetActive(false);
+                }
+                if (hit.transform.tag == "Untagged")
+                {
+                    revocation_Button.transform.gameObject.SetActive(false);
+                }
+                if (hit.transform.tag == "Map")
+                {
+                    target_index = hit.transform.GetComponent<Hex_Info>().index;
+                    choose_unit.GetComponent<Unit_Info>().Move(target_index);
+                }
             }
         }
 #endif

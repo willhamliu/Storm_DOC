@@ -71,13 +71,15 @@ public class Camera_Control : MonoBehaviour
     {
         float scaleMAX_height = (map_border.y - transform.position.y) / Mathf.Tan(halfFOV);//不考虑 Y 轴得到的最远缩放距离
         float scaleMAX_width = ((map_border.x - transform.position.x) / aspect) / Mathf.Tan(halfFOV);//不考虑x轴得到的最远缩放距离
-        scaleMAX_Y = Mathf.Max(scaleMAX_height, scaleMAX_width);//由于摄像机z坐标为负数，因此取最大值作为极限高度
+        scaleMAX_Y = Mathf.Max(scaleMAX_height, scaleMAX_width) + (map_point.position.z);
+        //由于摄像机z坐标为负数，因此取最大值作为极限距离，需要通过地图的位置增加极限距离才是最大高度
     }
 
     private void Update_camera_FOV()//更新摄像机视野
     {
         halfFOV = (Camera.main.fieldOfView * 0.5f) * Mathf.Deg2Rad;
         aspect = Camera.main.aspect;
+        
         height = Mathf.Abs(camera_Height - map_point.position.z) * Mathf.Tan(halfFOV);
         width = height * aspect;
     }
@@ -199,14 +201,14 @@ public class Camera_Control : MonoBehaviour
                     camera_offset = transform.position - hit.point;//偏移量
 
                     update_x = Mathf.Clamp(Single_Touch.x + camera_offset.x, map_border.x + (width), -map_border.x - (width));
-                    update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.innerRadius);
+                    update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.map_Management.innerRadius);
 
                     if ((update_x == map_border.x + (width) || update_x == -map_border.x - (width) ||
-                      update_y == map_border.y + (height) || update_y == -map_border.y - (height) + Map_Management.innerRadius))
+                      update_y == map_border.y + (height) || update_y == -map_border.y - (height) + Map_Management.map_Management.innerRadius))
                     {
                         Single_Touch = start_Single_Touch;
                         update_x = Mathf.Clamp(Single_Touch.x + camera_offset.x, map_border.x + (width), -map_border.x - (width));
-                        update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.innerRadius);
+                        update_y = Mathf.Clamp(Single_Touch.y + camera_offset.y, map_border.y + (height), -map_border.y - (height) + Map_Management.map_Management.innerRadius);
                     }
 
                     transform.position = new Vector3(update_x, update_y, transform.position.z);
@@ -256,7 +258,7 @@ public class Camera_Control : MonoBehaviour
 
                         if (transform.position.y + height >= -map_border.y)//上边溢出
                         {
-                            transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_border.y) + Map_Management.innerRadius)), camera_Height);
+                            transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_border.y) + Map_Management.map_Management.innerRadius)), camera_Height);
                         }
                         else if (transform.position.y - height <= map_border.y)//下边溢出
                         {

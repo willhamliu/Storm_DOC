@@ -66,6 +66,7 @@ public class UI_Management : MonoBehaviour
             StartCoroutine(Level_Quit());
             Level_State.Level_state.Lecel_quit = false;
         }
+        Config_Item.Config_item.Config_Item_Json();
     }
     void Start()
     {

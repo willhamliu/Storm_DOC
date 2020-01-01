@@ -9,7 +9,7 @@ public class Unit_Info : MonoBehaviour
     public int coordinate_y;//该单位在y轴的编号
     public string unit_name;
     public int AP;//行动点数
-    public int unity_position_index;//该单位所在位置的下标
+    public int unity_position_index { get; set; }//该单位所在位置的下标
     public int unity_revocation_position_index;//执行撤销指令时的下标
     private Vector3 unit_position;//该单位所在的位置
     private Vector3 unity_targetposition;//目标位置
@@ -59,7 +59,14 @@ public class Unit_Info : MonoBehaviour
                         seen_queue.Enqueue(graph[seen_queue.Peek()][i]);
                         seen.Add(graph[seen_queue.Peek()][i]);
                         GameObject hex = Map_Pool.Map_pool.Get_Hex();
-                        hex.SetActive(true);
+                        if (Unit_Management.Unit_management.Unit_list.Contains(graph[seen_queue.Peek()][i]) == false)
+                        {
+                            hex.SetActive(true);
+                        }
+                        else
+                        {
+                            hex.SetActive(false);
+                        }
                         hex.transform.position = position_array[graph[seen_queue.Peek()][i]];
                         hex.GetComponent<Hex_Info>().Hex_data(graph[seen_queue.Peek()][i]);
                         floor_count++;
@@ -77,13 +84,16 @@ public class Unit_Info : MonoBehaviour
     {
         transform.position= position_array[unity_revocation_position_index];
         unity_position_index = unity_revocation_position_index;
+        Unit_Management.Unit_management.Unit_update();
         this.BFS();
     }
 
     public void Move(int unit_targetposition_index)//前往目标位置
     {
         int move_count = 0;//移动次数
-        int move_path=-1;//最短路径
+        int move_path = -1;//最短路径下标
+      
+
         path_list.Clear();
         Queue<int> move_queue = new Queue<int>();
         move_queue.Enqueue(unity_position_index);
@@ -91,29 +101,21 @@ public class Unit_Info : MonoBehaviour
         while (move_count < AP)
         {
             move_count++;
-
-            for (int i = 0; i < graph[move_queue.Peek()].Count; i++)
+            int shortest_hex = 0;//最近网格
+            for (int i = 1; i < graph[move_queue.Peek()].Count; i++)
             {
-                if (move_count < AP)
+                if (Vector3.Distance(position_array[graph[move_queue.Peek()][shortest_hex]], position_array[unit_targetposition_index]) <
+                    Vector3.Distance(position_array[graph[move_queue.Peek()][i]], position_array[unit_targetposition_index]))
                 {
-
-                    if (Vector3.Distance(position_array[graph[move_queue.Peek()][i]], position_array[unit_targetposition_index]) <=
-                        Math.Round(Map_Management.map_Management.innerRadius) * 2 * (AP - move_count))
-                    //在没进行最后一格的遍历时，消耗步数最少的格子为：剩余步数与2倍内半径的乘积
-                    {
-                        move_path = graph[move_queue.Peek()][i];
-                        i = graph[move_queue.Peek()].Count;
-                    }
+                    move_path = graph[move_queue.Peek()][shortest_hex];
                 }
                 else
                 {
-                    if (Vector3.Distance(position_array[graph[move_queue.Peek()][i]], position_array[unit_targetposition_index]) == 0)
-                    {
-                        move_path = graph[move_queue.Peek()][i];
-                        i = graph[move_queue.Peek()].Count;
-                    }
+                    shortest_hex = i;
+                    move_path = graph[move_queue.Peek()][shortest_hex];
                 }
             }
+
             move_queue.Enqueue(move_path);
             path_list.Add(move_path);
             move_queue.Dequeue();
@@ -140,5 +142,7 @@ public class Unit_Info : MonoBehaviour
                 yield return new WaitForSeconds(Time.deltaTime);
             }
         }
+        Unit_Management.Unit_management.Revocation_allow();
+        Unit_Management.Unit_management.Unit_update();
     }
 }

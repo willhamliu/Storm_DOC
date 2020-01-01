@@ -53,7 +53,6 @@ public class Customize_Data : MonoBehaviour
         Audio_Management.Audio_management.SFXS_play("按钮点击");
         buy_Panel_Name.text = "是否研发\u3000" + this.customize.Customize_Name.ToString();
         buy_Panel.SetActive(true);
-        Config_Item.Config_item.Config_Item_Json();
     }
     public void Purchase_Canel()
     {

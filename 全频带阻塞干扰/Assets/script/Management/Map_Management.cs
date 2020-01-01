@@ -26,7 +26,7 @@ public class Map_Management : MonoBehaviour
 
     public void Awake()
     {
-        Config_Item.Config_item.Config_Item_Json();//测试后记得删掉！！！！！！！！！！！！！！！！！！！
+        //Config_Item.Config_item.Config_Item_Json();//测试后记得删掉
 
         if (map_Management==null)
         {
@@ -65,12 +65,12 @@ public class Map_Management : MonoBehaviour
 
         //GameObject hex = Instantiate(hex_Prefab, MAP_create);
         //Hex_Info hex_Info = hex.GetComponent<Hex_Info>();
-        //hex_Info.Hex_data(x, y, index);
+        //hex_Info.Hex_data(index, x, y);
         //hex.transform.localPosition = position;
 
         if (Obtain_boundary==false)
         {
-            boundary = new Vector3(position.x- (2*sidelength), position.y - (2*innerRadius), position.z);
+            boundary = new Vector3(position.x - (2 * sidelength), position.y - (2 * innerRadius), position.z);
             Obtain_boundary = true;
         }
     }

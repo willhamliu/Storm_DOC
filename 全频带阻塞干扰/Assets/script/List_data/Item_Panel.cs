@@ -40,7 +40,6 @@ public class Item_Panel : MonoBehaviour {
   
     void Awake()
     {
-        Config_Item.Config_item.Config_Item_Json();
         config_List_Building = Config_Item.Config_item.item_List_Building;
         config_List_People = Config_Item.Config_item.item_List_People;
         config_List_Tank = Config_Item.Config_item.item_List_Tank;
