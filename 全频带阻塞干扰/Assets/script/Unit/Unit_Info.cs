@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit_Info : MonoBehaviour
+public class Unit_Info : Unit_UI
 {
     public int coordinate_x;//该单位在x轴的编号
     public int coordinate_y;//该单位在y轴的编号
@@ -14,7 +14,6 @@ public class Unit_Info : MonoBehaviour
     private Vector3 unit_position;//该单位所在的位置
     private Vector3 unity_targetposition;//目标位置
     public bool selected_State { get; set; } = false;//单位是否被选中
-    public GameObject hex_Prefab;//六边形预制体
     public Transform MAP_create;
     private Vector3[] position_array;
 
@@ -35,7 +34,15 @@ public class Unit_Info : MonoBehaviour
         this.transform.position = unit_position;
 
         AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].Item_AP;
+        MAX_HP = HP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].Item_HP;
+        Create_HP();
     }
+
+    private void Update()
+    {
+        Be_hit();
+    }
+
     public void BFS()//搜索附近的点
     {
         int search_count=0;//搜索次数
@@ -59,7 +66,7 @@ public class Unit_Info : MonoBehaviour
                         seen_queue.Enqueue(graph[seen_queue.Peek()][i]);
                         seen.Add(graph[seen_queue.Peek()][i]);
                         GameObject hex = Map_Pool.Map_pool.Get_Hex();
-                        if (Unit_Management.Unit_management.Unit_list.Contains(graph[seen_queue.Peek()][i]) == false)
+                        if (Unit_Management.Unit_management.Unit_list.Contains(graph[seen_queue.Peek()][i]) == false)//如果为友方单位则不会被阻挡
                         {
                             hex.SetActive(true);
                         }
@@ -85,6 +92,7 @@ public class Unit_Info : MonoBehaviour
         transform.position= position_array[unity_revocation_position_index];
         unity_position_index = unity_revocation_position_index;
         Unit_Management.Unit_management.Unit_update();
+        Update_Slider_Position();
         this.BFS();
     }
 
@@ -93,7 +101,6 @@ public class Unit_Info : MonoBehaviour
         int move_count = 0;//移动次数
         int move_path = -1;//最短路径下标
       
-
         path_list.Clear();
         Queue<int> move_queue = new Queue<int>();
         move_queue.Enqueue(unity_position_index);
@@ -125,8 +132,18 @@ public class Unit_Info : MonoBehaviour
                 break;
             }
         }
+
         Map_Pool.Map_pool.Recycle();//回收对象
         StartCoroutine(Way());
+    }
+
+    public void Be_hit()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            HP -= (MAX_HP*0.2f);
+            Update_HP();
+        }
     }
 
     IEnumerator Way()
@@ -139,6 +156,7 @@ public class Unit_Info : MonoBehaviour
             {
                 move_T = move_T + 0.1f;
                 transform.position = Vector3.Lerp(present_poision, position_array[path_list[move_count]], move_T);
+                Update_Slider_Position();
                 yield return new WaitForSeconds(Time.deltaTime);
             }
         }

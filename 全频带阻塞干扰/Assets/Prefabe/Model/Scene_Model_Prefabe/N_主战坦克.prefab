@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8986881295831299189}
   m_Layer: 0
   m_Name: "N_\u4E3B\u6218\u5766\u514B"
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2359252834828306685}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91,10 +92,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ce868926775f14f827fd0fd2af4dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinate_x: 6
-  coordinate_y: 6
+  HP_Slider_create: {fileID: 0}
+  HP_Slider_Prefabe: {fileID: 8947657471445657755, guid: 4141c4bf7970c8c4ca0b71f9a43afc73,
+    type: 3}
+  HP: 0
+  MAX_HP: 0
+  coordinate_x: 5
+  coordinate_y: 5
   unit_name: 
   AP: 0
+  unity_revocation_position_index: 0
+  MAP_create: {fileID: 0}
 --- !u!64 &8986881295831299189
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -109,3 +117,33 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 79a39127f46be674d85db6311358cc99, type: 3}
+--- !u!1 &5472105091765168363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2359252834828306685}
+  m_Layer: 0
+  m_Name: Sliderdisplay_Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2359252834828306685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5472105091765168363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3478269606751318130}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

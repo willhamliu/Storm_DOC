@@ -34,10 +34,10 @@ public class Map_Pool : MonoBehaviour
     {
         for (int i = 0; i < MAP_instance.Count; i++)
         {
-            if (!MAP_instance[i].activeInHierarchy) //判断该子弹是否在场景中激活。
+            if (!MAP_instance[i].activeInHierarchy) 
             {
                 MAP_instance_end = i;
-                return MAP_instance[i];             //找到没有被激活的子弹并返回
+                return MAP_instance[i];             
             }
         }
         return null;
