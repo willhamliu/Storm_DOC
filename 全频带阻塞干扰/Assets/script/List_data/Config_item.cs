@@ -9,7 +9,6 @@ using System;
 
 public class Config_Item
 {
-
     public List<Item> item_List_All = new List<Item>();
     public List<Item> item_List_Building = new List<Item>();
     public List<Item> item_List_People = new List<Item>();
@@ -78,6 +77,7 @@ public class Config_Item
     private void Decode_Item_Json()
     {
         item_List_All.Clear();//更新数据
+        unit_info.Clear();
 
         for (int i = 0; i < item_Json_Data.Count; i++)
         {

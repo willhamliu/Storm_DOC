@@ -16,7 +16,6 @@ public class Audio_Management : MonoBehaviour
     public Slider sfxs_Slider;
     public AudioSource sfxs;
 
-    GameObject sound_play_object;
 
     static Dictionary<string, AudioClip> audio_BGM = new Dictionary<string, AudioClip>();
     static Dictionary<string, AudioClip> audio_SFXS = new Dictionary<string, AudioClip>();
@@ -30,8 +29,10 @@ public class Audio_Management : MonoBehaviour
 
     void Awake()
     {
-        Audio_management = this;
-        sound_play_object = this.gameObject;
+        if (Audio_management == null)
+        {
+            Audio_management = this;
+        }
         if (notload)
         {
             notload = false;
