@@ -26,7 +26,7 @@ public class Config_Dialogue
 
     public void Config_Dialogue_Json()
     {
-        string file_Name = Level_State.Level_state.Dialogue_name;
+        string file_Name = Level_Radio.Level_radio.Dialogue_name;
 
 #if UNITY_EDITOR_WIN
         dialogue_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));

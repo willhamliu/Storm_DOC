@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item  {
-
+public class Item {
+   
     public enum Type
     {
         UnKown=-1,

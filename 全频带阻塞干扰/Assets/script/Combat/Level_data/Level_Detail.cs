@@ -17,7 +17,7 @@ public class Level_Detail : MonoBehaviour
     }
     void Start()
     {
-        star.onClick.AddListener(Load_level);
+        star.onClick.AddListener(Send_level);
     }
     public void SetData(Level level)
     {
@@ -29,9 +29,9 @@ public class Level_Detail : MonoBehaviour
         desc.text ="\u3000\u3000"+this.level.Level_Desc;
         point.text = this.level.Level_Point.ToString();
     }
-    public void Load_level()
+    public void Send_level()
     {
         SceneManager.LoadScene("Load_level");
-        Level_State.Level_state.Load_level(level);
+        Level_Radio.Level_radio.Load_level(level);
     }
 }

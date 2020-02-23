@@ -86,7 +86,7 @@ public class Game_setting : MonoBehaviour
     }
     private void Level_Quit()//退出关卡
     {
-        Level_State.Level_state.Lecel_quit = true;
+        Level_Radio.Level_radio.Level_quit = true;
         SceneManager.LoadScene("Home");
     }
     private void Level_Again()//重新开始
