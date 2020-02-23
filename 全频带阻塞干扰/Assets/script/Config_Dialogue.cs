@@ -43,6 +43,7 @@ public class Config_Dialogue
     }
     public void Decode_Dialogue_Json()
     {
+        dialogues.Clear();
         for (int i = 0; i < dialogue_Json_Data.Count-1; i++)//任务信息在最后
         {
             string dialogue_desc = this.dialogue_Json_Data[i]["Dialogue"].ToString();

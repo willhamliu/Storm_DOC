@@ -16,7 +16,8 @@ public class Dialogue_Management : MonoBehaviour
     bool text_Ponit_Start = false;//逐字显示状态
     public bool dialogue_end { get; private set; } = false;
 
-    int dialogues_Index=0;
+    int dialogues_index=0;
+    int text_index = 0;
     int index = 0;
 
     int onClick_Count=0;
@@ -90,25 +91,36 @@ public class Dialogue_Management : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR_WIN
-        
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
         {
-            if (dialogue_end==true)
+            if (dialogue_end==true|| text_index == 0)//必须显示第一个字之后才可提前显示
             {
                 return;
             }
-            if (log_Open == false && dialogues_Index+ 1 < dialogues.Count && text_Ponit_Start == false)//逐字显示
+            if (log_Open == false && dialogues_index+ 1 < dialogues.Count && text_Ponit_Start == false)//逐字显示
             {
-                dialogues_Index++;
-                speaker_Text.text = dialogues[dialogues_Index].Speaker;
-                StartCoroutine(Show_Text(dialogues[dialogues_Index].Dialogue_Desc.Length));
+                dialogues_index++;
+                speaker_Text.text = dialogues[dialogues_index].Speaker;
+                StartCoroutine(Show_Text(dialogues[dialogues_index].Dialogue_Desc.Length));
             }
             else if (log_Open == false && text_Ponit_Start == true)//提前显示
             {
                 text_Ponit_Start = false;
-                dialogue_Text.text = (dialogues[dialogues_Index].Dialogue_Desc).ToString();
+                string desc = null;
+                for (int i = 0; i < dialogues[dialogues_index].Dialogue_Desc.Length; i++)
+                {
+                    if ((dialogues[dialogues_index].Dialogue_Desc)[i].ToString() == "/")
+                    {
+                        desc = desc + "\r\n";
+                    }
+                    else
+                    {
+                        desc = desc + (dialogues[dialogues_index].Dialogue_Desc)[i].ToString();
+                    }
+                }
+                dialogue_Text.text = desc;
             }
-            else if (log_Open == false && dialogues_Index+1 == dialogues.Count)//播放完成
+            else if (log_Open == false && dialogues_index+1 == dialogues.Count)//播放完成
             {
                 End_Dialogue();
             }
@@ -119,6 +131,10 @@ public class Dialogue_Management : MonoBehaviour
 #if UNITY_ANDROID
         if (Input.touches[0].phase== TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)==false)
         {
+            if (dialogue_end==true|| text_index == 0)
+            {
+                return;
+            }
             if (log_Open == false && dialogues_Index + 1 < dialogues.Count && text_Ponit_Start == false)
             {
                 dialogues_Index++;
@@ -171,7 +187,7 @@ public class Dialogue_Management : MonoBehaviour
             else
             {
                 log_Panel.SetActive(false);
-                log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 20), 0.4f);
+                log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 0), 0.4f);
                 log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 0), 0.3f);
 
                 Invoke("Log_Close", 0.5f);
@@ -196,7 +212,7 @@ public class Dialogue_Management : MonoBehaviour
             {
                 log_Image.gameObject.SetActive(true);
                 log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 780), 0.4f);
-                log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 760), 0.4f);
+                log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 760), 0.44f);
 
 
                 Invoke("Log_Open", 0.5f);
@@ -238,7 +254,7 @@ public class Dialogue_Management : MonoBehaviour
 
     public void Log_Add()
     {
-        for (int i = index; i <= dialogues_Index ; i++)//防止每次打开调用时都会遍历造成字符串重复，因此作用域 (i) 不能是0
+        for (int i = index; i <= dialogues_index ; i++)//防止每次打开调用时都会遍历造成字符串重复，因此作用域 (i) 不能是0
         {
             for (int j = index; j <= index; j++)//每次遍历1回，遍历完后则增加索引进行第二次添加
             {
@@ -252,12 +268,12 @@ public class Dialogue_Management : MonoBehaviour
 
     private void End_Dialogue()//结束对话
     {
-        dialogues_Index = dialogues.Count-1;
+        dialogues_index = dialogues.Count-1;
         speaker_Text.gameObject.SetActive(false);
         dialogue_Animation = dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 0), 0.3f);
-        dialogue_Animation = dialogue_Image_Background.DOSizeDelta(new Vector2(dialogue_Image_Background.sizeDelta.x, 0), 0.3f);
+        dialogue_Animation = dialogue_Image_Background.DOSizeDelta(new Vector2(dialogue_Image_Background.sizeDelta.x, 0), 0.26f);
 
-        log_Image.sizeDelta = new Vector2(log_Image.sizeDelta.x, 20);
+        log_Image.sizeDelta = new Vector2(log_Image.sizeDelta.x, 0);
         log_Image_Background.sizeDelta = new Vector2(log_Image_Background.sizeDelta.x, 0);
 
         dialogue_end = true;
@@ -266,28 +282,28 @@ public class Dialogue_Management : MonoBehaviour
 
     IEnumerator Show_Text(int Dialogue_Length)
     {
-        int i = 0;
+        text_index = 0;
         string desc = null;
         text_Ponit_Start = true;
 
-        while (i < Dialogue_Length)
+        while (text_index < Dialogue_Length)
         {
             if (text_Ponit_Start == true)
             {
-                if ((dialogues[dialogues_Index].Dialogue_Desc)[i].ToString()=="/")
+                if ((dialogues[dialogues_index].Dialogue_Desc)[text_index].ToString()=="/")
                 {
                     desc = desc + "\r\n";                    
                 }
                 else
                 {
-                    desc = desc + (dialogues[dialogues_Index].Dialogue_Desc)[i].ToString();
+                    desc = desc + (dialogues[dialogues_index].Dialogue_Desc)[text_index].ToString();
                 }
                 dialogue_Text.text = desc;
-                i++;
+                text_index++;
             }
             else//提前显示时终止协程
             {
-                i = Dialogue_Length;
+                text_index = Dialogue_Length;
             }
             yield return new WaitForSeconds(0.05f);
         }
