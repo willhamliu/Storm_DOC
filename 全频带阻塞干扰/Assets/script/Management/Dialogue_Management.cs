@@ -118,7 +118,14 @@ public class Dialogue_Management : MonoBehaviour
                         desc = desc + (dialogues[dialogues_index].Dialogue_Desc)[i].ToString();
                     }
                 }
-                dialogue_Text.text = desc;
+                if (dialogues_index==0)
+                {
+                    dialogue_Text.text = desc;
+                }
+                else
+                {
+                    dialogue_Text.text = "\u3000\u3000" + desc;
+                }
             }
             else if (log_Open == false && dialogues_index+1 == dialogues.Count)//播放完成
             {
@@ -135,18 +142,37 @@ public class Dialogue_Management : MonoBehaviour
             {
                 return;
             }
-            if (log_Open == false && dialogues_Index + 1 < dialogues.Count && text_Ponit_Start == false)
+            if (log_Open == false && dialogues_index + 1 < dialogues.Count && text_Ponit_Start == false)
             {
-                dialogues_Index++;
-                speaker_Text.text = dialogues[dialogues_Index].Speaker;
-                StartCoroutine(Show_Text(dialogues[dialogues_Index].Dialogue_Desc.Length));
+                dialogues_index++;
+                speaker_Text.text = dialogues[dialogues_index].Speaker;
+                StartCoroutine(Show_Text(dialogues[dialogues_index].Dialogue_Desc.Length));
             }
             else if (text_Ponit_Start == true)
             {
                 text_Ponit_Start = false;
-                dialogue_Text.text = (dialogues[dialogues_Index].Dialogue_Desc).ToString();
+                string desc = null;
+                for (int i = 0; i < dialogues[dialogues_index].Dialogue_Desc.Length; i++)
+                {
+                    if ((dialogues[dialogues_index].Dialogue_Desc)[i].ToString() == "/")
+                    {
+                        desc = desc + "\r\n";
+                    }
+                    else
+                    {
+                        desc = desc + (dialogues[dialogues_index].Dialogue_Desc)[i].ToString();
+                    }
+                }
+                if (dialogues_index==0)
+                {
+                    dialogue_Text.text = desc;
+                }
+                else
+                {
+                    dialogue_Text.text = "\u3000\u3000" + desc;
+                }
             }
-            else if (log_Open == false && dialogues_Index+1 == dialogues.Count)
+            else if (log_Open == false && dialogues_index + 1 == dialogues.Count)
             {
                 End_Dialogue();
             }
@@ -258,10 +284,17 @@ public class Dialogue_Management : MonoBehaviour
         {
             for (int j = index; j <= index; j++)//每次遍历1回，遍历完后则增加索引进行第二次添加
             {
-                Link = dialogues[index].Speaker+"       "+ dialogues[index].Dialogue_Desc;
+                if (index==0)
+                {
+                    Link = dialogues[index].Speaker  + dialogues[index].Dialogue_Desc;
+                }
+                else
+                {
+                    Link = dialogues[index].Speaker + ":\u3000" + dialogues[index].Dialogue_Desc;
+                }
             }
             index++;
-            log_String = log_String + Link+"\n";
+            log_String = log_String + Link+"\n\n";
         }
         log_Text.text = log_String;
     }
@@ -298,7 +331,14 @@ public class Dialogue_Management : MonoBehaviour
                 {
                     desc = desc + (dialogues[dialogues_index].Dialogue_Desc)[text_index].ToString();
                 }
-                dialogue_Text.text = desc;
+                if (dialogues_index == 0)
+                {
+                    dialogue_Text.text = desc;
+                }
+                else
+                {
+                    dialogue_Text.text = "\u3000\u3000" + desc;
+                }
                 text_index++;
             }
             else//提前显示时终止协程
