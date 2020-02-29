@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3478269606749418130}
   - component: {fileID: 6591318997494311372}
   - component: {fileID: 8986881295831299189}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: "N_\u4E3B\u6218\u5766\u514B"
-  m_TagString: Unit
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP_Slider_create: {fileID: 0}
+  Sliderdisplay_Position: {fileID: 2359252834828306685}
   HP_Slider_Prefabe: {fileID: 8947657471445657755, guid: 4141c4bf7970c8c4ca0b71f9a43afc73,
     type: 3}
   HP: 0
@@ -100,9 +101,10 @@ MonoBehaviour:
   coordinate_x: 5
   coordinate_y: 5
   unit_name: 
+  unit_position_index: 0
+  unit_revocation_position_index: 0
   AP: 0
-  unity_revocation_position_index: 0
-  MAP_create: {fileID: 0}
+  Attack_Range: 0
 --- !u!64 &8986881295831299189
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -126,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2359252834828306685}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sliderdisplay_Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5472105091765168363}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3478269606751318130}

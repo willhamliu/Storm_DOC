@@ -8,6 +8,8 @@ TagManager:
   - Item
   - Unit
   - Map
+  - Enemy
+  - Enemytag
   layers:
   - Default
   - TransparentFX

@@ -89,7 +89,7 @@ public class Config_Customize
 #endif
         StreamWriter write = file.CreateText();
 
-        string json =JsonMapper.ToJson(customize_Json_Data);
+        string json = JsonMapper.ToJson(customize_Json_Data);
         Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
         json = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
         write.Write(json);

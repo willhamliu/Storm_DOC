@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1180237553
+CRC: 2301646455
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7d86b87f2950daeb7d8405649e74139c
+    Hash: be1ee2497dcce03857954822fcf99461
   TypeTreeHash:
     serializedVersion: 2
     Hash: 798811b7255c82b34a9f8780c2ce846a
@@ -24,30 +24,30 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 Assets:
-- "Assets/Model/ui_prefabe/N_\u53CD\u5766\u514B\u5C0F\u7EC4.prefab"
-- "Assets/Model/ui_prefabe/R_\u8F70\u70B8\u673A.prefab"
-- "Assets/Model/ui_prefabe/N_\u6218\u6597\u673A.prefab"
-- "Assets/Model/ui_prefabe/N_\u4E3B\u6218\u5766\u514B.prefab"
-- "Assets/Model/ui_prefabe/N_\u7535\u5B50\u6218\u98DE\u673A.prefab"
-- "Assets/Model/ui_prefabe/R_\u6218\u6597\u673A.prefab"
-- "Assets/Model/ui_prefabe/R_\u79FB\u52A8\u96F7\u8FBE\u7AD9.prefab"
-- "Assets/Model/ui_prefabe/N_\u81EA\u884C\u706B\u70AE.prefab"
-- "Assets/Model/ui_prefabe/N_\u673A\u573A.prefab"
-- "Assets/Model/ui_prefabe/R_\u96F7\u8FBE\u7AD9.prefab"
-- "Assets/Model/ui_prefabe/N_\u7A7A\u964D\u5175.prefab"
-- "Assets/Model/ui_prefabe/N_\u540E\u52E4\u57FA\u5730.prefab"
-- "Assets/Model/ui_prefabe/N_\u6E38\u9A91\u5175.prefab"
-- "Assets/Model/ui_prefabe/R_\u81EA\u884C\u9632\u7A7A\u70AE.prefab"
-- "Assets/Model/ui_prefabe/R_\u4E3B\u6218\u5766\u514B.prefab"
-- "Assets/Model/ui_prefabe/R_\u7535\u5B50\u6218\u98DE\u673A.prefab"
-- "Assets/Model/ui_prefabe/N_\u81EA\u884C\u9632\u7A7A\u70AE.prefab"
-- "Assets/Model/ui_prefabe/N_\u79FB\u52A8\u96F7\u8FBE\u7AD9.prefab"
-- "Assets/Model/ui_prefabe/R_\u540E\u52E4\u57FA\u5730.prefab"
-- "Assets/Model/ui_prefabe/R_\u91CE\u6218\u519B.prefab"
-- "Assets/Model/ui_prefabe/N_\u8F70\u70B8\u673A.prefab"
-- "Assets/Model/ui_prefabe/R_\u7A7A\u964D\u5175.prefab"
-- "Assets/Model/ui_prefabe/N_\u96F7\u8FBE\u7AD9.prefab"
-- "Assets/Model/ui_prefabe/R_\u673A\u573A.prefab"
-- "Assets/Model/ui_prefabe/R_\u81EA\u884C\u706B\u70AE.prefab"
-- "Assets/Model/ui_prefabe/R_\u53CD\u5766\u514B\u5C0F\u7EC4.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u53CD\u5766\u514B\u5C0F\u7EC4.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u8F70\u70B8\u673A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u6218\u6597\u673A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u4E3B\u6218\u5766\u514B.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u7535\u5B50\u6218\u98DE\u673A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u6218\u6597\u673A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u79FB\u52A8\u96F7\u8FBE\u7AD9.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u81EA\u884C\u706B\u70AE.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u96F7\u8FBE\u7AD9.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u7A7A\u964D\u5175.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u540E\u52E4\u57FA\u5730.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u6E38\u9A91\u5175.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u81EA\u884C\u9632\u7A7A\u70AE.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u4E3B\u6218\u5766\u514B.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u7535\u5B50\u6218\u98DE\u673A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u81EA\u884C\u9632\u7A7A\u70AE.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u79FB\u52A8\u96F7\u8FBE\u7AD9.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u540E\u52E4\u57FA\u5730.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u673A\u573A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u91CE\u6218\u519B.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u8F70\u70B8\u673A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u7A7A\u964D\u5175.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/N_\u96F7\u8FBE\u7AD9.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u673A\u573A.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u81EA\u884C\u706B\u70AE.prefab"
+- "Assets/Prefabe/Model/UI_Model_Prefabe/R_\u53CD\u5766\u514B\u5C0F\u7EC4.prefab"
 Dependencies: []

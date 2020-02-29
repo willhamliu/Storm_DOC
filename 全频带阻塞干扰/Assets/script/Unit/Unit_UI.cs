@@ -11,9 +11,9 @@ public class Unit_UI : MonoBehaviour
     public float HP;
     public float MAX_HP;
 
-    GameObject HP_Slider;
-    Slider Slider;
-    Image Effect;
+    protected GameObject HP_Slider;
+    protected Slider Slider;
+    protected Image Effect;
     float Hurtspeed = 0.01f;//缓冲速度
 
 
@@ -34,7 +34,7 @@ public class Unit_UI : MonoBehaviour
         Slider.value = Effect.fillAmount = HP / MAX_HP;
     }
 
-    public void Update_Slider_Position()//更新血量
+    public void Update_Slider_Position()//更新血量条位置
     {
         HP_Slider.transform.position = Sliderdisplay_Position.position;
     }
@@ -53,7 +53,7 @@ public class Unit_UI : MonoBehaviour
             yield return null;
         }
         Effect.fillAmount = Slider.value;
-        if (Slider.value == 0)
+        if (Effect.fillAmount == 0)
         {
             Destroy(this.gameObject);
             Destroy(this.HP_Slider);

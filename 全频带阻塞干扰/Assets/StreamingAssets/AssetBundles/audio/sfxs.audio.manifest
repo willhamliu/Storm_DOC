@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4022101547
+CRC: 1707092703
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8b1c2072701ad469d3a27fa3811b15fc
+    Hash: e9e753d10638693d34a39dce9d633a04
   TypeTreeHash:
     serializedVersion: 2
     Hash: 8de51064219e4f947fb7fea9d09a4e34
@@ -18,9 +18,9 @@ ClassTypes:
 - Class: 83
   Script: {instanceID: 0}
 Assets:
-- "Assets/Audio/SFXS_prefabe/\u786E\u8BA4\u7814\u53D1.prefab"
-- "Assets/Audio/SFXS_prefabe/\u6309\u94AE\u70B9\u51FB.prefab"
-- "Assets/Audio/SFXS_prefabe/\u8FD4\u56DE.prefab"
-- "Assets/Audio/SFXS_prefabe/\u9635\u8425\u5207\u6362.prefab"
-- "Assets/Audio/SFXS_prefabe/\u5355\u4F4D\u5207\u6362.prefab"
+- "Assets/Audio/SFXS_Prefabe/\u8FD4\u56DE.prefab"
+- "Assets/Audio/SFXS_Prefabe/\u9635\u8425\u5207\u6362.prefab"
+- "Assets/Audio/SFXS_Prefabe/\u5355\u4F4D\u5207\u6362.prefab"
+- "Assets/Audio/SFXS_Prefabe/\u786E\u8BA4\u7814\u53D1.prefab"
+- "Assets/Audio/SFXS_Prefabe/\u6309\u94AE\u70B9\u51FB.prefab"
 Dependencies: []
