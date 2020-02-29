@@ -113,7 +113,7 @@ public class Unit_Control : Unit_UI
     {
         transform.position= position_array[unit_revocation_position_index];
         unit_position_index = unit_revocation_position_index;
-        Unit_Management.Unit_management.Unit_update();
+        Unit_Management.Unit_management.Unit_Update();
         Update_Slider_Position();
         this.BFS(Unit_Management.Search_setting.Moverange);
     }
@@ -160,6 +160,7 @@ public class Unit_Control : Unit_UI
             move_queue.Dequeue();
             if (move_path == targetposition_index)
             {
+
                 if (reverse_search == false)
                 {
                     unit_position_index = targetposition_index;
@@ -168,6 +169,7 @@ public class Unit_Control : Unit_UI
                 }
                 else
                 {
+                    reverse_search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
                     unit_position_index = startposition_index;//当切换为倒序搜索时，找到终点后，单位下标为起点下标
                     path_list.Reverse();
                     path_list.RemoveAt(0);
@@ -179,7 +181,6 @@ public class Unit_Control : Unit_UI
 
         if (move_count == AP && move_path != targetposition_index)//当正序搜索无法找到终点时使用倒序搜索
         {
-
             reverse_search = true;
             Move(targetposition_index, startposition_index);
         }
@@ -203,6 +204,6 @@ public class Unit_Control : Unit_UI
                 BFS(Unit_Management.Search_setting.Enemy);
             }
         }
-        Unit_Management.Unit_management.Revocation_allow();
+        Unit_Management.Unit_management.Revocation_Allow();
     }
 }

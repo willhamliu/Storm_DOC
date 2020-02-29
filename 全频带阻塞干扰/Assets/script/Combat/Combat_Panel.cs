@@ -76,7 +76,7 @@ public class Combat_Panel : MonoBehaviour
         }
         for (int i = 0; i < upgrade_All.Count; i++)
         {
-            var customize = Config_Customize.Config_customize.customize_Data_All[i];
+            var customize = Config_Customize.Config_customize.customize_DataAll[i];
             var index = upgrade_All.IndexOf(upgrade_All[i]);
             upgrade_All[i].onValueChanged.AddListener((bool value) => { Toggle_Upgrade(ref index, ref value); });
         }
@@ -98,7 +98,7 @@ public class Combat_Panel : MonoBehaviour
     public void Open_Combat()
     {
         var star_index=0;
-        var customize = Config_Customize.Config_customize.customize_Data_All[0];
+        var customize = Config_Customize.Config_customize.customize_DataAll[0];
 
         Level_Detail.Level_detail.SetData(Config_Level.Config_level.level_Data_All[last_Level_index]);
         Customize_Data.Customize_data.SetData (ref customize, ref star_index);
@@ -212,7 +212,7 @@ public class Combat_Panel : MonoBehaviour
             }
             if (a == 250)
             {
-                var customize = Config_Customize.Config_customize.customize_Data_All[index];
+                var customize = Config_Customize.Config_customize.customize_DataAll[index];
                 Customize_Data.Customize_data.SetData( ref customize,ref index);
             }
             if (b < 0)

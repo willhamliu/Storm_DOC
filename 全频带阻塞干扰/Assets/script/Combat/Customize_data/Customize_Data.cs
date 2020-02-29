@@ -51,7 +51,7 @@ public class Customize_Data : MonoBehaviour
     public void Purchase()
     {
         Audio_Management.Audio_management.SFXS_play("按钮点击");
-        buy_Panel_Name.text = "是否研发\u3000" + this.customize.Customize_Name.ToString();
+        buy_Panel_Name.text = "是否研发\u3000" + this.customize.customize_Name.ToString();
         buy_Panel.SetActive(true);
     }
     public void Purchase_Canel()
@@ -68,7 +68,7 @@ public class Customize_Data : MonoBehaviour
         buy_Panel.SetActive(false);
         buy.SetActive(false);
         item_price.SetActive(false);
-        point_Buy = point - customize.Customize_Price;
+        point_Buy = point - customize.customize_Price;
         StartCoroutine(use_point());
 
         PlayerPrefs.SetInt("point", point);
@@ -92,23 +92,23 @@ public class Customize_Data : MonoBehaviour
             return;
         }
         this.customize = customize;
-        data.text = this.customize.Customize_Desc;
-        price.text = this.customize.Customize_Price.ToString();
+        data.text = this.customize.customize_Desc;
+        price.text = this.customize.customize_Price.ToString();
        
 
-        if (customize.Customize_Unlockindex !=-1)//如果上一级索引的装备未购买则无法购买当前装备
+        if (customize.customize_Unlockindex !=-1)//如果上一级索引的装备未购买则无法购买当前装备
         {
-            if (Config_Customize.Config_customize.customize_Data_All[customize.Customize_Unlockindex].Customize_Purchase_Status == true)
+            if (Config_Customize.Config_customize.customize_DataAll[customize.customize_Unlockindex].ustomize_Purchase_Status == true)
             {
-                if (Config_Customize.Config_customize.customize_Data_All[index].Customize_Purchase_Status == true)
+                if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == true)
                 {
                     item_price.SetActive(false);
                     buy.SetActive(false);
                     attention_Buy.SetActive(false);
                 }
-                if (Config_Customize.Config_customize.customize_Data_All[index].Customize_Purchase_Status == false)
+                if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == false)
                 {
-                    if (point < customize.Customize_Price)
+                    if (point < customize.customize_Price)
                     {
                         item_price.SetActive(true);
                         buy.SetActive(false);
@@ -131,17 +131,17 @@ public class Customize_Data : MonoBehaviour
         }
         else
         {
-            if (Config_Customize.Config_customize.customize_Data_All[index].Customize_Purchase_Status == true)
+            if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == true)
             {
                 item_price.SetActive(false);
                 buy.SetActive(false);
                 attention_Buy.SetActive(false);
             }
-            if (Config_Customize.Config_customize.customize_Data_All[index].Customize_Purchase_Status == false)
+            if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == false)
             {
-                if (point < customize.Customize_Price)
+                if (point < customize.customize_Price)
                 {
-                    Debug.Log(point+" "+customize.Customize_Price);
+                    Debug.Log(point+" "+customize.customize_Price);
                     item_price.SetActive(true);
                     buy.SetActive(false);
                     attention_Buy.SetActive(false);

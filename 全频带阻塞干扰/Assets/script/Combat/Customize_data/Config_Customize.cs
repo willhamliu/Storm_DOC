@@ -9,8 +9,8 @@ using System;
 
 public class Config_Customize
 {
-    public List<Customize> customize_Data_All = new List<Customize>();
-    JsonData customize_Json_Data;
+    public List<Customize> customize_DataAll = new List<Customize>();
+    private JsonData customize_JsonData;
 
     private static Config_Customize config_Customize;
     public static Config_Customize Config_customize
@@ -25,7 +25,7 @@ public class Config_Customize
     public void Confing_Customize_Json()
     {
 #if UNITY_EDITOR_WIN
-        customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
+        customize_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 
 #if UNITY_ANDROID
@@ -33,7 +33,7 @@ public class Config_Customize
         if (file.Exists)//如果之前存过就不用再存了
         {
             string path = Application.persistentDataPath + "Upgrade_Json.json";
-            customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(path, Encoding.GetEncoding("UTF-8")));
+            customize_JsonData = JsonMapper.ToObject(File.ReadAllText(path, Encoding.GetEncoding("UTF-8")));
 
         }
         else
@@ -42,18 +42,18 @@ public class Config_Customize
             WWW www = new WWW(path);
             while (!www.isDone) { }
 
-            customize_Json_Data = JsonMapper.ToObject(www.text);
+            customize_JsonData = JsonMapper.ToObject(www.text);
 
 
             StreamWriter write = file.CreateText();//创建一个文件夹
-            string json = JsonMapper.ToJson(customize_Json_Data);
+            string json = JsonMapper.ToJson(customize_JsonData);
             Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
             json = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
             write.Write(json);//写入
 
             write.Close();
             write.Dispose();
-            customize_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.persistentDataPath + "Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
+            customize_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.persistentDataPath + "Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
             //安卓端必须写入后再次赋值，否则升级时第一次无法写入(查了好久。。。)
         }
 
@@ -63,23 +63,23 @@ public class Config_Customize
 
     private void Decode_Confing_Json()
     {
-        customize_Data_All.Clear();//更新数据
-        for (int i = 0; i < customize_Json_Data.Count; i++)
+        customize_DataAll.Clear();//更新数据
+        for (int i = 0; i < customize_JsonData.Count; i++)
         {
-            string Customize_Name = customize_Json_Data[i]["Customize_Name"].ToString();
-            string Customize_Desc = customize_Json_Data[i]["Customize_Desc"].ToString();
-            int Customize_Price = (int)customize_Json_Data[i]["Customize_Price"];
-            int Customize_Unlockindex = (int)customize_Json_Data[i]["Customize_Unlockindex"];
-            bool Customize_Purchase_Status = (bool)customize_Json_Data[i]["Customize_Purchase_Status"];
-            Customize customize = new Customize(Customize_Name, Customize_Desc, Customize_Price, Customize_Unlockindex,Customize_Purchase_Status);
+            string customize_Name = customize_JsonData[i]["Customize_Name"].ToString();
+            string customize_Desc = customize_JsonData[i]["Customize_Desc"].ToString();
+            int customize_Price = (int)customize_JsonData[i]["Customize_Price"];
+            int customize_Unlockindex = (int)customize_JsonData[i]["Customize_Unlockindex"];
+            bool customize_Purchase_Status = (bool)customize_JsonData[i]["Customize_Purchase_Status"];
+            Customize customize = new Customize(customize_Name, customize_Desc, customize_Price, customize_Unlockindex,customize_Purchase_Status);
 
-            customize_Data_All.Add(customize);
+            customize_DataAll.Add(customize);
         }
     }
     public void Purchase_Status_Modify(int index)
     {
         FileInfo file;
-        customize_Json_Data[index]["Customize_Purchase_Status"] = true;
+        customize_JsonData[index]["Customize_Purchase_Status"] = true;
 #if UNITY_EDITOR_WIN
         file = new FileInfo(Application.streamingAssetsPath + "/Upgrade_Json.json");
 #endif
@@ -89,7 +89,7 @@ public class Config_Customize
 #endif
         StreamWriter write = file.CreateText();
 
-        string json = JsonMapper.ToJson(customize_Json_Data);
+        string json = JsonMapper.ToJson(customize_JsonData);
         Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
         json = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
         write.Write(json);

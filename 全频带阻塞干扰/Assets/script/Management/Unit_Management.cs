@@ -37,15 +37,15 @@ public class Unit_Management : MonoBehaviour
     private void Start()
     {
         revocation_Button.transform.gameObject.SetActive(false);
-        revocation_Button.onClick.AddListener(Revocation);
-        Unit_update();
+        revocation_Button.onClick.AddListener(RevocationOnClick);
+        Unit_Update();
     }
   
     void Update()
     {
-        Unit_selected();
+        Unit_Selected();
     }
-    public void Unit_update()
+    public void Unit_Update()
     {
         GameObject[] Player_array_object = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] Enemy_array_object = GameObject.FindGameObjectsWithTag("Enemy");
@@ -62,18 +62,18 @@ public class Unit_Management : MonoBehaviour
         }
     }
 
-    public void Revocation_allow()//允许撤销
+    public void Revocation_Allow()//允许撤销
     {
         revocation_Button.transform.gameObject.SetActive(true);
     }
 
-    private void Revocation()
+    private void RevocationOnClick()
     {
         revocation_Button.transform.gameObject.SetActive(false);
         player_script.Revocation();
     }
    
-    private void Unit_selected()
+    private void Unit_Selected()
     {
 #if UNITY_EDITOR_WIN
         if (Input.GetMouseButtonUp(0)&& EventSystem.current.IsPointerOverGameObject() == false&& order_lock==false)
@@ -86,7 +86,7 @@ public class Unit_Management : MonoBehaviour
                 Map_Pool.Map_pool.Recycle_Enemytag();
                 if (hit.transform.tag== "Player")
                 {
-                    Unit_update();
+                    Unit_Update();
                     player_script = hit.transform.gameObject.GetComponent<Unit_Control>();
                     player_script.BFS(Search_setting.Moverange);
                     player_index = player_script.unit_position_index;
@@ -139,7 +139,7 @@ public class Unit_Management : MonoBehaviour
                 {
                     move_target = hit.transform.GetComponent<Hex_Info>().index;
                     player_script.Move(player_index, move_target);
-                    Unit_update();
+                    Unit_Update();
                 }
                 if (hit.transform.tag == "Enemy")
                 {
@@ -149,7 +149,7 @@ public class Unit_Management : MonoBehaviour
                         enemy_script = hit.transform.GetComponent<Unit_Control>();
                         player_script.Attack(player_script.Attack_power, enemy_script);
                     }
-                    Unit_update();
+                    Unit_Update();
                     player_script = null;
                 }
             }
