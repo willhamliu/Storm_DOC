@@ -23,15 +23,15 @@ public class Audio_Management : MonoBehaviour
     static AssetBundle load_BGM;
     static AssetBundle load_SFXS;
 
-    public static Audio_Management Audio_management;
+    public static Audio_Management audio_Management;
 
     public static bool notload = true;
 
     void Awake()
     {
-        if (Audio_management == null)
+        if (audio_Management == null)
         {
-            Audio_management = this;
+            audio_Management = this;
         }
         if (notload)
         {
@@ -64,13 +64,13 @@ public class Audio_Management : MonoBehaviour
     {
 
         bgm_Value.text = ((int)(bgm_Slider.value * 100)).ToString();
-        bgm_Slider.onValueChanged.AddListener((float value) => BGM_Adjust(value));
+        bgm_Slider.onValueChanged.AddListener((float value) => BGM_AdjustOnClick(value));
 
         sfxs_Value.text = ((int)(sfxs_Slider.value * 100)).ToString();
-        sfxs_Slider.onValueChanged.AddListener((float value) => SFXS_Adjust(value));
+        sfxs_Slider.onValueChanged.AddListener((float value) => SFXS_AdjustOnClick(value));
     }
 
-    public void BGM_Adjust(float value)//背景音乐滑动条
+    public void BGM_AdjustOnClick(float value)//背景音乐滑动条
     {
         bgm_Value.text = ((int)(value * 100)).ToString();
 
@@ -80,7 +80,7 @@ public class Audio_Management : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void SFXS_Adjust(float value)//音效滑动条
+    public void SFXS_AdjustOnClick(float value)//音效滑动条
     {
         sfxs_Value.text = ((int)(value * 100)).ToString();
 

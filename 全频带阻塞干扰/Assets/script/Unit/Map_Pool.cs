@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Map_Pool : MonoBehaviour
 {
-    public static Map_Pool Map_pool;
+    public static Map_Pool map_Pool;
     public GameObject hex_Prefab;
     public GameObject enemy_Prefab;
-    public Transform MAP_create;
-    public Transform Enemytag_create;
-    private List<GameObject> MAP_instance = new List<GameObject>();
-    private List<GameObject> Enemytag_instance = new List<GameObject>();
+    public Transform map_Create;
+    public Transform enemytag_Create;
+    private List<GameObject> map_Instance = new List<GameObject>();
+    private List<GameObject> enemytag_Instance = new List<GameObject>();
 
-    private int MAP_instance_end;//末端对象下标
-    private int Enemytag_instance_end;
+    private int map_Instance_End;//末端对象下标
+    private int enemytag_Instance_End;
 
     private void Awake()
     {
-        if (Map_pool==null)
+        if (map_Pool==null)
         {
-            Map_pool = this;
+            map_Pool = this;
         }
     }
 
@@ -27,52 +27,52 @@ public class Map_Pool : MonoBehaviour
     {
         for (int i = 0; i < 100; i++)
         {
-            GameObject enemytag= Instantiate(enemy_Prefab, Enemytag_create);
-            GameObject hex = Instantiate(hex_Prefab, MAP_create);
+            GameObject enemytag= Instantiate(enemy_Prefab, enemytag_Create);
+            GameObject hex = Instantiate(hex_Prefab, map_Create);
             enemytag.SetActive(false);
             hex.SetActive(false);
-            Enemytag_instance.Add(enemytag);
-            MAP_instance.Add(hex);
+            enemytag_Instance.Add(enemytag);
+            map_Instance.Add(hex);
         }
     }
     public GameObject Get_Enemytag()
     {
-        for (int i = 0; i < Enemytag_instance.Count; i++)
+        for (int i = 0; i < enemytag_Instance.Count; i++)
         {
-            if (!Enemytag_instance[i].activeInHierarchy)
+            if (!enemytag_Instance[i].activeInHierarchy)
             {
-                Enemytag_instance_end = i;
-                Enemytag_instance[i].SetActive(true);
-                return Enemytag_instance[i];
+                enemytag_Instance_End = i;
+                enemytag_Instance[i].SetActive(true);
+                return enemytag_Instance[i];
             }
         }
         return null;
     }
     public GameObject Get_Hex()
     {
-        for (int i = 0; i < MAP_instance.Count; i++)
+        for (int i = 0; i < map_Instance.Count; i++)
         {
-            if (!MAP_instance[i].activeInHierarchy) 
+            if (!map_Instance[i].activeInHierarchy) 
             {
-                MAP_instance_end = i;
-                MAP_instance[i].SetActive(true);
-                return MAP_instance[i];             
+                map_Instance_End = i;
+                map_Instance[i].SetActive(true);
+                return map_Instance[i];             
             }
         }
         return null;
     }
     public void Recycle_Enemytag()
     {
-        for (int i = 0; i <= Enemytag_instance_end; i++)
+        for (int i = 0; i <= enemytag_Instance_End; i++)
         {
-            Enemytag_instance[i].SetActive(false);
+            enemytag_Instance[i].SetActive(false);
         }
     }
     public void Recycle_Hex()
     {
-        for (int i = 0; i <= MAP_instance_end; i++)
+        for (int i = 0; i <= map_Instance_End; i++)
         {
-            MAP_instance[i].SetActive(false);
+            map_Instance[i].SetActive(false);
         }
     }
 }

@@ -30,30 +30,30 @@ public class Item {
         俄罗斯,
     }
 
-    public string Item_Model;//模型路径
-    public string Item_Number;
+    public string item_Model;//模型路径
+    public string item_Number;
     public Type Item_Type =Type.UnKown;
     public Target Item_Target=Target.UnKown;
     public Camp Item_Camp=Camp.UnKown;
 
-    public string Item_Name;//名字
-    public int Item_AP;//行动点数
-    public int Item_Attack;//攻击力
+    public string item_Name;//名字
+    public int item_AP;//行动点数
+    public int item_Attack;//攻击力
 
-    public int Item_Defense;//防御力
+    public int item_Defense;//防御力
 
-    public int Iten_Range;//射程
+    public int iten_Range;//射程
 
-    public int Item_Price;//价格
-    public int Item_HP;//血量
-    public int Item_Vision;//视野范围
-    public string Item_Desc;//描述信息
+    public int item_Price;//价格
+    public int item_HP;//血量
+    public int item_Vision;//视野范围
+    public string item_Desc;//描述信息
 
     public Item(string item_Model, string item_Number, int item_Type, int item_Target, int item_Camp, string item_Name, int item_AP, int item_Attack, int item_Defense,
                 int iten_Range, int item_Price, int item_HP, int item_Vision, string item_Desc)
     {
-        this.Item_Model = item_Model;
-        this.Item_Number = item_Number;
+        this.item_Model = item_Model;
+        this.item_Number = item_Number;
         switch (item_Type)
         {
             case -1:
@@ -113,14 +113,14 @@ public class Item {
             default:
                 break;
         }
-        this.Item_Name = item_Name;
-        this.Item_AP = item_AP;
-        this.Item_Attack = item_Attack;
-        this.Item_Defense = item_Defense;
-        this.Iten_Range = iten_Range;
-        this.Item_Price = item_Price;
-        this.Item_HP = item_HP;
-        this.Item_Vision = item_Vision;
-        this.Item_Desc = item_Desc;
+        this.item_Name = item_Name;
+        this.item_AP = item_AP;
+        this.item_Attack = item_Attack;
+        this.item_Defense = item_Defense;
+        this.iten_Range = iten_Range;
+        this.item_Price = item_Price;
+        this.item_HP = item_HP;
+        this.item_Vision = item_Vision;
+        this.item_Desc = item_Desc;
     }
 }

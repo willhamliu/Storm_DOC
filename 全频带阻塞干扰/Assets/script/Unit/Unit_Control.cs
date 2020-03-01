@@ -26,17 +26,17 @@ public class Unit_Control : Unit_UI
     }
     void Start()
     {
-        position_array = Map_Management.map_Management.Hex_position;
-        graph = Map_Management.map_Management.Hex_graph;
-        unit_position_index = Map_Management.map_Management.Hex_index[coordinate_x, coordinate_y];
+        position_array = Map_Management.map_Management.hex_Position;
+        graph = Map_Management.map_Management.hex_Graph;
+        unit_position_index = Map_Management.map_Management.hex_Idex[coordinate_x, coordinate_y];
         unit_position = position_array[unit_position_index];
 
         this.transform.position = unit_position;
 
-        AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].Item_AP;
-        Attack_Range = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].Iten_Range;
-        Attack_power = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].Item_Attack;
-        MAX_HP = HP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].Item_HP;
+        AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].item_AP;
+        Attack_Range = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].iten_Range;
+        Attack_power = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].item_Attack;
+        MAX_HP = HP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].item_HP;
         Create_HP();
     }
 
@@ -68,13 +68,13 @@ public class Unit_Control : Unit_UI
                 {
                     if (open_list.Contains(graph[open_queue.Peek()][i]) == false && search_setting== Unit_Management.Search_setting.Moverange)//遍历附近的节点，如果重复则跳过
                     {
-                        if (Unit_Management.Unit_management.Enemy_list.Contains(graph[open_queue.Peek()][i]) == true)
+                        if (Unit_Management.unit_Management.enemy_List.Contains(graph[open_queue.Peek()][i]) == true)
                         {
                             continue;
                         }
-                        else if (Unit_Management.Unit_management.Player_list.Contains(graph[open_queue.Peek()][i]) == false)
+                        else if (Unit_Management.unit_Management.player_List.Contains(graph[open_queue.Peek()][i]) == false)
                         {
-                            GameObject hex = Map_Pool.Map_pool.Get_Hex();
+                            GameObject hex = Map_Pool.map_Pool.Get_Hex();
                             hex.transform.position = position_array[graph[open_queue.Peek()][i]];
                             hex.GetComponent<Hex_Info>().Hex_data(graph[open_queue.Peek()][i]);
                         }
@@ -85,9 +85,9 @@ public class Unit_Control : Unit_UI
                     }
                     else if (open_list.Contains(graph[open_queue.Peek()][i]) == false && search_setting == Unit_Management.Search_setting.Enemy)
                     {
-                        if (Unit_Management.Unit_management.Enemy_list.Contains(graph[open_queue.Peek()][i]) == true)
+                        if (Unit_Management.unit_Management.enemy_List.Contains(graph[open_queue.Peek()][i]) == true)
                         {
-                            GameObject enemytag = Map_Pool.Map_pool.Get_Enemytag();
+                            GameObject enemytag = Map_Pool.map_Pool.Get_Enemytag();
                             enemytag.transform.position = position_array[graph[open_queue.Peek()][i]];
                         }
 
@@ -113,7 +113,8 @@ public class Unit_Control : Unit_UI
     {
         transform.position= position_array[unit_revocation_position_index];
         unit_position_index = unit_revocation_position_index;
-        Unit_Management.Unit_management.Unit_Update();
+        Unit_Management.unit_Management.Unit_Update();
+        Map_Pool.map_Pool.Recycle_Enemytag();
         Update_Slider_Position();
         this.BFS(Unit_Management.Search_setting.Moverange);
     }
@@ -144,12 +145,12 @@ public class Unit_Control : Unit_UI
             {
                 if (Vector3.Distance(position_array[graph[move_queue.Peek()][shortest_hex]], position_array[targetposition_index]) <
                     Vector3.Distance(position_array[graph[move_queue.Peek()][     i      ]], position_array[targetposition_index])&&
-                    Unit_Management.Unit_management.Enemy_list.Contains(graph[move_queue.Peek()][shortest_hex]) == false)
+                    Unit_Management.unit_Management.enemy_List.Contains(graph[move_queue.Peek()][shortest_hex]) == false)
                 //当指定网格与终点的距离小于当前遍历网格与终点距离并且指定网格上无敌方单位时，这个网格的下标就会成为这次遍历中的最短路径
                 {
                     move_path = graph[move_queue.Peek()][shortest_hex];
                 }
-                else if (Unit_Management.Unit_management.Enemy_list.Contains(graph[move_queue.Peek()][i]) == false)
+                else if (Unit_Management.unit_Management.enemy_List.Contains(graph[move_queue.Peek()][i]) == false)
                 {
                     shortest_hex = i;
                     move_path = graph[move_queue.Peek()][shortest_hex];
@@ -169,7 +170,6 @@ public class Unit_Control : Unit_UI
                 }
                 else
                 {
-                    reverse_search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
                     unit_position_index = startposition_index;//当切换为倒序搜索时，找到终点后，单位下标为起点下标
                     path_list.Reverse();
                     path_list.RemoveAt(0);
@@ -183,9 +183,10 @@ public class Unit_Control : Unit_UI
         {
             reverse_search = true;
             Move(targetposition_index, startposition_index);
+            reverse_search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
         }
     }
-   
+
     IEnumerator Way()
     {       
         for (int i = 0; i < path_list.Count; i++)
@@ -204,6 +205,6 @@ public class Unit_Control : Unit_UI
                 BFS(Unit_Management.Search_setting.Enemy);
             }
         }
-        Unit_Management.Unit_management.Revocation_Allow();
+        Unit_Management.unit_Management.Revocation_Allow();
     }
 }

@@ -8,11 +8,11 @@ using UnityEngine.UI;
 
 public class Game_State : MonoBehaviour
 {
-    public Button Combat;
-    public Button Demo;
-    public Button Setting;
-    public Button List;
-    public Button Quit;
+    public Button combat;
+    public Button demo;
+    public Button setting;
+    public Button list;
+    public Button quit;
 
 
 
@@ -24,8 +24,6 @@ public class Game_State : MonoBehaviour
     public Button quit_Cancel;
 
     List<Button> buttons = new List<Button>();
-
-    public Action<PointerEventData, GameObject> onClickDown { get; set; }
 
     public enum Gamestate
     {
@@ -60,11 +58,11 @@ public class Game_State : MonoBehaviour
 
     public void Gather_button()
     {
-        buttons.Add(Combat);
-        buttons.Add(Demo);
-        buttons.Add(Setting);
-        buttons.Add(List);
-        buttons.Add(Quit);
+        buttons.Add(combat);
+        buttons.Add(demo);
+        buttons.Add(setting);
+        buttons.Add(list);
+        buttons.Add(quit);
 
         buttons.Add(combat_Close);
         buttons.Add(list_Close);
@@ -113,34 +111,34 @@ public class Game_State : MonoBehaviour
             case Gamestate.UnKown:
                 break;
             case Gamestate.Combatopen:
-                UI_Management.UI_management.Combat_Open();
+                UI_Management.ui_Management.Combat_OpenOnClick();
                 break;
             case Gamestate.Demo:
-                UI_Management.UI_management.Demo();
+                UI_Management.ui_Management.DemoOnClick();
                 break;
             case Gamestate.Settingopen:
-                UI_Management.UI_management.Setting_Open();
+                UI_Management.ui_Management.Setting_OpenOnClick();
                 break;
             case Gamestate.Listopen:
-                UI_Management.UI_management.List_Open();
+                UI_Management.ui_Management.List_OpenOnClick();
                 break;
             case Gamestate.Quit:
-                UI_Management.UI_management.Quit();
+                UI_Management.ui_Management.QuitOnClick();
                 break;
             case Gamestate.Combatcloce:
-                UI_Management.UI_management.Combat_Close();
+                UI_Management.ui_Management.Combat_CloseOnClick();
                 break;
             case Gamestate.Listclose:
-                UI_Management.UI_management.List_Close();
+                UI_Management.ui_Management.List_CloseOnClick();
                 break;
             case Gamestate.Settingclose:
-                UI_Management.UI_management.Setting_Close();
+                UI_Management.ui_Management.Setting_CloseOnClick();
                 break;
             case Gamestate.Quitconfrim:
-                UI_Management.UI_management.Quit_Confrim();
+                UI_Management.ui_Management.Quit_ConfrimOnClick();
                 break;
             default:
-                UI_Management.UI_management.Quit_Cancel();
+                UI_Management.ui_Management.Quit_CancelOnClick();
                 break;
         }
     }

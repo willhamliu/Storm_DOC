@@ -14,6 +14,6 @@ public class Level_Info : MonoBehaviour
             return;
         }
         this.level = level;
-        lecel_Name.text = this.level.Level_Name;
+        lecel_Name.text = this.level.level_Name;
     }
 }

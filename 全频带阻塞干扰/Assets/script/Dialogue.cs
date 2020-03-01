@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Dialogue
 {
-    public string Dialogue_Desc;
-    public string Speaker;
+    public string dialogue_Desc;
+    public string speaker;
     public Dialogue(string dialogue_desc, string speaker)
     {
-        this.Dialogue_Desc = dialogue_desc;
-        this.Speaker = speaker;
+        this.dialogue_Desc = dialogue_desc;
+        this.speaker = speaker;
     }
 }

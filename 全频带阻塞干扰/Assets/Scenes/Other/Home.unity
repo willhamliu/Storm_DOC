@@ -4610,10 +4610,10 @@ MonoBehaviour:
   item_Temp: {fileID: 5273181491357845218}
   camp_Rus: {fileID: 821751779}
   camp_NATO: {fileID: 1259598350}
-  building_item_create: {fileID: 1748789979}
-  people_item_create: {fileID: 1521146790}
-  tank_item_create: {fileID: 2080511559}
-  plane_item_create: {fileID: 1456144761}
+  building_Item_Create: {fileID: 1748789979}
+  people_Item_Create: {fileID: 1521146790}
+  tank_Item_Create: {fileID: 2080511559}
+  plane_Item_Create: {fileID: 1456144761}
 --- !u!114 &548453092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19406,12 +19406,12 @@ MonoBehaviour:
   price: {fileID: 419220126}
   point_Count: {fileID: 2020068389}
   point_Buy: 0
-  Purchase_Index: 0
+  purchase_Index: 0
   buy_Panel_Name: {fileID: 508706198}
   buy_Bonfrim: {fileID: 1177233344}
   buy_Cancel: {fileID: 1292604092}
   buy: {fileID: 1584291949}
-  item_price: {fileID: 880629096}
+  item_Price: {fileID: 880629096}
   attention_Buy: {fileID: 1405566726}
   buy_Panel: {fileID: 1630368267}
 --- !u!114 &1702789194
@@ -27765,11 +27765,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5b128bf0d07eb44bf9233708125d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Combat: {fileID: 1215296379}
-  Demo: {fileID: 1475508416}
-  Setting: {fileID: 540279049}
-  List: {fileID: 1816052462}
-  Quit: {fileID: 1731497304}
+  combat: {fileID: 1215296379}
+  demo: {fileID: 1475508416}
+  setting: {fileID: 540279049}
+  list: {fileID: 1816052462}
+  quit: {fileID: 1731497304}
   combat_Close: {fileID: 2099808161}
   list_Close: {fileID: 846090012}
   setting_Close: {fileID: 645522976}

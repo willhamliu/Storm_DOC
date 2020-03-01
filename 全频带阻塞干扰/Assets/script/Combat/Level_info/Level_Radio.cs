@@ -15,7 +15,7 @@ public class Level_Radio
         }
     }
     private static string level_Name;
-    public string Level_Name//关卡名字
+    public string Level_name//关卡名字
     {
         get
         {
@@ -48,7 +48,7 @@ public class Level_Radio
     
     public void Load_level(Level level)
     {
-        level_Name = level.Load_Scene;
-        dialogue_Name = level.Load_Scene_Dialogue;
+        level_Name = level.load_Scene;
+        dialogue_Name = level.load_Scene_Dialogue;
     }
 }

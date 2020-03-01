@@ -9,14 +9,14 @@ public class Item_Model_Management : MonoBehaviour
     public Transform model_Create;
     static AssetBundle load_Model;
 
-    public static Item_Model_Management Item_model_management;
+    public static Item_Model_Management item_Model_Management;
     private int index;
 
     public static bool notload = true;
 
     void Awake()
     {
-        Item_model_management = this;
+        item_Model_Management = this;
         if (notload == true)
         {
             AB_path();

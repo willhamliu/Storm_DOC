@@ -12,10 +12,10 @@ public class Level_Receipt : MonoBehaviour
     public float simulation_Value=0;
     AsyncOperation async;
 
-    public static Level_Receipt Level_receipt;
+    public static Level_Receipt level_Receipt;
     void Awake()
     {
-        Level_receipt = this;
+        level_Receipt = this;
         Config_Prompt.Config_prompt.Config_Prompt_Json();
     }
     void Start()
@@ -31,7 +31,7 @@ public class Level_Receipt : MonoBehaviour
 
     public void Level_load()
     {
-        async = SceneManager.LoadSceneAsync(Level_Radio.Level_radio.Level_Name);
+        async = SceneManager.LoadSceneAsync(Level_Radio.Level_radio.Level_name);
         async.allowSceneActivation = false;
         StartCoroutine(Wait_load());
     }

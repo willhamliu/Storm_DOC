@@ -10,14 +10,14 @@ public class Level_Detail : MonoBehaviour
     public Text point;
     public Button star;
     private Level level;
-    public static Level_Detail Level_detail;
+    public static Level_Detail level_Detail;
     void Awake()
     {
-        Level_detail = this;
+        level_Detail = this;
     }
     void Start()
     {
-        star.onClick.AddListener(Send_level);
+        star.onClick.AddListener(Send_levelOnClick);
     }
     public void SetData(Level level)
     {
@@ -26,10 +26,10 @@ public class Level_Detail : MonoBehaviour
             return;
         }
         this.level = level;
-        desc.text ="\u3000\u3000"+this.level.Level_Desc;
-        point.text = this.level.Level_Point.ToString();
+        desc.text ="\u3000\u3000"+this.level.level_Desc;
+        point.text = this.level.level_Point.ToString();
     }
-    public void Send_level()
+    public void Send_levelOnClick()
     {
         SceneManager.LoadScene("Load_level");
         Level_Radio.Level_radio.Load_level(level);

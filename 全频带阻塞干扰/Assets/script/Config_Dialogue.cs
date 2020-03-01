@@ -9,10 +9,10 @@ public class Config_Dialogue
 {
     public List<Dialogue> dialogues = new List<Dialogue>();
 
-    public string Main_TaskGoal;
-    public string Secondary_TaskGoal;
+    public string main_TaskGoal;
+    public string secondary_TaskGoal;
 
-    JsonData dialogue_Json_Data;
+    JsonData dialogue_JsonData;
 
     private static Config_Dialogue config_Dialogue;
     public static Config_Dialogue Config_dialogue
@@ -29,7 +29,7 @@ public class Config_Dialogue
         string file_Name = Level_Radio.Level_radio.Dialogue_name;
 
 #if UNITY_EDITOR_WIN
-        dialogue_Json_Data = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));
+        dialogue_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));
 #endif
 
 #if UNITY_ANDROID
@@ -37,23 +37,23 @@ public class Config_Dialogue
         WWW www = new WWW(path);
         while (!www.isDone) { }
 
-        dialogue_Json_Data = JsonMapper.ToObject(www.text);
+        dialogue_JsonData = JsonMapper.ToObject(www.text);
 #endif
         Decode_Dialogue_Json();
     }
     public void Decode_Dialogue_Json()
     {
         dialogues.Clear();
-        for (int i = 0; i < dialogue_Json_Data.Count-1; i++)//任务信息在最后
+        for (int i = 0; i < dialogue_JsonData.Count-1; i++)//任务信息在最后
         {
-            string dialogue_desc = this.dialogue_Json_Data[i]["Dialogue"].ToString();
-            string speaker = this.dialogue_Json_Data[i]["Speaker"].ToString();
+            string dialogue_Desc = this.dialogue_JsonData[i]["Dialogue"].ToString();
+            string speaker = this.dialogue_JsonData[i]["Speaker"].ToString();
 
-            Dialogue Dialogue = new Dialogue(dialogue_desc, speaker);
+            Dialogue Dialogue = new Dialogue(dialogue_Desc, speaker);
 
             dialogues.Add(Dialogue);
         }
-        Main_TaskGoal = this.dialogue_Json_Data[dialogue_Json_Data.Count-1]["Main_TaskGoal"].ToString();
-        Secondary_TaskGoal = this.dialogue_Json_Data[dialogue_Json_Data.Count-1]["Secondary_TaskGoal"].ToString();
+        main_TaskGoal = this.dialogue_JsonData[dialogue_JsonData.Count-1]["Main_TaskGoal"].ToString();
+        secondary_TaskGoal = this.dialogue_JsonData[dialogue_JsonData.Count-1]["Secondary_TaskGoal"].ToString();
     }
 }

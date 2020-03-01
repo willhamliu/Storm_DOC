@@ -707,7 +707,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000306, y: 1.0000306, z: 1.0000306}
   m_Children: []
   m_Father: {fileID: 1863146872}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4684,7 +4684,7 @@ MonoBehaviour:
   log_Image: {fileID: 698815786}
   log_Image_Background: {fileID: 256849743}
   log_Panel: {fileID: 858927288}
-  Task_Panel: {fileID: 1103468124}
+  task_Panel: {fileID: 1103468124}
   interface_Canvas: {fileID: 1613071477}
   scene_Canvas: {fileID: 902585567}
   dialogue_Text: {fileID: 2010958631}
@@ -5445,7 +5445,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000306, y: 1.0000306, z: 1.0000306}
   m_Children: []
   m_Father: {fileID: 1863146872}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6241,8 +6241,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000306, y: 1.0000306, z: 1.0000306}
   m_Children:
-  - {fileID: 1623756631}
   - {fileID: 279940310}
+  - {fileID: 1623756631}
   - {fileID: 1684757240}
   - {fileID: 1177521501}
   m_Father: {fileID: 1788232767}
@@ -6266,8 +6266,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   setting_Panel: {fileID: 1684757240}
-  insert_point: {fileID: 279940310}
-  raw_point: {fileID: 1623756631}
+  insert_Point: {fileID: 279940310}
+  raw_Point: {fileID: 1623756631}
   game_Toggle: {fileID: 1619309124}
   music_Toggle: {fileID: 1436463065}
   setting_Open: {fileID: 1831801333}

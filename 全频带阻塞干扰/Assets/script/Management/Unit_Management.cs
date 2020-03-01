@@ -6,16 +6,15 @@ using UnityEngine.EventSystems;
 
 public class Unit_Management : MonoBehaviour
 {
-    public static Unit_Management Unit_management;
+    public static Unit_Management unit_Management;
     public Button revocation_Button;
-    public bool order_lock { get; set; } = false;
-    int move_target;//移动目标
-    int attack_target;//攻击目标
-    private int player_index = -1;//选中单位索引
-    private Unit_Control player_script;
-    private Unit_Control enemy_script;
-    public List<int> Player_list { get; private set; } = new List<int>();
-    public List<int> Enemy_list { get; private set; } = new List<int>();
+    public bool Order_lock { get; set; } = false;
+    int move_Target;//移动目标
+    private int player_Index = -1;//选中单位索引
+    private Unit_Control player_Script;
+    private Unit_Control enemy_Script;
+    public List<int> player_List { get; private set; } = new List<int>();
+    public List<int> enemy_List { get; private set; } = new List<int>();
     public enum Search_setting
     {
         Enemy,
@@ -28,9 +27,9 @@ public class Unit_Management : MonoBehaviour
     void Awake()
     {
         Config_Item.Config_item.Config_Item_Json();//
-        if (Unit_management==false)
+        if (unit_Management==false)
         {
-            Unit_management = this;
+            unit_Management = this;
         }
     }
 
@@ -50,15 +49,15 @@ public class Unit_Management : MonoBehaviour
         GameObject[] Player_array_object = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] Enemy_array_object = GameObject.FindGameObjectsWithTag("Enemy");
 
-        Player_list.Clear();
+        player_List.Clear();
         for (int i = 0; i < Player_array_object.Length; i++)
         {
-            Player_list.Add(Player_array_object[i].transform.GetComponent<Unit_Control>().unit_position_index);
+            player_List.Add(Player_array_object[i].transform.GetComponent<Unit_Control>().unit_position_index);
         }
-        Enemy_list.Clear();
+        enemy_List.Clear();
         for (int i = 0; i < Enemy_array_object.Length; i++)
         {
-            Enemy_list.Add(Enemy_array_object[i].transform.GetComponent<Unit_Control>().unit_position_index);
+            enemy_List.Add(Enemy_array_object[i].transform.GetComponent<Unit_Control>().unit_position_index);
         }
     }
 
@@ -70,26 +69,26 @@ public class Unit_Management : MonoBehaviour
     private void RevocationOnClick()
     {
         revocation_Button.transform.gameObject.SetActive(false);
-        player_script.Revocation();
+        player_Script.Revocation();
     }
    
     private void Unit_Selected()
     {
 #if UNITY_EDITOR_WIN
-        if (Input.GetMouseButtonUp(0)&& EventSystem.current.IsPointerOverGameObject() == false&& order_lock==false)
+        if (Input.GetMouseButtonUp(0)&& EventSystem.current.IsPointerOverGameObject() == false&& Order_lock==false)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Map_Pool.Map_pool.Recycle_Hex();
-                Map_Pool.Map_pool.Recycle_Enemytag();
+                Map_Pool.map_Pool.Recycle_Hex();
+                Map_Pool.map_Pool.Recycle_Enemytag();
                 if (hit.transform.tag== "Player")
                 {
                     Unit_Update();
-                    player_script = hit.transform.gameObject.GetComponent<Unit_Control>();
-                    player_script.BFS(Search_setting.Moverange);
-                    player_index = player_script.unit_position_index;
+                    player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
+                    player_Script.BFS(Search_setting.Moverange);
+                    player_Index = player_Script.unit_position_index;
                     revocation_Button.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Untagged")
@@ -98,18 +97,18 @@ public class Unit_Management : MonoBehaviour
                 }
                 if (hit.transform.tag == "Map")
                 {
-                    move_target = hit.transform.GetComponent<Hex_Info>().index;
-                    player_script.Move(player_index, move_target);
+                    move_Target = hit.transform.GetComponent<Hex_Info>().index;
+                    player_Script.Move(player_Index, move_Target);
                 }
                 if (hit.transform.tag == "Enemy")
                 {
-                    if (player_script != null)
+                    if (player_Script != null)
                     {
                         revocation_Button.transform.gameObject.SetActive(false);
-                        enemy_script = hit.transform.GetComponent<Unit_Control>();
-                        player_script.Attack(player_script.Attack_power, enemy_script);
+                        enemy_Script = hit.transform.GetComponent<Unit_Control>();
+                        player_Script.Attack(player_Script.Attack_power, enemy_Script);
                     }
-                    player_script = null;
+                    player_Script = null;
                 }
             }
         }
@@ -122,13 +121,13 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Map_Pool.Map_pool.Recycle_Hex();
-                Map_Pool.Map_pool.Recycle_Enemytag();
+                Map_Pool.map_Pool.Recycle_Hex();
+                Map_Pool.map_Pool.Recycle_Enemytag();
                 if (hit.transform.tag == "Player")
                 {
-                    player_script = hit.transform.gameObject.GetComponent<Unit_Control>();
-                    player_script.BFS(Search_setting.Moverange);
-                    player_index = player_script.unit_position_index;
+                    player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
+                    player_Script.BFS(Search_setting.Moverange);
+                    player_Index = player_Script.unit_position_index;
                     revocation_Button.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Untagged")
@@ -137,20 +136,20 @@ public class Unit_Management : MonoBehaviour
                 }
                 if (hit.transform.tag == "Map")
                 {
-                    move_target = hit.transform.GetComponent<Hex_Info>().index;
-                    player_script.Move(player_index, move_target);
+                    move_Target = hit.transform.GetComponent<Hex_Info>().index;
+                    player_Script.Move(player_Index, move_Target);
                     Unit_Update();
                 }
                 if (hit.transform.tag == "Enemy")
                 {
-                    if (player_script != null)
+                    if (player_Script != null)
                     {
                         revocation_Button.transform.gameObject.SetActive(false);
-                        enemy_script = hit.transform.GetComponent<Unit_Control>();
-                        player_script.Attack(player_script.Attack_power, enemy_script);
+                        enemy_Script = hit.transform.GetComponent<Unit_Control>();
+                        player_Script.Attack(player_Script.Attack_power, enemy_Script);
                     }
                     Unit_Update();
-                    player_script = null;
+                    player_Script = null;
                 }
             }
         }

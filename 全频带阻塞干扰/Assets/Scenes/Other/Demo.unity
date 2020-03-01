@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344df295c7014824282806add179435a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map_point: {fileID: 1493379332}
+  map_Point: {fileID: 1493379332}
   scaleMIN_Y: -40
 --- !u!45 &1006761050
 Skybox:
@@ -688,7 +688,7 @@ MonoBehaviour:
   height: 13
   hex_Prefab: {fileID: 4091281176685866942, guid: bc0e670d692f66c408673121da7c3742,
     type: 3}
-  MAP_create: {fileID: 1493379332}
+  map_Create: {fileID: 376822262}
 --- !u!4 &1493379332
 Transform:
   m_ObjectHideFlags: 0
@@ -747,8 +747,8 @@ MonoBehaviour:
     type: 3}
   enemy_Prefab: {fileID: 1418631786457106424, guid: be6d2783589b8bd47875aa7761c8d22f,
     type: 3}
-  MAP_create: {fileID: 376822262}
-  Enemytag_create: {fileID: 1382379899}
+  map_Create: {fileID: 376822262}
+  enemytag_Create: {fileID: 1382379899}
 --- !u!1 &1499095059
 GameObject:
   m_ObjectHideFlags: 0

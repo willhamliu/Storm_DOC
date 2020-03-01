@@ -37,7 +37,7 @@ public class Combat_Panel : MonoBehaviour
         Config_Level.Config_level.Config_Level_Json();
         Config_Customize.Config_customize.Confing_Customize_Json();
 
-        level_Data_All = Config_Level.Config_level.level_Data_All;
+        level_Data_All = Config_Level.Config_level.level_DataAll;
 
 
         if (PlayerPrefs.HasKey("level_index"))
@@ -66,19 +66,19 @@ public class Combat_Panel : MonoBehaviour
         for (int i = 0; i < option.Count; i++)
         {
             var index = option.IndexOf(option[i]);
-            option[i].onValueChanged.AddListener((bool value) => { Toggle_Option(ref value, ref index); });
+            option[i].onValueChanged.AddListener((bool value) => { Toggle_OptionOClick(value, index); });
         }
         for (int i = 0; i < level_All.Count; i++)
         {
-            var level = Config_Level.Config_level.level_Data_All[i];
+            var level = Config_Level.Config_level.level_DataAll[i];
             var index = level_All.IndexOf(level_All[i]);
-            level_All[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Toggle_level(ref level, ref index, ref value); });
+            level_All[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Toggle_levelOnClick(level, index, value); });
         }
         for (int i = 0; i < upgrade_All.Count; i++)
         {
             var customize = Config_Customize.Config_customize.customize_DataAll[i];
             var index = upgrade_All.IndexOf(upgrade_All[i]);
-            upgrade_All[i].onValueChanged.AddListener((bool value) => { Toggle_Upgrade(ref index, ref value); });
+            upgrade_All[i].onValueChanged.AddListener((bool value) => { Toggle_UpgradeOnClick(index, value); });
         }
         level_All[last_Level_index].GetComponent<Toggle>().isOn = true;
         upgrade_All[0].isOn = true;
@@ -100,8 +100,8 @@ public class Combat_Panel : MonoBehaviour
         var star_index=0;
         var customize = Config_Customize.Config_customize.customize_DataAll[0];
 
-        Level_Detail.Level_detail.SetData(Config_Level.Config_level.level_Data_All[last_Level_index]);
-        Customize_Data.Customize_data.SetData (ref customize, ref star_index);
+        Level_Detail.level_Detail.SetData(Config_Level.Config_level.level_DataAll[last_Level_index]);
+        Customize_Data.customize_Data.SetData (ref customize, ref star_index);
 
         mission_Content.SetActive(true);
         customize_Content.SetActive(false);
@@ -124,41 +124,41 @@ public class Combat_Panel : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void Toggle_Option( ref bool value,ref int index)//切换选项
+    public void Toggle_OptionOClick(bool value, int index)//切换选项
     {
 
         if (last_Option_index != index && value == true)
         {
             if (gameObject.activeInHierarchy == true)
             {
-                Audio_Management.Audio_management.SFXS_play("按钮点击");
+                Audio_Management.audio_Management.SFXS_play("按钮点击");
                 StartCoroutine(Toggle_option(index));
             }
             last_Option_index = index;
         }
     }
 
-    public void Toggle_level(ref Level level, ref int index, ref bool value)//切换关卡
+    public void Toggle_levelOnClick(Level level, int index, bool value)//切换关卡
     {
         if (last_Level_index!=index && value == true)
         {
             if (gameObject.activeInHierarchy == true)
             {
-                Audio_Management.Audio_management.SFXS_play("单位切换");
+                Audio_Management.audio_Management.SFXS_play("单位切换");
                 StartCoroutine(Toggle_level(level));
             }
             last_Level_index = index;
         }
     }
 
-    public void Toggle_Upgrade(ref int index, ref bool value)//切换升级项目
+    public void Toggle_UpgradeOnClick(int index, bool value)//切换升级项目
     {
         if (last_Upgrade_index!=index && value == true)
         {
             if (gameObject.activeInHierarchy == true)
             {
 
-                Audio_Management.Audio_management.SFXS_play("单位切换");
+                Audio_Management.audio_Management.SFXS_play("单位切换");
                 StartCoroutine(Upgrade_level(index));
             }
             last_Upgrade_index = index;
@@ -184,7 +184,7 @@ public class Combat_Panel : MonoBehaviour
             }
             if (a == 250)
             {
-                Level_Detail.Level_detail.SetData(level);
+                Level_Detail.level_Detail.SetData(level);
             }
             if (b < 0)
             {
@@ -213,7 +213,7 @@ public class Combat_Panel : MonoBehaviour
             if (a == 250)
             {
                 var customize = Config_Customize.Config_customize.customize_DataAll[index];
-                Customize_Data.Customize_data.SetData( ref customize,ref index);
+                Customize_Data.customize_Data.SetData( ref customize,ref index);
             }
             if (b < 0)
             {

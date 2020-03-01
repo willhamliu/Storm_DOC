@@ -8,7 +8,7 @@ public class Item_Info : MonoBehaviour {
     public Text item_Name;
     public string item_Camp;
     private Item item;
-    public void Namedata(Item item)
+    public void NameData(Item item)
     {
         if (item == null)
         {
@@ -16,6 +16,6 @@ public class Item_Info : MonoBehaviour {
         }
         this.item = item;
         this.item_Camp = this.item.Item_Camp.ToString();
-        this.item_Name.text = this.item.Item_Name;
+        this.item_Name.text = this.item.item_Name;
     }
 }

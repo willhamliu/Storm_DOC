@@ -76,6 +76,7 @@ public class Config_Customize
             customize_DataAll.Add(customize);
         }
     }
+
     public void Purchase_Status_Modify(int index)
     {
         FileInfo file;
@@ -99,61 +100,72 @@ public class Config_Customize
 
         Confing_Customize_Json();
 
-        Item.Type type;
-        string name;
-        int value;
+        string upgradeProject;
+        string upgraDename;
+        Item.Type upgradeType;
+        int upgradeValue;
 
         switch (index)
         {
             case 0:
-                type = Item.Type.步兵单位;
-                value = 5;
-                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
+                upgradeProject = "Item_HP";
+                upgradeType = Item.Type.步兵单位;
+                upgradeValue = 5;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 1:
-                name = "自行火炮";
-                value = 10;
-                Config_Item.Config_item.Upgrade_Attack(ref name, ref value);
+                upgradeProject = "Item_Attack_extra";
+                upgraDename = "自行火炮";
+                upgradeValue = 10;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgraDename, upgradeValue);
                 break;
             case 2:
-                type = Item.Type.步兵单位;
-                value = 3;
-                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
+                upgradeProject = "Item_Attack";
+                upgradeType = Item.Type.步兵单位;
+                upgradeValue = 3;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 3:
-                type = Item.Type.飞行单位;
-                value = 10;
-                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
+                upgradeProject = "Item_Attack";
+                upgradeType = Item.Type.飞行单位;
+                upgradeValue = 10;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 4:
-                type = Item.Type.装甲单位;
-                value = 10;
-                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
+                upgradeProject = "Item_HP";
+                upgradeType = Item.Type.装甲单位;
+                upgradeValue = 10;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 5:
-                type = Item.Type.步兵单位;
-                value = 7;
-                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
+                upgradeProject = "Item_Attack";
+                upgradeType = Item.Type.步兵单位;
+                upgradeValue = 7;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 6:
-                type = Item.Type.飞行单位;
-                value = 15;
-                Config_Item.Config_item.Upgrade_Attack(ref type, ref value);
+                upgradeProject = "Item_Attack";
+                upgradeType = Item.Type.飞行单位;
+                upgradeValue = 15;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 7:
-                type = Item.Type.装甲单位;
-                value = 10;
-                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
+                upgradeProject = "Item_HP";
+                upgradeType = Item.Type.装甲单位;
+                upgradeValue = 10;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 8:
-                type = Item.Type.装甲单位;
-                value = 1;
-                Config_Item.Config_item.Upgrade_AP(ref type, ref value);
+                upgradeProject = "Item_AP";
+                upgradeType = Item.Type.装甲单位;
+                upgradeValue = 1;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 9:
-                type = Item.Type.飞行单位;
-                value = 15;
-                Config_Item.Config_item.Upgrade_HP(ref type, ref value);
+                upgradeProject = "Item_HP";
+                upgradeType = Item.Type.飞行单位;
+                upgradeValue = 15;
+                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
         }
     }

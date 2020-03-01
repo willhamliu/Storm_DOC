@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class UI_Management : MonoBehaviour
 {
-    public static UI_Management UI_management;
+    public static UI_Management ui_Management;
 
     Tweener setting_Insert;
     public GameObject list_Main_Canvas;//遮挡主页
@@ -42,9 +42,9 @@ public class UI_Management : MonoBehaviour
 
     void Awake()
     {
-        if (UI_management==null)
+        if (ui_Management==null)
         {
-            UI_management = this;
+            ui_Management = this;
         }
         if (Level_Radio.Level_radio.Level_quit == false)
         {
@@ -70,66 +70,66 @@ public class UI_Management : MonoBehaviour
     }
     void Start()
     {
-        Audio_Management.Audio_management.BGM_play("Home_BGM");
+        Audio_Management.audio_Management.BGM_play("Home_BGM");
     }
 
 
-    public void Demo()//打开Demo场景
+    public void DemoOnClick()//打开Demo场景
     {
         SceneManager.LoadScene("Demo");
     }
 
-    public void Setting_Open()//打开设置
+    public void Setting_OpenOnClick()//打开设置
     {
         home_Canvas.SetActive(true);
         setting_Insert = setting_Panel.DOLocalMoveX(insert_point.localPosition.x, 0.3f);
     }
-    public void Setting_Close()//关闭设置
+    public void Setting_CloseOnClick()//关闭设置
     {
-        Audio_Management.Audio_management.SFXS_play("返回");
+        Audio_Management.audio_Management.SFXS_play("返回");
         home_Canvas.SetActive(false);
         setting_Insert = setting_Panel.DOLocalMoveX(raw_point.localPosition.x, 0.3f);
     }
 
 
-    public void List_Open()//打开图鉴
+    public void List_OpenOnClick()//打开图鉴
     {
         fx.SetActive(false);
         StartCoroutine(List_ON());
     }
-    public void List_Close()//关闭图鉴
+    public void List_CloseOnClick()//关闭图鉴
     {
-        Audio_Management.Audio_management.SFXS_play("返回");
+        Audio_Management.audio_Management.SFXS_play("返回");
         StartCoroutine(List_OFF());
     }
 
 
-    public void Combat_Open()//开启战斗面板
+    public void Combat_OpenOnClick()//开启战斗面板
     {
         fx.SetActive(false);
         StartCoroutine(Combat_ON());
     }
-    public void Combat_Close()//关闭战斗面板
+    public void Combat_CloseOnClick()//关闭战斗面板
     {
-        Audio_Management.Audio_management.SFXS_play("返回");
+        Audio_Management.audio_Management.SFXS_play("返回");
         StartCoroutine(Combat_OFF());
     }
 
 
-    public void Quit()//退出
+    public void QuitOnClick()//退出
     {
         home_Canvas.SetActive(true);
         quit_Panel.SetActive(true);
     }
-    public void Quit_Cancel()//取消退出
+    public void Quit_CancelOnClick()//取消退出
     {
-        Audio_Management.Audio_management.SFXS_play("按钮点击");
+        Audio_Management.audio_Management.SFXS_play("按钮点击");
         home_Canvas.SetActive(false);
         quit_Panel.SetActive(false);
     }
-    public void Quit_Confrim()//确认退出
+    public void Quit_ConfrimOnClick()//确认退出
     {
-        Audio_Management.Audio_management.BGM_stop("Home_BGM");
+        Audio_Management.audio_Management.BGM_stop("Home_BGM");
         Application.Quit();
     }
 
@@ -210,7 +210,7 @@ public class UI_Management : MonoBehaviour
                 {
                     list_Canvas.SetActive(true);
                     list_Content.SetActive(true);
-                    Item_Panel.Item_panel.Open_list();
+                    Item_Panel.item_Panel.Open_list();
                 }
             }
             if (b < 0)
@@ -245,8 +245,8 @@ public class UI_Management : MonoBehaviour
             if (a<0)
             {
                 list_Main_Canvas.SetActive(false);
-                Item_Panel.Item_panel.Close_list();
-                Item_Model_Management.Item_model_management.Close_list();
+                Item_Panel.item_Panel.Close_list();
+                Item_Model_Management.item_Model_Management.Close_list();
             }
             yield return null;
         }
