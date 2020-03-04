@@ -13,20 +13,19 @@ public class Unit_Management : MonoBehaviour
     private int player_Index = -1;//选中单位索引
     private Unit_Control player_Script;
     private Unit_Control enemy_Script;
-    public List<int> player_List { get; private set; } = new List<int>();
-    public List<int> enemy_List { get; private set; } = new List<int>();
+    public Dictionary<int, Unit_Control> Player_List { get; private set; } = new Dictionary<int, Unit_Control>();
+    public Dictionary<int, Unit_Control> Enemy_List { get; private set; } = new Dictionary<int, Unit_Control>();
+
     public enum Search_setting
     {
         Enemy,
         Moverange,
+        Morale
     }
-
-
-
 
     void Awake()
     {
-        Config_Item.Config_item.Config_Item_Json();//
+        Config_Item.Config_item.Config_Item_Json();///
         if (unit_Management==false)
         {
             unit_Management = this;
@@ -48,16 +47,27 @@ public class Unit_Management : MonoBehaviour
     {
         GameObject[] Player_array_object = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] Enemy_array_object = GameObject.FindGameObjectsWithTag("Enemy");
-
-        player_List.Clear();
+        Player_List.Clear();
         for (int i = 0; i < Player_array_object.Length; i++)
         {
-            player_List.Add(Player_array_object[i].transform.GetComponent<Unit_Control>().unit_position_index);
+            Player_List.Add(Player_array_object[i].GetComponent<Unit_Control>().unit_Position_Index, Player_array_object[i].GetComponent<Unit_Control>());
         }
-        enemy_List.Clear();
+        Enemy_List.Clear();
         for (int i = 0; i < Enemy_array_object.Length; i++)
         {
-            enemy_List.Add(Enemy_array_object[i].transform.GetComponent<Unit_Control>().unit_position_index);
+            Enemy_List.Add(Enemy_array_object[i].GetComponent<Unit_Control>().unit_Position_Index, Enemy_array_object[i].GetComponent<Unit_Control>());
+        }
+        Initial_Morale();
+    }
+    public void Initial_Morale()
+    {
+        foreach (var playerScript in Player_List)
+        {
+            playerScript.Value.BFS(Search_setting.Morale);
+        }
+        foreach (var enemyScript in Enemy_List)
+        {
+            enemyScript.Value.BFS(Search_setting.Morale);
         }
     }
 
@@ -85,10 +95,10 @@ public class Unit_Management : MonoBehaviour
                 Map_Pool.map_Pool.Recycle_Enemytag();
                 if (hit.transform.tag== "Player")
                 {
-                    Unit_Update();
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
+
                     player_Script.BFS(Search_setting.Moverange);
-                    player_Index = player_Script.unit_position_index;
+                    player_Index = player_Script.unit_Position_Index;
                     revocation_Button.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Untagged")
@@ -106,7 +116,7 @@ public class Unit_Management : MonoBehaviour
                     {
                         revocation_Button.transform.gameObject.SetActive(false);
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
-                        player_Script.Attack(player_Script.Attack_power, enemy_Script);
+                        player_Script.Attack( enemy_Script);
                     }
                     player_Script = null;
                 }
@@ -126,8 +136,9 @@ public class Unit_Management : MonoBehaviour
                 if (hit.transform.tag == "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
+
                     player_Script.BFS(Search_setting.Moverange);
-                    player_Index = player_Script.unit_position_index;
+                    player_Index = player_Script.unit_Position_Index;
                     revocation_Button.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Untagged")
@@ -146,7 +157,7 @@ public class Unit_Management : MonoBehaviour
                     {
                         revocation_Button.transform.gameObject.SetActive(false);
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
-                        player_Script.Attack(player_Script.Attack_power, enemy_Script);
+                        player_Script.Attack(enemy_Script);
                     }
                     Unit_Update();
                     player_Script = null;

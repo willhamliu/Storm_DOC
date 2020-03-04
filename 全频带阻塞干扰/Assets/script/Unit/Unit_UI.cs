@@ -5,58 +5,66 @@ using UnityEngine.UI;
 
 public class Unit_UI : MonoBehaviour
 {
-    public Transform HP_Slider_create;
-    public Transform Sliderdisplay_Position;
-    public GameObject HP_Slider_Prefabe;//血量条预制体
-    public float HP;
-    public float MAX_HP;
+    public Transform hp_Slider_Create;
+    public Transform sliderDisplay_Position;
+    public Transform morale_Create;
+    public Transform moraleDisplay_Position;
 
-    protected GameObject HP_Slider;
-    protected Slider Slider;
-    protected Image Effect;
+    public GameObject hp_Slider_Prefabe;//血量条预制体
+    public GameObject morale_Prefabe;
+    public float hp;
+    public float max_HP;
+
+    protected GameObject hp_Slider;
+    protected GameObject morale;
+    protected Slider slider;
+    protected Image effect;
     float Hurtspeed = 0.01f;//缓冲速度
 
 
     public void Create_HP()
     {
-        HP_Slider = Instantiate(HP_Slider_Prefabe, HP_Slider_create);
-        HP_Slider.transform.position = Sliderdisplay_Position.position;
-        Slider = HP_Slider.GetComponent<Slider>();
-        foreach (Transform effect in HP_Slider.transform)
+        hp_Slider = Instantiate(hp_Slider_Prefabe, hp_Slider_Create);
+        hp_Slider.transform.position = sliderDisplay_Position.position;
+        slider = hp_Slider.GetComponent<Slider>();
+        foreach (Transform effect in hp_Slider.transform)
         {
             if (effect.name== "Effect")
             {
-                this.Effect = effect.GetComponent<Image>();
+                this.effect = effect.GetComponent<Image>();
             }
         }
+        slider.value = effect.fillAmount = hp / max_HP;
 
-
-        Slider.value = Effect.fillAmount = HP / MAX_HP;
+        morale = Instantiate(morale_Prefabe, morale_Create);
+        morale.transform.position = moraleDisplay_Position.position;
+        morale.SetActive(false);
     }
 
     public void Update_Slider_Position()//更新血量条位置
     {
-        HP_Slider.transform.position = Sliderdisplay_Position.position;
+        hp_Slider.transform.position = sliderDisplay_Position.position;
+        morale.transform.position = moraleDisplay_Position.position;
     }
 
     public void Update_HP()//更新血量
     {
-        Slider.value = HP / MAX_HP;
+        slider.value = hp / max_HP;
         StartCoroutine(Hit());
     }
 
     IEnumerator Hit()
     {
-        while (Effect.fillAmount > Slider.value)
+        while (effect.fillAmount > slider.value)
         {
-            Effect.fillAmount -= Hurtspeed;
+            effect.fillAmount -= Hurtspeed;
             yield return null;
         }
-        Effect.fillAmount = Slider.value;
-        if (Effect.fillAmount == 0)
+        effect.fillAmount = slider.value;
+        if (effect.fillAmount == 0)
         {
             Destroy(this.gameObject);
-            Destroy(this.HP_Slider);
+            Destroy(this.hp_Slider);
         }
     }
 }

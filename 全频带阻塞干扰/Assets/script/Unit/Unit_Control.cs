@@ -5,136 +5,200 @@ using UnityEngine;
 
 public class Unit_Control : Unit_UI
 {
-    public int coordinate_x;//该单位在x轴的编号
-    public int coordinate_y;//该单位在y轴的编号
-    public string unit_name;
-    public int unit_position_index;//该单位所在位置的下标
-    public int unit_revocation_position_index;//执行撤销指令时的下标
-    public int AP;//行动点数
-    public int Attack_Range;//射程
-    public int Attack_power;//攻击力
-    private Vector3 unit_position;//该单位所在的位置
-    private bool reverse_search = false;
+    public int coordinate_X;//该单位在x轴的编号
+    public int coordinate_Y;//该单位在y轴的编号
+    private string unit_Name;
+    public int unit_Position_Index;//该单位所在位置的下标
+    private int unit_Revocation_Position_Index;//执行撤销指令时的下标
+    private int AP;//行动点数
+    private int Attack_Range;//射程
+    private int Attack_Power;//攻击力
+    private Vector3 unit_Position;//该单位所在的位置
+    private bool reverse_Search = false;
 
-    private Vector3[] position_array;//索引位置数组
+    private Vector3[] position_Array;//索引位置数组
     private Dictionary<int, List<int>> graph = new Dictionary<int, List<int>>();
-    private List<int> path_list = new List<int>();
+    private List<int> path_List = new List<int>();
+    private List<bool> enemy_Exist = new List<bool>();
+    private bool ismorale;
 
     private void Awake()
     {
-        unit_name = this.gameObject.name;
+        unit_Name = this.gameObject.name;
     }
     void Start()
     {
-        position_array = Map_Management.map_Management.hex_Position;
+        position_Array = Map_Management.map_Management.hex_Position;
         graph = Map_Management.map_Management.hex_Graph;
-        unit_position_index = Map_Management.map_Management.hex_Idex[coordinate_x, coordinate_y];
-        unit_position = position_array[unit_position_index];
+        unit_Position_Index = Map_Management.map_Management.hex_Idex[coordinate_X, coordinate_Y];
+        unit_Position = position_Array[unit_Position_Index];
 
-        this.transform.position = unit_position;
+        this.transform.position = unit_Position;
 
-        AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].item_AP;
-        Attack_Range = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].iten_Range;
-        Attack_power = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].item_Attack;
-        MAX_HP = HP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_name)].item_HP;
+        AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_AP;
+        Attack_Range = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].iten_Range;
+        Attack_Power = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_Attack;
+        max_HP = hp = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_HP;
         Create_HP();
     }
 
-    public void BFS(Unit_Management.Search_setting search_setting)//显示移动和攻击范围范围
+    public void BFS(Unit_Management.Search_setting search_Setting)//显示移动和攻击范围范围
     {
-        int search_count=0;//搜索次数
-        int search_range=0;
-        List<int> open_list = new List<int>();
-        Queue<int> open_queue = new Queue<int>();
-        open_queue.Enqueue(unit_position_index);//入队
-        open_list.Add(unit_position_index);
-        int floor_count = 0;//每层网格相邻的非重叠的网格数量(作为下次需要遍历的网格数量)
-        int hex_count = 1;//每一层需要遍历的网格数量
-        if (search_setting == Unit_Management.Search_setting.Moverange)
+        int search_Count=0;//搜索次数
+        int search_Range=0;
+        List<int> open_List = new List<int>();
+        Queue<int> open_Queue = new Queue<int>();
+        open_Queue.Enqueue(unit_Position_Index);//入队
+        open_List.Add(unit_Position_Index);
+        int adjacent_Count = 0;//每层网格相邻的非重叠的网格数量(作为下次需要遍历的网格数量)
+        int hex_Count = 1;//每一层需要遍历的网格数量
+        if (search_Setting == Unit_Management.Search_setting.Moverange)
         {
-            unit_revocation_position_index = unit_position_index;
-            search_range = AP;
+            unit_Revocation_Position_Index = unit_Position_Index;
+            search_Range = AP;
         }
-        else
+        else if(search_Setting == Unit_Management.Search_setting.Enemy)
         {
-            search_range = Attack_Range;
+            search_Range = Attack_Range;
+        }
+        else if (search_Setting == Unit_Management.Search_setting.Morale)
+        {
+            search_Range = 1;
+            ismorale = false;
         }
 
-        while (search_count < search_range)
+        while (search_Count < search_Range)
         {
-            for (int floor = 0; floor < hex_count; floor++)
+            for (int floor = 0; floor < hex_Count; floor++)
             {
-                for (int i = 0; i < graph[open_queue.Peek()].Count; i++)
+                for (int i = 0; i < graph[open_Queue.Peek()].Count; i++)
                 {
-                    if (open_list.Contains(graph[open_queue.Peek()][i]) == false && search_setting== Unit_Management.Search_setting.Moverange)//遍历附近的节点，如果重复则跳过
+                    if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting== Unit_Management.Search_setting.Moverange)//遍历附近的节点，如果重复则跳过
                     {
-                        if (Unit_Management.unit_Management.enemy_List.Contains(graph[open_queue.Peek()][i]) == true)
+                        if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                         {
                             continue;
                         }
-                        else if (Unit_Management.unit_Management.player_List.Contains(graph[open_queue.Peek()][i]) == false)
+                        else if (Unit_Management.unit_Management.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == false)
                         {
                             GameObject hex = Map_Pool.map_Pool.Get_Hex();
-                            hex.transform.position = position_array[graph[open_queue.Peek()][i]];
-                            hex.GetComponent<Hex_Info>().Hex_data(graph[open_queue.Peek()][i]);
+                            hex.transform.position = position_Array[graph[open_Queue.Peek()][i]];
+                            hex.GetComponent<Hex_Info>().Hex_data(graph[open_Queue.Peek()][i]);
                         }
 
-                        open_queue.Enqueue(graph[open_queue.Peek()][i]);
-                        open_list.Add(graph[open_queue.Peek()][i]);                        
-                        floor_count++;
+                        open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
+                        open_List.Add(graph[open_Queue.Peek()][i]);
+                        adjacent_Count++;
                     }
-                    else if (open_list.Contains(graph[open_queue.Peek()][i]) == false && search_setting == Unit_Management.Search_setting.Enemy)
+
+                    else if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting == Unit_Management.Search_setting.Enemy)
                     {
-                        if (Unit_Management.unit_Management.enemy_List.Contains(graph[open_queue.Peek()][i]) == true)
+                        if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                         {
                             GameObject enemytag = Map_Pool.map_Pool.Get_Enemytag();
-                            enemytag.transform.position = position_array[graph[open_queue.Peek()][i]];
+                            enemytag.transform.position = position_Array[graph[open_Queue.Peek()][i]];
                         }
-
-                        open_queue.Enqueue(graph[open_queue.Peek()][i]);
-                        open_list.Add(graph[open_queue.Peek()][i]);
-                        floor_count++;
+                        open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
+                        open_List.Add(graph[open_Queue.Peek()][i]);
+                        adjacent_Count++;
+                    }
+                    else if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting == Unit_Management.Search_setting.Morale)
+                    {
+                        if (this.tag == "Player")
+                        {
+                            if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
+                            {
+                                enemy_Exist.Add(true);
+                            }
+                            else
+                            {
+                                enemy_Exist.Add(false);
+                            }
+                        }
+                        else if (this.tag == "Enemy")
+                        {
+                            if (Unit_Management.unit_Management.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
+                            {
+                                enemy_Exist.Add(true);
+                            }
+                            else
+                            {
+                                enemy_Exist.Add(false);
+                            }
+                        }
+                        open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
+                        open_List.Add(graph[open_Queue.Peek()][i]);
+                        adjacent_Count++;
                     }
                 }
-                open_queue.Dequeue();
+                open_Queue.Dequeue();
             }
-            hex_count = floor_count;
-            floor_count = 0;//赋值后要把当前层的网格数量归零
-            search_count++;
+            hex_Count = adjacent_Count;
+            adjacent_Count = 0;//赋值后要把当前层的网格数量归零
+            search_Count++;
         }
-        if (search_setting == Unit_Management.Search_setting.Moverange)
+        if (search_Setting == Unit_Management.Search_setting.Moverange)
         {
             BFS(Unit_Management.Search_setting.Enemy);
         }
+        else if (search_Setting == Unit_Management.Search_setting.Morale)
+        {
+            Morale_Inspection();
+        }
+    }
+
+    public void Morale_Inspection()//检查自身是否被包围
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (enemy_Exist[i]==true&& enemy_Exist[i+3]==true)
+            {
+                morale.SetActive(true);
+                ismorale = true;
+            }
+            if (ismorale==false)
+            {
+                morale.SetActive(false);
+            }
+        }
+        enemy_Exist.Clear();
     }
    
 
     public void Revocation()//撤销命令
     {
-        transform.position= position_array[unit_revocation_position_index];
-        unit_position_index = unit_revocation_position_index;
+        transform.position= position_Array[unit_Revocation_Position_Index];
+        unit_Position_Index = unit_Revocation_Position_Index;
         Unit_Management.unit_Management.Unit_Update();
         Map_Pool.map_Pool.Recycle_Enemytag();
         Update_Slider_Position();
         this.BFS(Unit_Management.Search_setting.Moverange);
     }
 
-    public void Attack(int atk ,Unit_Control target)
+    public void Attack(Unit_Control target)
     {
-        target.Be_hit(atk);
+        if (ismorale)
+        {
+            Attack_Power -= 10;
+        }
+        target.Be_Hit(Attack_Power);
     }
 
-    public void Be_hit(int damage)
+    public void Be_Hit(int damage)
     {
-        HP -= damage;
+        hp -= damage;
         Update_HP();
     }
     public void Move(int startposition_index, int targetposition_index)//前往目标位置
     {
+        ismorale = false;
+        morale.SetActive(false);
+
+        path_List.Clear();
+
         int move_count = 0;//移动次数
         int move_path = -1;//最短路径下标
       
-        path_list.Clear();
         Queue<int> move_queue = new Queue<int>();
         move_queue.Enqueue(startposition_index);
         while (move_count < AP)
@@ -143,37 +207,37 @@ public class Unit_Control : Unit_UI
             int shortest_hex = 0;//最近网格(模拟量)
             for (int i = 1; i < graph[move_queue.Peek()].Count; i++)
             {
-                if (Vector3.Distance(position_array[graph[move_queue.Peek()][shortest_hex]], position_array[targetposition_index]) <
-                    Vector3.Distance(position_array[graph[move_queue.Peek()][     i      ]], position_array[targetposition_index])&&
-                    Unit_Management.unit_Management.enemy_List.Contains(graph[move_queue.Peek()][shortest_hex]) == false)
+                if (Vector3.Distance(position_Array[graph[move_queue.Peek()][shortest_hex]], position_Array[targetposition_index]) <
+                    Vector3.Distance(position_Array[graph[move_queue.Peek()][     i      ]], position_Array[targetposition_index])&&
+                    Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[move_queue.Peek()][shortest_hex]) == false)
                 //当指定网格与终点的距离小于当前遍历网格与终点距离并且指定网格上无敌方单位时，这个网格的下标就会成为这次遍历中的最短路径
                 {
                     move_path = graph[move_queue.Peek()][shortest_hex];
                 }
-                else if (Unit_Management.unit_Management.enemy_List.Contains(graph[move_queue.Peek()][i]) == false)
+                else if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[move_queue.Peek()][i]) == false)
                 {
                     shortest_hex = i;
                     move_path = graph[move_queue.Peek()][shortest_hex];
                 }
             }
             move_queue.Enqueue(move_path);
-            path_list.Add(move_path);
+            path_List.Add(move_path);
             move_queue.Dequeue();
             if (move_path == targetposition_index)
             {
 
-                if (reverse_search == false)
+                if (reverse_Search == false)
                 {
-                    unit_position_index = targetposition_index;
+                    unit_Position_Index = targetposition_index;
                     StartCoroutine(Way());
                     break;
                 }
                 else
                 {
-                    unit_position_index = startposition_index;//当切换为倒序搜索时，找到终点后，单位下标为起点下标
-                    path_list.Reverse();
-                    path_list.RemoveAt(0);
-                    path_list.Add(startposition_index);
+                    unit_Position_Index = startposition_index;//当切换为倒序搜索时，找到终点后，单位下标为起点下标
+                    path_List.Reverse();
+                    path_List.RemoveAt(0);
+                    path_List.Add(startposition_index);
                     StartCoroutine(Way());
                 }
             }
@@ -181,27 +245,28 @@ public class Unit_Control : Unit_UI
 
         if (move_count == AP && move_path != targetposition_index)//当正序搜索无法找到终点时使用倒序搜索
         {
-            reverse_search = true;
+            reverse_Search = true;
             Move(targetposition_index, startposition_index);
-            reverse_search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
+            reverse_Search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
         }
     }
 
     IEnumerator Way()
     {       
-        for (int i = 0; i < path_list.Count; i++)
+        for (int i = 0; i < path_List.Count; i++)
         {
             Vector3 present_poision = transform.position;
             float move_T = 0;
             while (move_T < 1)
             {
                 move_T = move_T + 0.1f;
-                transform.position = Vector3.Lerp(present_poision, position_array[path_list[i]], move_T);
+                transform.position = Vector3.Lerp(present_poision, position_Array[path_List[i]], move_T);
                 Update_Slider_Position();
                 yield return new WaitForSeconds(Time.deltaTime);
             }
-            if (i == path_list.Count-1)
+            if (i == path_List.Count-1)
             {
+                Unit_Management.unit_Management.Unit_Update();
                 BFS(Unit_Management.Search_setting.Enemy);
             }
         }
