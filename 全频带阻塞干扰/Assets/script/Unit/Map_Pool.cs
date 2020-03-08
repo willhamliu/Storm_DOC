@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 六边形网格与攻击图标的对象池
+/// </summary>
 public class Map_Pool : MonoBehaviour
 {
     public static Map_Pool map_Pool;

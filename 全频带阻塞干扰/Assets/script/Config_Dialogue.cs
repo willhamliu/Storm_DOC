@@ -4,7 +4,9 @@ using UnityEngine;
 using LitJson;
 using System.IO;
 using System.Text;
-
+/// <summary>
+/// 配置每个关卡的对话信息与任务信息
+/// </summary>
 public class Config_Dialogue
 {
     public List<Dialogue> dialogues = new List<Dialogue>();

@@ -6,7 +6,9 @@ using LitJson;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System;
-
+/// <summary>
+/// 配置每个单位的属性，通过特定的升级项目修改更新指定单位的属性
+/// </summary>
 public class Config_Item
 {
     public List<Item> item_List_All = new List<Item>();

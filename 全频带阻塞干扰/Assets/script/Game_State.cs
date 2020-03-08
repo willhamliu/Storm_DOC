@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
-
+/// <summary>
+/// Home场景的按钮命令分发
+/// </summary>
 public class Game_State : MonoBehaviour
 {
     public Button combat;

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 管理地图大小，每个六边形网格的显示位置...
+/// </summary>
 public class Map_Management : MonoBehaviour
 {
     public static Map_Management map_Management;
@@ -26,8 +28,6 @@ public class Map_Management : MonoBehaviour
 
     public void Awake()
     {
-        //Config_Item.Config_item.Config_Item_Json();//测试后记得删掉
-
         if (map_Management==null)
         {
             map_Management = this;

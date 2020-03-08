@@ -2,44 +2,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 对指定单位实现搜索，攻击，移动，扣血，死亡...
+/// </summary>
 public class Unit_Control : Unit_UI
 {
-    public int coordinate_X;//该单位在x轴的编号
-    public int coordinate_Y;//该单位在y轴的编号
-    private string unit_Name;
-    public int unit_Position_Index;//该单位所在位置的下标
     private int unit_Revocation_Position_Index;//执行撤销指令时的下标
     private int AP;//行动点数
     private int Attack_Range;//射程
     private int Attack_Power;//攻击力
-    private Vector3 unit_Position;//该单位所在的位置
     private bool reverse_Search = false;
 
-    private Vector3[] position_Array;//索引位置数组
     private Dictionary<int, List<int>> graph = new Dictionary<int, List<int>>();
     private List<int> path_List = new List<int>();
     private List<bool> enemy_Exist = new List<bool>();
     private bool ismorale;
 
-    private void Awake()
-    {
-        unit_Name = this.gameObject.name;
-    }
     void Start()
     {
-        position_Array = Map_Management.map_Management.hex_Position;
+        Postition_Start();
+        HP_Start();
+        Create_UnityUI();
         graph = Map_Management.map_Management.hex_Graph;
-        unit_Position_Index = Map_Management.map_Management.hex_Idex[coordinate_X, coordinate_Y];
-        unit_Position = position_Array[unit_Position_Index];
-
-        this.transform.position = unit_Position;
 
         AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_AP;
         Attack_Range = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].iten_Range;
         Attack_Power = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_Attack;
-        max_HP = hp = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_HP;
-        Create_HP();
     }
 
     public void BFS(Unit_Management.Search_setting search_Setting)//显示移动和攻击范围范围
@@ -171,7 +159,7 @@ public class Unit_Control : Unit_UI
         unit_Position_Index = unit_Revocation_Position_Index;
         Unit_Management.unit_Management.Unit_Update();
         Map_Pool.map_Pool.Recycle_Enemytag();
-        Update_Slider_Position();
+        Update_UnityUIPosition();
         this.BFS(Unit_Management.Search_setting.Moverange);
     }
 
@@ -188,7 +176,9 @@ public class Unit_Control : Unit_UI
     {
         hp -= damage;
         Update_HP();
+        StartCoroutine(Hit());
     }
+
     public void Move(int startposition_index, int targetposition_index)//前往目标位置
     {
         ismorale = false;
@@ -250,9 +240,24 @@ public class Unit_Control : Unit_UI
             reverse_Search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
         }
     }
+    IEnumerator Hit()
+    {
+        while (effect.fillAmount > slider.value)
+        {
+            effect.fillAmount -= Hurtspeed;
+            yield return null;
+        }
+        if (slider.value == 0)
+        {
+            Destroy(this.gameObject);
+            Destroy(this.hp_Slider);
+            Destroy(this.morale);
+        }
+        effect.fillAmount = slider.value;
+    }
 
     IEnumerator Way()
-    {       
+    {
         for (int i = 0; i < path_List.Count; i++)
         {
             Vector3 present_poision = transform.position;
@@ -261,15 +266,12 @@ public class Unit_Control : Unit_UI
             {
                 move_T = move_T + 0.1f;
                 transform.position = Vector3.Lerp(present_poision, position_Array[path_List[i]], move_T);
-                Update_Slider_Position();
+                Update_UnityUIPosition();
                 yield return new WaitForSeconds(Time.deltaTime);
             }
-            if (i == path_List.Count-1)
-            {
-                Unit_Management.unit_Management.Unit_Update();
-                BFS(Unit_Management.Search_setting.Enemy);
-            }
         }
+        BFS(Unit_Management.Search_setting.Enemy);
+        Unit_Management.unit_Management.Unit_Update();
         Unit_Management.unit_Management.Revocation_Allow();
     }
 }

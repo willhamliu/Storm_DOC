@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-
+/// <summary>
+/// 游戏设置面板的UI逻辑
+/// </summary>
 public class Game_setting : MonoBehaviour
 {
     Tweener setting_Insert;
@@ -97,7 +99,7 @@ public class Game_setting : MonoBehaviour
     }
     private void ConfrimOClick()
     {
-        Debug.Log("重新开始");
+        SceneManager.LoadScene("Load_level");
     }
     private void CancelOClick()
     {

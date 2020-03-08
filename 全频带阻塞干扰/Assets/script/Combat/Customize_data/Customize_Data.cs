@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
+/// <summary>
+/// 单位升级面板的UI逻辑
+/// </summary>
 public class Customize_Data : MonoBehaviour
 {
     public Text data;

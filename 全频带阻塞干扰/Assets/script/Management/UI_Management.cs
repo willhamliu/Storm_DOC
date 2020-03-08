@@ -7,7 +7,9 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+/// <summary>
+/// 管理Home场景的粒子效果以及按钮的功能实现
+/// </summary>
 public class UI_Management : MonoBehaviour
 {
     public static UI_Management ui_Management;
@@ -32,12 +34,6 @@ public class UI_Management : MonoBehaviour
     public Transform insert_point;//插入位置
     public Transform raw_point;//原始位置
 
-    public Button combat_Close;
-    public Button list_Close;
-    public Button setting_Close;
-
-    public Button quit_Confrim;
-    public Button quit_Cancel;
 
 
     void Awake()

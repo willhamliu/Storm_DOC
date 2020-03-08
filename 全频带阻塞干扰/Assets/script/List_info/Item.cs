@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 储存每个单位的属性
+/// </summary>
 public class Item {
    
     public enum Type

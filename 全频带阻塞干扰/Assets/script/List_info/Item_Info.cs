@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 图鉴面板的单位基本信息显示
+/// </summary>
 public class Item_Info : MonoBehaviour {
 
     public Text item_Name;

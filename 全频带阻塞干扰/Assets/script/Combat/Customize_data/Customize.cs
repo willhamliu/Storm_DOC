@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 存储每个升级项目的说明
+/// </summary>
 public class Customize
 {
     public string customize_Name;

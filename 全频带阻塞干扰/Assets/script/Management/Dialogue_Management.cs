@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using System;
-
+/// <summary>
+/// 管理对话与任务目标的UI显示
+/// </summary>
 public class Dialogue_Management : MonoBehaviour
 {
     List<Dialogue> dialogues = new List<Dialogue>();

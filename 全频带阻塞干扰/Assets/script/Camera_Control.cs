@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 摄像机控制
+/// </summary>
 public class Camera_Control : MonoBehaviour
 {
     public Transform map_Point;

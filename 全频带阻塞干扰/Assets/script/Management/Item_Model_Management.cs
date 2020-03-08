@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-
+/// <summary>
+/// 管理所有单位模型的加载与显示
+/// </summary>
 public class Item_Model_Management : MonoBehaviour
 {
     public Dictionary<int, GameObject> models = new Dictionary<int, GameObject>();

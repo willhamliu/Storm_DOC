@@ -4,10 +4,11 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+/// <summary>
+/// 管理音频播放与音量大小调节
+/// </summary>
 public class Audio_Management : MonoBehaviour
 {
-
     public Text bgm_Value;
     public Slider bgm_Slider;
     public AudioSource bgm;

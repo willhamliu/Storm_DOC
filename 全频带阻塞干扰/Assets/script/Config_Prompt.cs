@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using LitJson;
 using System.IO;
 using System.Text;
-
+/// <summary>
+/// 配置关卡加载时的操作提示
+/// </summary>
 public class Config_Prompt
 {
     public List<string> prompts = new List<string>();

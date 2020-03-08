@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 开始面板的UI逻辑
+/// </summary>
 public class Combat_Panel : MonoBehaviour
 {
     List<Toggle> option = new List<Toggle>();

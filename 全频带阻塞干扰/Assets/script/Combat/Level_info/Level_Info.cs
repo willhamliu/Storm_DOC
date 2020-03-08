@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 关卡选择面板的，关卡名字信息显示
+/// </summary>
 public class Level_Info : MonoBehaviour
 {
     public Text lecel_Name;

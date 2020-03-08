@@ -4,7 +4,9 @@ using System.IO;
 using System.Text;
 using LitJson;
 using UnityEngine.UI;
-
+/// <summary>
+/// 配置关卡信息
+/// </summary>
 public class Config_Level
 {
     public List<Level> level_DataAll = new List<Level>();

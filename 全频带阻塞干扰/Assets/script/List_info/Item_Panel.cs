@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// 图鉴面板UI逻辑
+/// </summary>
 public class Item_Panel : MonoBehaviour {
 
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层

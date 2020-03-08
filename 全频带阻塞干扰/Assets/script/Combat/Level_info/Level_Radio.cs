@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/// <summary>
+/// 储存需要加载的关卡，与关卡状态
+/// </summary>
 public class Level_Radio
 {
     private static Level_Radio level_Radio;
@@ -43,8 +45,6 @@ public class Level_Radio
             level_Quit = value;
         }
     }
-
-
     
     public void Load_level(Level level)
     {

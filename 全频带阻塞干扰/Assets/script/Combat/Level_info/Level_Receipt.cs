@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+/// <summary>
+/// 异步加载指定关卡
+/// </summary>
 public class Level_Receipt : MonoBehaviour
 {
     public Slider load_Value;
@@ -28,7 +30,7 @@ public class Level_Receipt : MonoBehaviour
     {
         UI_display();
     }
-
+    
     public void Level_load()
     {
         async = SceneManager.LoadSceneAsync(Level_Radio.Level_radio.Level_name);

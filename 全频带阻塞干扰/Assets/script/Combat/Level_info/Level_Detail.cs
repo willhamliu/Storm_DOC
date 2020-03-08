@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+/// <summary>
+/// 关卡选择面板的，关卡加载，关卡介绍信息显示
+/// </summary>
 public class Level_Detail : MonoBehaviour
 {
     public Text desc;

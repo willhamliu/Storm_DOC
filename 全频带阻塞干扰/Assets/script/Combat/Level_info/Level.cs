@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 储存关卡信息
+/// </summary>
 public class Level
 {
     public string level_Name;

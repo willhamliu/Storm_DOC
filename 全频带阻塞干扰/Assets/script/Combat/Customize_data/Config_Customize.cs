@@ -6,7 +6,9 @@ using LitJson;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System;
-
+/// <summary>
+/// 配置单位升级说明，执行单位升级命令
+/// </summary>
 public class Config_Customize
 {
     public List<Customize> customize_DataAll = new List<Customize>();

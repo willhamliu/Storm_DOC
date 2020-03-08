@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+/// <summary>
+/// 管理所有单位，对指定单位发出命令
+/// </summary>
 public class Unit_Management : MonoBehaviour
 {
     public static Unit_Management unit_Management;
