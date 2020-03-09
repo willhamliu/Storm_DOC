@@ -88,7 +88,8 @@ public class Game_setting : MonoBehaviour
     }
     private void Level_QuitOClick()//退出关卡
     {
-        Level_Radio.Level_radio.Level_quit = true;
+        Level_Radio.Level_radio.IsLevel_quit = true;
+        Level_Radio.Level_radio.IsLevel_again = false;
         SceneManager.LoadScene("Home");
     }
     private void Level_AgainOClick()//重新开始
@@ -99,7 +100,8 @@ public class Game_setting : MonoBehaviour
     }
     private void ConfrimOClick()
     {
-        SceneManager.LoadScene("Load_level");
+        Level_Radio.Level_radio.IsLevel_again = true;
+        SceneManager.LoadScene(Level_Radio.Level_radio.Level_name);
     }
     private void CancelOClick()
     {
@@ -116,7 +118,6 @@ public class Game_setting : MonoBehaviour
             return;
         }
         insert = true;
-        //Audio_Management.Audio_management.SFXS_play("按钮点击");
         setting_Canvas.SetActive(true);
         setting_Insert = setting_Panel.DOLocalMoveX(insert_Point.localPosition.x, 0.3f);
     }

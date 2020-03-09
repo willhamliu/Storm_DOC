@@ -42,7 +42,7 @@ public class UI_Management : MonoBehaviour
         {
             ui_Management = this;
         }
-        if (Level_Radio.Level_radio.Level_quit == false)
+        if (Level_Radio.Level_radio.IsLevel_quit == false)
         {
             combat_Content.SetActive(false);
             list_Content.SetActive(false);
@@ -60,7 +60,7 @@ public class UI_Management : MonoBehaviour
             list_Main_Canvas.SetActive(false);
 
             StartCoroutine(Level_Quit());
-            Level_Radio.Level_radio.Level_quit = false;
+            Level_Radio.Level_radio.IsLevel_quit = false;
         }
         Config_Item.Config_item.Config_Item_Json();
     }

@@ -33,19 +33,33 @@ public class Level_Radio
         }
     }
 
-    private static bool level_Quit = false;
-    public bool Level_quit//退出关卡
+    private static bool islevel_Quit = false;
+    public bool IsLevel_quit//是否退出了关卡
     {
         get
         {
-            return level_Quit;
+            return islevel_Quit;
         }
         set
         {
-            level_Quit = value;
+            islevel_Quit = value;
         }
     }
-    
+
+    private static bool islevel_Again = false;
+    public bool IsLevel_again//是否重新开始关卡
+    {
+        get
+        {
+            return islevel_Again;
+        }
+        set
+        {
+            islevel_Again = value;
+        }
+    }
+
+
     public void Load_level(Level level)
     {
         level_Name = level.load_Scene;

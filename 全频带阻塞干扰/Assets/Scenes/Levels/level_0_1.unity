@@ -2352,8 +2352,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -400}
-  m_SizeDelta: {x: 1800, y: 780}
+  m_AnchoredPosition: {x: 0, y: -370}
+  m_SizeDelta: {x: 1800, y: 750}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &858927291
 CanvasRenderer:
@@ -3278,7 +3278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.000027034203}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1160395426
@@ -4696,7 +4696,6 @@ MonoBehaviour:
   secondary_TaskGoal_Text_TaskPanel: {fileID: 1895066093}
   log_Button: {fileID: 1498384957}
   close_TaskPanel_Button: {fileID: 323631329}
-  on: 0
 --- !u!4 &1508864878
 Transform:
   m_ObjectHideFlags: 0
