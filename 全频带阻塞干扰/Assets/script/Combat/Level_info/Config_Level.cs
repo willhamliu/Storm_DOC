@@ -7,21 +7,12 @@ using UnityEngine.UI;
 /// <summary>
 /// 配置关卡信息
 /// </summary>
-public class Config_Level
+public class Config_Level:InstanceNull<Config_Level>
 {
     public List<Level> level_DataAll = new List<Level>();
     JsonData level_JsonData;
 
     private static Config_Level config_Level;
-    public static Config_Level Config_level
-    {
-        get
-        {
-            if (config_Level == null) config_Level = new Config_Level();
-            return config_Level;
-        }
-    }
-
    
     public void Config_Level_Json()
     {

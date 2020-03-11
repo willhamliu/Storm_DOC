@@ -7,18 +7,21 @@ using System.IO;
 /// </summary>
 public class Item_Model_Management : MonoBehaviour
 {
+    public static Item_Model_Management instance;
+
     public Dictionary<int, GameObject> models = new Dictionary<int, GameObject>();
     public Transform model_Create;
     static AssetBundle load_Model;
 
-    public static Item_Model_Management item_Model_Management;
     private int index;
-
     public static bool notload = true;
 
     void Awake()
     {
-        item_Model_Management = this;
+        if (instance==null)
+        {
+            instance = this;
+        }
         if (notload == true)
         {
             AB_path();

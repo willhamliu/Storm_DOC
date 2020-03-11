@@ -8,14 +8,17 @@ using UnityEngine.UI;
 /// </summary>
 public class Level_Detail : MonoBehaviour
 {
+    public static Level_Detail instance;
     public Text desc;
     public Text point;
     public Button star;
     private Level level;
-    public static Level_Detail level_Detail;
     void Awake()
     {
-        level_Detail = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
     }
     void Start()
     {
@@ -34,6 +37,6 @@ public class Level_Detail : MonoBehaviour
     public void Send_levelOnClick()
     {
         SceneManager.LoadScene("Load_level");
-        Level_Radio.Level_radio.Load_level(level);
+        Level_Radio.Instance.Load_level(level);
     }
 }

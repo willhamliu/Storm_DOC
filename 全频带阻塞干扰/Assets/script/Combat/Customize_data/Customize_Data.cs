@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// </summary>
 public class Customize_Data : MonoBehaviour
 {
+    public static Customize_Data instance;
     public Text data;
     public Text price;
     public Text point_Count;
@@ -24,10 +25,12 @@ public class Customize_Data : MonoBehaviour
     public GameObject buy_Panel;
 
     public Customize customize;
-    public static Customize_Data customize_Data;
     private void Awake()
     {
-        customize_Data = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
         if (PlayerPrefs.HasKey("point"))
         {
             point = PlayerPrefs.GetInt("point");
@@ -49,21 +52,21 @@ public class Customize_Data : MonoBehaviour
     }
     public void PurchaseOnClick()
     {
-        Audio_Management.audio_Management.SFXS_play("按钮点击");
+        Audio_Management.instance.SFXS_play("按钮点击");
         buy_Panel_Name.text = "是否研发\u3000" + this.customize.customize_Name.ToString();
         buy_Panel.SetActive(true);
     }
     public void Purchase_CanelOnClick()
     {
-        Audio_Management.audio_Management.SFXS_play("返回");
+        Audio_Management.instance.SFXS_play("返回");
         buy_Panel.SetActive(false);
     }
    
     public void Purchase_ComfrimOnClick()
     {
-        Audio_Management.audio_Management.SFXS_play("确认研发");
+        Audio_Management.instance.SFXS_play("确认研发");
 
-        Config_Customize.Config_customize.Purchase_Status_Modify(purchase_Index);
+        Config_Customize.Instance.Purchase_Status_Modify(purchase_Index);
         buy_Panel.SetActive(false);
         buy.SetActive(false);
         item_Price.SetActive(false);
@@ -97,15 +100,15 @@ public class Customize_Data : MonoBehaviour
 
         if (customize.customize_Unlockindex !=-1)//如果上一级索引的装备未购买则无法购买当前装备
         {
-            if (Config_Customize.Config_customize.customize_DataAll[customize.customize_Unlockindex].ustomize_Purchase_Status == true)
+            if (Config_Customize.Instance.customize_DataAll[customize.customize_Unlockindex].ustomize_Purchase_Status == true)
             {
-                if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == true)
+                if (Config_Customize.Instance.customize_DataAll[index].ustomize_Purchase_Status == true)
                 {
                     item_Price.SetActive(false);
                     buy.SetActive(false);
                     attention_Buy.SetActive(false);
                 }
-                if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == false)
+                if (Config_Customize.Instance.customize_DataAll[index].ustomize_Purchase_Status == false)
                 {
                     if (point < customize.customize_Price)
                     {
@@ -130,13 +133,13 @@ public class Customize_Data : MonoBehaviour
         }
         else
         {
-            if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == true)
+            if (Config_Customize.Instance.customize_DataAll[index].ustomize_Purchase_Status == true)
             {
                 item_Price.SetActive(false);
                 buy.SetActive(false);
                 attention_Buy.SetActive(false);
             }
-            if (Config_Customize.Config_customize.customize_DataAll[index].ustomize_Purchase_Status == false)
+            if (Config_Customize.Instance.customize_DataAll[index].ustomize_Purchase_Status == false)
             {
                 if (point < customize.customize_Price)
                 {

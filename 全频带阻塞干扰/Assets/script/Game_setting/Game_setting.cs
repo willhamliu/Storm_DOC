@@ -68,7 +68,7 @@ public class Game_setting : MonoBehaviour
     {
         if (insert==true)
         {
-            Audio_Management.audio_Management.SFXS_play("阵营切换");
+            Audio_Management.instance.SFXS_play("阵营切换");
         }
 
         if (last_SettingToggle_Index != index && value ==true)
@@ -88,24 +88,24 @@ public class Game_setting : MonoBehaviour
     }
     private void Level_QuitOClick()//退出关卡
     {
-        Level_Radio.Level_radio.IsLevel_quit = true;
-        Level_Radio.Level_radio.IsLevel_again = false;
+        Level_Radio.Instance.IsLevel_quit = true;
+        Level_Radio.Instance.IsLevel_again = false;
         SceneManager.LoadScene("Home");
     }
     private void Level_AgainOClick()//重新开始
     {
-        Audio_Management.audio_Management.SFXS_play("按钮点击");
+        Audio_Management.instance.SFXS_play("按钮点击");
         quit_Panel.SetActive(true);
         setting_Panel.gameObject.SetActive(false);
     }
     private void ConfrimOClick()
     {
-        Level_Radio.Level_radio.IsLevel_again = true;
-        SceneManager.LoadScene(Level_Radio.Level_radio.Level_name);
+        Level_Radio.Instance.IsLevel_again = true;
+        SceneManager.LoadScene(Level_Radio.Instance.Level_name);
     }
     private void CancelOClick()
     {
-        Audio_Management.audio_Management.SFXS_play("按钮点击");
+        Audio_Management.instance.SFXS_play("按钮点击");
         quit_Panel.SetActive(false);
         setting_Panel.gameObject.SetActive(true);
     }
@@ -128,7 +128,7 @@ public class Game_setting : MonoBehaviour
             return;
         }
         insert = false;
-        Audio_Management.audio_Management.SFXS_play("返回");
+        Audio_Management.instance.SFXS_play("返回");
         setting_Canvas.SetActive(false);
         setting_Raw = setting_Panel.DOLocalMoveX(raw_Point.localPosition.x, 0.3f);
         Invoke("Reduction",0.3f);

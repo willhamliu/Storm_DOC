@@ -9,7 +9,7 @@ using System;
 /// <summary>
 /// 配置每个单位的属性，通过特定的升级项目修改更新指定单位的属性
 /// </summary>
-public class Config_Item
+public class Config_Item:InstanceNull<Config_Item>
 {
     public List<Item> item_List_All = new List<Item>();
     public List<Item> item_List_Building = new List<Item>();
@@ -26,16 +26,6 @@ public class Config_Item
     JsonData item_JsonData;
 
     bool update_Object=true;//更新对象层，只需要执行一次
-
-    private static Config_Item config_Item;
-    public static Config_Item Config_item
-    {
-        get
-        {
-            if (config_Item == null) config_Item = new Config_Item();
-            return config_Item;
-        }
-    }
 
     public void Config_Item_Json()
     {

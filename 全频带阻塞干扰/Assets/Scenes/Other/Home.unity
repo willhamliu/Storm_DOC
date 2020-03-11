@@ -785,11 +785,6 @@ MonoBehaviour:
   setting_Panel: {fileID: 28631001}
   insert_point: {fileID: 1324375524}
   raw_point: {fileID: 489051805}
-  combat_Close: {fileID: 2099808161}
-  list_Close: {fileID: 846090012}
-  setting_Close: {fileID: 645522976}
-  quit_Confrim: {fileID: 1085209494}
-  quit_Cancel: {fileID: 1363479643}
 --- !u!4 &104471027
 Transform:
   m_ObjectHideFlags: 0

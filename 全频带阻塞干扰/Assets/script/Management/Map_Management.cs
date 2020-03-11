@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// </summary>
 public class Map_Management : MonoBehaviour
 {
-    public static Map_Management map_Management;
+    public static Map_Management instance;
 
     public const float sidelength = 10;//六边形边长
     public  float Innerradius { get; private set; } = sidelength * 0.866f;//六边形内半径
@@ -28,9 +28,9 @@ public class Map_Management : MonoBehaviour
 
     public void Awake()
     {
-        if (map_Management==null)
+        if (instance==null)
         {
-            map_Management = this;
+            instance = this;
         }
         hex_Position = new Vector3[width * height];
 

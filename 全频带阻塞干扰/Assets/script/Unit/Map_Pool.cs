@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class Map_Pool : MonoBehaviour
 {
-    public static Map_Pool map_Pool;
+    public static Map_Pool instance;
     public GameObject hex_Prefab;
     public GameObject enemy_Prefab;
     public Transform map_Create;
@@ -19,9 +19,9 @@ public class Map_Pool : MonoBehaviour
 
     private void Awake()
     {
-        if (map_Pool==null)
+        if (instance == null)
         {
-            map_Pool = this;
+            instance = this;
         }
     }
 

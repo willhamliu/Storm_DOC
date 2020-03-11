@@ -8,20 +8,10 @@ using System.Text;
 /// <summary>
 /// 配置关卡加载时的操作提示
 /// </summary>
-public class Config_Prompt
+public class Config_Prompt:InstanceNull<Config_Prompt>
 {
     public List<string> prompts = new List<string>();
     JsonData prompt;
-
-    private static Config_Prompt config_Prompt;
-    public static Config_Prompt Config_prompt
-    {
-        get
-        {
-            if (config_Prompt == null) config_Prompt = new Config_Prompt();
-            return config_Prompt;
-        }
-    }
    
     public void Config_Prompt_Json()
     {

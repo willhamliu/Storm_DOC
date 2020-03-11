@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// </summary>
 public class Item_Detail : MonoBehaviour {
 
+    public static Item_Detail instance;
     public Text camp;
     public Text target;
 
@@ -19,11 +20,12 @@ public class Item_Detail : MonoBehaviour {
     public Text desc;
     private Item item;
 
-    public static Item_Detail item_Detail;
-
     void Awake()
     {
-        item_Detail = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
     }
 
     public void SetData(Item item)

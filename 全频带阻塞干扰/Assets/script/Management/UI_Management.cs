@@ -12,7 +12,7 @@ using UnityEngine.UI;
 /// </summary>
 public class UI_Management : MonoBehaviour
 {
-    public static UI_Management ui_Management;
+    public static UI_Management instance;
 
     Tweener setting_Insert;
     public GameObject list_Main_Canvas;//遮挡主页
@@ -38,11 +38,11 @@ public class UI_Management : MonoBehaviour
 
     void Awake()
     {
-        if (ui_Management==null)
+        if (instance == null)
         {
-            ui_Management = this;
+            instance = this;
         }
-        if (Level_Radio.Level_radio.IsLevel_quit == false)
+        if (Level_Radio.Instance.IsLevel_quit == false)
         {
             combat_Content.SetActive(false);
             list_Content.SetActive(false);
@@ -60,13 +60,12 @@ public class UI_Management : MonoBehaviour
             list_Main_Canvas.SetActive(false);
 
             StartCoroutine(Level_Quit());
-            Level_Radio.Level_radio.IsLevel_quit = false;
+            Level_Radio.Instance.IsLevel_quit = false;
         }
-        Config_Item.Config_item.Config_Item_Json();
     }
     void Start()
     {
-        Audio_Management.audio_Management.BGM_play("Home_BGM");
+        Audio_Management.instance.BGM_play("Home_BGM");
     }
 
 
@@ -82,7 +81,7 @@ public class UI_Management : MonoBehaviour
     }
     public void Setting_CloseOnClick()//关闭设置
     {
-        Audio_Management.audio_Management.SFXS_play("返回");
+        Audio_Management.instance.SFXS_play("返回");
         home_Canvas.SetActive(false);
         setting_Insert = setting_Panel.DOLocalMoveX(raw_point.localPosition.x, 0.3f);
     }
@@ -95,7 +94,7 @@ public class UI_Management : MonoBehaviour
     }
     public void List_CloseOnClick()//关闭图鉴
     {
-        Audio_Management.audio_Management.SFXS_play("返回");
+        Audio_Management.instance.SFXS_play("返回");
         StartCoroutine(List_OFF());
     }
 
@@ -107,7 +106,7 @@ public class UI_Management : MonoBehaviour
     }
     public void Combat_CloseOnClick()//关闭战斗面板
     {
-        Audio_Management.audio_Management.SFXS_play("返回");
+        Audio_Management.instance.SFXS_play("返回");
         StartCoroutine(Combat_OFF());
     }
 
@@ -119,13 +118,13 @@ public class UI_Management : MonoBehaviour
     }
     public void Quit_CancelOnClick()//取消退出
     {
-        Audio_Management.audio_Management.SFXS_play("按钮点击");
+        Audio_Management.instance.SFXS_play("按钮点击");
         home_Canvas.SetActive(false);
         quit_Panel.SetActive(false);
     }
     public void Quit_ConfrimOnClick()//确认退出
     {
-        Audio_Management.audio_Management.BGM_stop("Home_BGM");
+        Audio_Management.instance.BGM_stop("Home_BGM");
         Application.Quit();
     }
 
@@ -147,7 +146,7 @@ public class UI_Management : MonoBehaviour
                 {
                     combat_Canvas.SetActive(true);
                     combat_Content.SetActive(true);
-                    Combat_Panel.Combat_panel.Open_Combat();
+                    Combat_Panel.instance.Open_Combat();
                 }
             }
             if (b < 0)
@@ -182,7 +181,7 @@ public class UI_Management : MonoBehaviour
             if (a < 0)
             {
                 combat_Main_Canvas.SetActive(false);
-                Combat_Panel.Combat_panel.Close_Combat();
+                Combat_Panel.instance.Close_Combat();
             }
             yield return null;
         }
@@ -206,7 +205,7 @@ public class UI_Management : MonoBehaviour
                 {
                     list_Canvas.SetActive(true);
                     list_Content.SetActive(true);
-                    Item_Panel.item_Panel.Open_list();
+                    Item_Panel.instance.Open_list();
                 }
             }
             if (b < 0)
@@ -241,8 +240,8 @@ public class UI_Management : MonoBehaviour
             if (a<0)
             {
                 list_Main_Canvas.SetActive(false);
-                Item_Panel.item_Panel.Close_list();
-                Item_Model_Management.item_Model_Management.Close_list();
+                Item_Panel.instance.Close_list();
+                Item_Model_Management.instance.Close_list();
             }
             yield return null;
         }
@@ -264,7 +263,7 @@ public class UI_Management : MonoBehaviour
             b = b - 25;
             if (b == 205)
             {
-                Combat_Panel.Combat_panel.Open_Combat();
+                Combat_Panel.instance.Open_Combat();
             }
             if (b < 0)
             {

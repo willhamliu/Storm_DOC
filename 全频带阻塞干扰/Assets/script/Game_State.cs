@@ -112,34 +112,34 @@ public class Game_State : MonoBehaviour
             case Gamestate.UnKown:
                 break;
             case Gamestate.Combatopen:
-                UI_Management.ui_Management.Combat_OpenOnClick();
+                UI_Management.instance.Combat_OpenOnClick();
                 break;
             case Gamestate.Demo:
-                UI_Management.ui_Management.DemoOnClick();
+                UI_Management.instance.DemoOnClick();
                 break;
             case Gamestate.Settingopen:
-                UI_Management.ui_Management.Setting_OpenOnClick();
+                UI_Management.instance.Setting_OpenOnClick();
                 break;
             case Gamestate.Listopen:
-                UI_Management.ui_Management.List_OpenOnClick();
+                UI_Management.instance.List_OpenOnClick();
                 break;
             case Gamestate.Quit:
-                UI_Management.ui_Management.QuitOnClick();
+                UI_Management.instance.QuitOnClick();
                 break;
             case Gamestate.Combatcloce:
-                UI_Management.ui_Management.Combat_CloseOnClick();
+                UI_Management.instance.Combat_CloseOnClick();
                 break;
             case Gamestate.Listclose:
-                UI_Management.ui_Management.List_CloseOnClick();
+                UI_Management.instance.List_CloseOnClick();
                 break;
             case Gamestate.Settingclose:
-                UI_Management.ui_Management.Setting_CloseOnClick();
+                UI_Management.instance.Setting_CloseOnClick();
                 break;
             case Gamestate.Quitconfrim:
-                UI_Management.ui_Management.Quit_ConfrimOnClick();
+                UI_Management.instance.Quit_ConfrimOnClick();
                 break;
             default:
-                UI_Management.ui_Management.Quit_CancelOnClick();
+                UI_Management.instance.Quit_CancelOnClick();
                 break;
         }
     }

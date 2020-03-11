@@ -9,20 +9,10 @@ using System;
 /// <summary>
 /// 配置单位升级说明，执行单位升级命令
 /// </summary>
-public class Config_Customize
+public class Config_Customize:InstanceNull<Config_Customize>
 {
     public List<Customize> customize_DataAll = new List<Customize>();
     private JsonData customize_JsonData;
-
-    private static Config_Customize config_Customize;
-    public static Config_Customize Config_customize
-    {
-        get
-        {
-            if (config_Customize == null) config_Customize = new Config_Customize();
-            return config_Customize;
-        }
-    }
 
     public void Confing_Customize_Json()
     {
@@ -113,61 +103,61 @@ public class Config_Customize
                 upgradeProject = "Item_HP";
                 upgradeType = Item.Type.步兵单位;
                 upgradeValue = 5;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 1:
                 upgradeProject = "Item_Attack_extra";
                 upgraDename = "自行火炮";
                 upgradeValue = 10;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgraDename, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgraDename, upgradeValue);
                 break;
             case 2:
                 upgradeProject = "Item_Attack";
                 upgradeType = Item.Type.步兵单位;
                 upgradeValue = 3;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 3:
                 upgradeProject = "Item_Attack";
                 upgradeType = Item.Type.飞行单位;
                 upgradeValue = 10;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 4:
                 upgradeProject = "Item_HP";
                 upgradeType = Item.Type.装甲单位;
                 upgradeValue = 10;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 5:
                 upgradeProject = "Item_Attack";
                 upgradeType = Item.Type.步兵单位;
                 upgradeValue = 7;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 6:
                 upgradeProject = "Item_Attack";
                 upgradeType = Item.Type.飞行单位;
                 upgradeValue = 15;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 7:
                 upgradeProject = "Item_HP";
                 upgradeType = Item.Type.装甲单位;
                 upgradeValue = 10;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 8:
                 upgradeProject = "Item_AP";
                 upgradeType = Item.Type.装甲单位;
                 upgradeValue = 1;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
             case 9:
                 upgradeProject = "Item_HP";
                 upgradeType = Item.Type.飞行单位;
                 upgradeValue = 15;
-                Config_Item.Config_item.Upgrade(upgradeProject, upgradeType, upgradeValue);
+                Config_Item.Instance.Upgrade(upgradeProject, upgradeType, upgradeValue);
                 break;
         }
     }

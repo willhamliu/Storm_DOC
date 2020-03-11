@@ -7,8 +7,9 @@ using UnityEngine.UI;
 /// </summary>
 public class Combat_Panel : MonoBehaviour
 {
-    List<Toggle> option = new List<Toggle>();
+    public static Combat_Panel instance;
 
+    List<Toggle> option = new List<Toggle>();
     List<Level> level_Data_All = new List<Level>();
 
     List<Toggle> upgrade_All = new List<Toggle>();
@@ -31,15 +32,17 @@ public class Combat_Panel : MonoBehaviour
     int last_Level_index;
     int last_Upgrade_index;
 
-    public static Combat_Panel Combat_panel;
     private void Awake()
     {
-        Combat_panel = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
 
-        Config_Level.Config_level.Config_Level_Json();
-        Config_Customize.Config_customize.Confing_Customize_Json();
+        Config_Level.Instance.Config_Level_Json();
+        Config_Customize.Instance.Confing_Customize_Json();
 
-        level_Data_All = Config_Level.Config_level.level_DataAll;
+        level_Data_All = Config_Level.Instance.level_DataAll;
 
 
         if (PlayerPrefs.HasKey("level_index"))
@@ -72,13 +75,13 @@ public class Combat_Panel : MonoBehaviour
         }
         for (int i = 0; i < level_All.Count; i++)
         {
-            var level = Config_Level.Config_level.level_DataAll[i];
+            var level = Config_Level.Instance.level_DataAll[i];
             var index = level_All.IndexOf(level_All[i]);
             level_All[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Toggle_levelOnClick(level, index, value); });
         }
         for (int i = 0; i < upgrade_All.Count; i++)
         {
-            var customize = Config_Customize.Config_customize.customize_DataAll[i];
+            var customize = Config_Customize.Instance.customize_DataAll[i];
             var index = upgrade_All.IndexOf(upgrade_All[i]);
             upgrade_All[i].onValueChanged.AddListener((bool value) => { Toggle_UpgradeOnClick(index, value); });
         }
@@ -100,10 +103,10 @@ public class Combat_Panel : MonoBehaviour
     public void Open_Combat()
     {
         var star_index=0;
-        var customize = Config_Customize.Config_customize.customize_DataAll[0];
+        var customize = Config_Customize.Instance.customize_DataAll[0];
 
-        Level_Detail.level_Detail.SetData(Config_Level.Config_level.level_DataAll[last_Level_index]);
-        Customize_Data.customize_Data.SetData (ref customize, ref star_index);
+        Level_Detail.instance.SetData(Config_Level.Instance.level_DataAll[last_Level_index]);
+        Customize_Data.instance.SetData (ref customize, ref star_index);
 
         mission_Content.SetActive(true);
         customize_Content.SetActive(false);
@@ -133,7 +136,7 @@ public class Combat_Panel : MonoBehaviour
         {
             if (gameObject.activeInHierarchy == true)
             {
-                Audio_Management.audio_Management.SFXS_play("按钮点击");
+                Audio_Management.instance.SFXS_play("按钮点击");
                 StartCoroutine(Toggle_option(index));
             }
             last_Option_index = index;
@@ -146,7 +149,7 @@ public class Combat_Panel : MonoBehaviour
         {
             if (gameObject.activeInHierarchy == true)
             {
-                Audio_Management.audio_Management.SFXS_play("单位切换");
+                Audio_Management.instance.SFXS_play("单位切换");
                 StartCoroutine(Toggle_level(level));
             }
             last_Level_index = index;
@@ -160,7 +163,7 @@ public class Combat_Panel : MonoBehaviour
             if (gameObject.activeInHierarchy == true)
             {
 
-                Audio_Management.audio_Management.SFXS_play("单位切换");
+                Audio_Management.instance.SFXS_play("单位切换");
                 StartCoroutine(Upgrade_level(index));
             }
             last_Upgrade_index = index;
@@ -186,7 +189,7 @@ public class Combat_Panel : MonoBehaviour
             }
             if (a == 250)
             {
-                Level_Detail.level_Detail.SetData(level);
+                Level_Detail.instance.SetData(level);
             }
             if (b < 0)
             {
@@ -214,8 +217,8 @@ public class Combat_Panel : MonoBehaviour
             }
             if (a == 250)
             {
-                var customize = Config_Customize.Config_customize.customize_DataAll[index];
-                Customize_Data.customize_Data.SetData( ref customize,ref index);
+                var customize = Config_Customize.Instance.customize_DataAll[index];
+                Customize_Data.instance.SetData( ref customize,ref index);
             }
             if (b < 0)
             {

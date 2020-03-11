@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class Unit_Management : MonoBehaviour
 {
-    public static Unit_Management unit_Management;
+    public static Unit_Management instance;
     public Button revocation_Button;
     public bool Order_lock { get; set; } = false;
     int move_Target;//移动目标
@@ -27,10 +27,10 @@ public class Unit_Management : MonoBehaviour
 
     void Awake()
     {
-        Config_Item.Config_item.Config_Item_Json();///
-        if (unit_Management==false)
+        Config_Item.Instance.Config_Item_Json();///
+        if (instance == null)
         {
-            unit_Management = this;
+            instance = this;
         }
     }
 
@@ -93,8 +93,8 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Map_Pool.map_Pool.Recycle_Hex();
-                Map_Pool.map_Pool.Recycle_Enemytag();
+                Map_Pool.instance.Recycle_Hex();
+                Map_Pool.instance.Recycle_Enemytag();
                 if (hit.transform.tag== "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
@@ -133,8 +133,8 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Map_Pool.map_Pool.Recycle_Hex();
-                Map_Pool.map_Pool.Recycle_Enemytag();
+                Map_Pool.instance.Recycle_Hex();
+                Map_Pool.instance.Recycle_Enemytag();
                 if (hit.transform.tag == "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();

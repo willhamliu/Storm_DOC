@@ -23,11 +23,11 @@ public class Unit_Control : Unit_UI
         Postition_Start();
         HP_Start();
         Create_UnityUI();
-        graph = Map_Management.map_Management.hex_Graph;
+        graph = Map_Management.instance.hex_Graph;
 
-        AP = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_AP;
-        Attack_Range = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].iten_Range;
-        Attack_Power = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_Attack;
+        AP = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_AP;
+        Attack_Range = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].iten_Range;
+        Attack_Power = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_Attack;
     }
 
     public void BFS(Unit_Management.Search_setting search_Setting)//显示移动和攻击范围范围
@@ -63,13 +63,13 @@ public class Unit_Control : Unit_UI
                 {
                     if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting== Unit_Management.Search_setting.Moverange)//遍历附近的节点，如果重复则跳过
                     {
-                        if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
+                        if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                         {
                             continue;
                         }
-                        else if (Unit_Management.unit_Management.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == false)
+                        else if (Unit_Management.instance.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == false)
                         {
-                            GameObject hex = Map_Pool.map_Pool.Get_Hex();
+                            GameObject hex = Map_Pool.instance.Get_Hex();
                             hex.transform.position = position_Array[graph[open_Queue.Peek()][i]];
                             hex.GetComponent<Hex_Info>().Hex_data(graph[open_Queue.Peek()][i]);
                         }
@@ -81,9 +81,9 @@ public class Unit_Control : Unit_UI
 
                     else if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting == Unit_Management.Search_setting.Enemy)
                     {
-                        if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
+                        if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                         {
-                            GameObject enemytag = Map_Pool.map_Pool.Get_Enemytag();
+                            GameObject enemytag = Map_Pool.instance.Get_Enemytag();
                             enemytag.transform.position = position_Array[graph[open_Queue.Peek()][i]];
                         }
                         open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
@@ -94,7 +94,7 @@ public class Unit_Control : Unit_UI
                     {
                         if (this.tag == "Player")
                         {
-                            if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
+                            if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                             {
                                 enemy_Exist.Add(true);
                             }
@@ -105,7 +105,7 @@ public class Unit_Control : Unit_UI
                         }
                         else if (this.tag == "Enemy")
                         {
-                            if (Unit_Management.unit_Management.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
+                            if (Unit_Management.instance.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                             {
                                 enemy_Exist.Add(true);
                             }
@@ -157,8 +157,8 @@ public class Unit_Control : Unit_UI
     {
         transform.position= position_Array[unit_Revocation_Position_Index];
         unit_Position_Index = unit_Revocation_Position_Index;
-        Unit_Management.unit_Management.Unit_Update();
-        Map_Pool.map_Pool.Recycle_Enemytag();
+        Unit_Management.instance.Unit_Update();
+        Map_Pool.instance.Recycle_Enemytag();
         Update_UnityUIPosition();
         this.BFS(Unit_Management.Search_setting.Moverange);
     }
@@ -199,12 +199,12 @@ public class Unit_Control : Unit_UI
             {
                 if (Vector3.Distance(position_Array[graph[move_queue.Peek()][shortest_hex]], position_Array[targetposition_index]) <
                     Vector3.Distance(position_Array[graph[move_queue.Peek()][     i      ]], position_Array[targetposition_index])&&
-                    Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[move_queue.Peek()][shortest_hex]) == false)
+                    Unit_Management.instance.Enemy_List.ContainsKey(graph[move_queue.Peek()][shortest_hex]) == false)
                 //当指定网格与终点的距离小于当前遍历网格与终点距离并且指定网格上无敌方单位时，这个网格的下标就会成为这次遍历中的最短路径
                 {
                     move_path = graph[move_queue.Peek()][shortest_hex];
                 }
-                else if (Unit_Management.unit_Management.Enemy_List.ContainsKey(graph[move_queue.Peek()][i]) == false)
+                else if (Unit_Management.instance.Enemy_List.ContainsKey(graph[move_queue.Peek()][i]) == false)
                 {
                     shortest_hex = i;
                     move_path = graph[move_queue.Peek()][shortest_hex];
@@ -271,7 +271,7 @@ public class Unit_Control : Unit_UI
             }
         }
         BFS(Unit_Management.Search_setting.Enemy);
-        Unit_Management.unit_Management.Unit_Update();
-        Unit_Management.unit_Management.Revocation_Allow();
+        Unit_Management.instance.Unit_Update();
+        Unit_Management.instance.Revocation_Allow();
     }
 }

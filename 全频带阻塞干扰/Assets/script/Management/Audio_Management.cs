@@ -9,6 +9,8 @@ using UnityEngine.UI;
 /// </summary>
 public class Audio_Management : MonoBehaviour
 {
+    public static Audio_Management instance;
+
     public Text bgm_Value;
     public Slider bgm_Slider;
     public AudioSource bgm;
@@ -23,16 +25,13 @@ public class Audio_Management : MonoBehaviour
 
     static AssetBundle load_BGM;
     static AssetBundle load_SFXS;
-
-    public static Audio_Management audio_Management;
-
     public static bool notload = true;
 
     void Awake()
     {
-        if (audio_Management == null)
+        if (instance == null)
         {
-            audio_Management = this;
+            instance = this;
         }
         if (notload)
         {
@@ -44,8 +43,8 @@ public class Audio_Management : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-        load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/bgm.audio"));
-        load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/sfxs.audio"));
+            load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/bgm.audio"));
+            load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "!assets/AssetBundles/audio/sfxs.audio"));
 #endif
         }
 

@@ -7,7 +7,7 @@ using System.Text;
 /// <summary>
 /// 配置每个关卡的对话信息与任务信息
 /// </summary>
-public class Config_Dialogue
+public class Config_Dialogue:InstanceNull<Config_Dialogue>
 {
     public List<Dialogue> dialogues = new List<Dialogue>();
 
@@ -16,19 +16,9 @@ public class Config_Dialogue
 
     JsonData dialogue_JsonData;
 
-    private static Config_Dialogue config_Dialogue;
-    public static Config_Dialogue Config_dialogue
-    {
-        get
-        {
-            if (config_Dialogue == null) config_Dialogue = new Config_Dialogue();
-            return config_Dialogue;
-        }
-    }
-
     public void Config_Dialogue_Json()
     {
-        string file_Name = Level_Radio.Level_radio.Dialogue_name;
+        string file_Name = Level_Radio.Instance.Dialogue_name;
 
 #if UNITY_EDITOR_WIN
         dialogue_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));

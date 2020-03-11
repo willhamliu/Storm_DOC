@@ -6,8 +6,10 @@ using UnityEngine.UI;
 /// <summary>
 /// 图鉴面板UI逻辑
 /// </summary>
-public class Item_Panel : MonoBehaviour {
+public class Item_Panel : MonoBehaviour
+{
 
+    public static Item_Panel instance;
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层
     List<GameObject> all_Item = new List<GameObject>();
     List<Toggle> camp = new List<Toggle>();
@@ -37,17 +39,20 @@ public class Item_Panel : MonoBehaviour {
         RUS,
         NATO
     }
-
-    public static Item_Panel item_Panel;
   
     void Awake()
     {
-        config_List_Building = Config_Item.Config_item.item_List_Building;
-        config_List_People = Config_Item.Config_item.item_List_People;
-        config_List_Tank = Config_Item.Config_item.item_List_Tank;
-        config_List_Plane = Config_Item.Config_item.item_List_Plane;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        Config_Item.Instance.Config_Item_Json();
 
-        item_Panel = this;
+        config_List_Building = Config_Item.Instance.item_List_Building;
+        config_List_People = Config_Item.Instance.item_List_People;
+        config_List_Tank = Config_Item.Instance.item_List_Tank;
+        config_List_Plane = Config_Item.Instance.item_List_Plane;
+
 
         data_Canvas.SetActive(false);
         camp.Add(camp_Rus);
@@ -67,7 +72,7 @@ public class Item_Panel : MonoBehaviour {
         for (int i = 0; i < all_Item.Count; i++)
         {
             
-            var item = Config_Item.Config_item.item_List_All[i];
+            var item = Config_Item.Instance.item_List_All[i];
             var index = all_Item.IndexOf(all_Item[i]);
             all_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) =>  { Data_toggleOnClick(value, index); });
         }
@@ -145,7 +150,7 @@ public class Item_Panel : MonoBehaviour {
         {
             if (gameObject.activeInHierarchy == true)
             {
-                Audio_Management.audio_Management.SFXS_play("阵营切换");
+                Audio_Management.instance.SFXS_play("阵营切换");
             }
             if (camp_Rus.isOn == true)
             {
@@ -169,7 +174,7 @@ public class Item_Panel : MonoBehaviour {
             }
             if (gameObject.activeInHierarchy==true)
             {
-                Audio_Management.audio_Management.SFXS_play("单位切换");
+                Audio_Management.instance.SFXS_play("单位切换");
                 StartCoroutine(Data_Toggle(index, last_Item_Index));
             }
             last_Item_Index = index;
@@ -212,8 +217,8 @@ public class Item_Panel : MonoBehaviour {
     public void Open_list()//打开图鉴
     {
         Camp_show(Camp_choose.RUS);
-        Item_Detail.item_Detail.SetData(Config_Item.Config_item.item_List_All[0]);
-        Item_Model_Management.item_Model_Management.Model_display(0, 0, "R_机场");
+        Item_Detail.instance.SetData(Config_Item.Instance.item_List_All[0]);
+        Item_Model_Management.instance.Model_display(0, 0, "R_机场");
     }
 
     public void Close_list()//关闭图鉴
@@ -245,9 +250,9 @@ public class Item_Panel : MonoBehaviour {
             }
             if (a==250)
             {
-                var item = Config_Item.Config_item.item_List_All[index];
-                Item_Detail.item_Detail.SetData(item);
-                Item_Model_Management.item_Model_Management.Model_display(last_index, index, item.item_Model);
+                var item = Config_Item.Instance.item_List_All[index];
+                Item_Detail.instance.SetData(item);
+                Item_Model_Management.instance.Model_display(last_index, index, item.item_Model);
             }
             if (b < 0)
             {

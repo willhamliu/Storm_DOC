@@ -23,8 +23,8 @@ public class Unit_Prototype : MonoBehaviour
     }
     protected void Postition_Start()
     {
-        position_Array = Map_Management.map_Management.hex_Position;
-        unit_Position_Index = Map_Management.map_Management.hex_Idex[coordinate_X, coordinate_Y];
+        position_Array = Map_Management.instance.hex_Position;
+        unit_Position_Index = Map_Management.instance.hex_Idex[coordinate_X, coordinate_Y];
         unit_Position = position_Array[unit_Position_Index];
 
         this.transform.position = unit_Position;
@@ -32,6 +32,6 @@ public class Unit_Prototype : MonoBehaviour
 
     protected void HP_Start()
     {
-        max_HP = hp = Config_Item.Config_item.item_List_All[Config_Item.Config_item.Config_unity_info(unit_Name)].item_HP;
+        max_HP = hp = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_HP;
     }
 }
