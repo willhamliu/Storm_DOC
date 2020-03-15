@@ -69,7 +69,7 @@ public class Unit_Control : Unit_UI
                         }
                         else if (Unit_Management.instance.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == false)
                         {
-                            GameObject hex = Map_Pool.instance.Get_Hex();
+                            GameObject hex = ObjectPool.instance.Get_Hex();
                             hex.transform.position = position_Array[graph[open_Queue.Peek()][i]];
                             hex.GetComponent<Hex_Info>().Hex_data(graph[open_Queue.Peek()][i]);
                         }
@@ -83,7 +83,7 @@ public class Unit_Control : Unit_UI
                     {
                         if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
                         {
-                            GameObject enemytag = Map_Pool.instance.Get_Enemytag();
+                            GameObject enemytag = ObjectPool.instance.Get_Enemytag();
                             enemytag.transform.position = position_Array[graph[open_Queue.Peek()][i]];
                         }
                         open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
@@ -158,7 +158,7 @@ public class Unit_Control : Unit_UI
         transform.position= position_Array[unit_Revocation_Position_Index];
         unit_Position_Index = unit_Revocation_Position_Index;
         Unit_Management.instance.Unit_Update();
-        Map_Pool.instance.Recycle_Enemytag();
+        ObjectPool.instance.Recycle_Enemytag();
         Update_UnityUIPosition();
         this.BFS(Unit_Management.Search_setting.Moverange);
     }

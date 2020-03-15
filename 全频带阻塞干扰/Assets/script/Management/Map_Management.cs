@@ -26,7 +26,7 @@ public class Map_Management : MonoBehaviour
 
     public Transform map_Create;
 
-    public void Awake()
+    void Awake()
     {
         if (instance==null)
         {

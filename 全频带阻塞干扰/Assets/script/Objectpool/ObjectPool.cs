@@ -4,9 +4,9 @@ using UnityEngine;
 /// <summary>
 /// 六边形网格与攻击图标的对象池
 /// </summary>
-public class Map_Pool : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
-    public static Map_Pool instance;
+    public static ObjectPool instance;
     public GameObject hex_Prefab;
     public GameObject enemy_Prefab;
     public Transform map_Create;
@@ -37,6 +37,7 @@ public class Map_Pool : MonoBehaviour
             map_Instance.Add(hex);
         }
     }
+
     public GameObject Get_Enemytag()
     {
         for (int i = 0; i < enemytag_Instance.Count; i++)

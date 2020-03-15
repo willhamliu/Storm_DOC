@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// 管理所有单位，对指定单位发出命令
 /// </summary>
 public class Unit_Management : MonoBehaviour
 {
     public static Unit_Management instance;
+    public Transform revocation;
+    public Button home_Button;
     public Button revocation_Button;
     public bool Order_lock { get; set; } = false;
     int move_Target;//移动目标
@@ -34,13 +37,14 @@ public class Unit_Management : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Start()
     {
-        revocation_Button.transform.gameObject.SetActive(false);
+        revocation.transform.gameObject.SetActive(false);
         revocation_Button.onClick.AddListener(RevocationOnClick);
+        home_Button.onClick.AddListener(ReturnHomeOnClick);
         Unit_Update();
     }
-  
+
     void Update()
     {
         Unit_Selected();
@@ -75,12 +79,15 @@ public class Unit_Management : MonoBehaviour
 
     public void Revocation_Allow()//允许撤销
     {
-        revocation_Button.transform.gameObject.SetActive(true);
+        revocation.transform.gameObject.SetActive(true);
     }
-
+    private void ReturnHomeOnClick()
+    {
+        SceneManager.LoadScene("Home");
+    }
     private void RevocationOnClick()
     {
-        revocation_Button.transform.gameObject.SetActive(false);
+        revocation.transform.gameObject.SetActive(false);
         player_Script.Revocation();
     }
    
@@ -93,19 +100,19 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Map_Pool.instance.Recycle_Hex();
-                Map_Pool.instance.Recycle_Enemytag();
+                ObjectPool.instance.Recycle_Hex();
+                ObjectPool.instance.Recycle_Enemytag();
                 if (hit.transform.tag== "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
 
                     player_Script.BFS(Search_setting.Moverange);
                     player_Index = player_Script.unit_Position_Index;
-                    revocation_Button.transform.gameObject.SetActive(false);
+                    revocation.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Untagged")
                 {
-                    revocation_Button.transform.gameObject.SetActive(false);
+                    revocation.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Map")
                 {
@@ -116,7 +123,7 @@ public class Unit_Management : MonoBehaviour
                 {
                     if (player_Script != null)
                     {
-                        revocation_Button.transform.gameObject.SetActive(false);
+                        revocation.transform.gameObject.SetActive(false);
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
                         player_Script.Attack( enemy_Script);
                     }
@@ -133,8 +140,8 @@ public class Unit_Management : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Map_Pool.instance.Recycle_Hex();
-                Map_Pool.instance.Recycle_Enemytag();
+                ObjectPool.instance.Recycle_Hex();
+                ObjectPool.instance.Recycle_Enemytag();
                 if (hit.transform.tag == "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
@@ -151,7 +158,6 @@ public class Unit_Management : MonoBehaviour
                 {
                     move_Target = hit.transform.GetComponent<Hex_Info>().index;
                     player_Script.Move(player_Index, move_Target);
-                    Unit_Update();
                 }
                 if (hit.transform.tag == "Enemy")
                 {
@@ -161,7 +167,6 @@ public class Unit_Management : MonoBehaviour
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
                         player_Script.Attack(enemy_Script);
                     }
-                    Unit_Update();
                     player_Script = null;
                 }
             }
