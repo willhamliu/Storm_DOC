@@ -165,11 +165,16 @@ public class Unit_Control : Unit_UI
 
     public void Attack(Unit_Control target)
     {
+        int hit=0;
         if (ismorale)
         {
-            Attack_Power -= 10;
+            hit = Attack_Power/2;
         }
-        target.Be_Hit(Attack_Power);
+        else
+        {
+            hit = Attack_Power;
+        }
+        target.Be_Hit(hit);
     }
 
     public void Be_Hit(int damage)
@@ -270,8 +275,9 @@ public class Unit_Control : Unit_UI
                 yield return new WaitForSeconds(Time.deltaTime);
             }
         }
-        BFS(Unit_Management.Search_setting.Enemy);
         Unit_Management.instance.Unit_Update();
         Unit_Management.instance.Revocation_Allow();
+
+        BFS(Unit_Management.Search_setting.Enemy);
     }
 }

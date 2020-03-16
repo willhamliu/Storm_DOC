@@ -14,7 +14,7 @@ public class Unit_Prototype : MonoBehaviour
     protected Vector3[] position_Array;//索引位置数组
     protected Vector3 unit_Position;//该单位所在的位置
 
-    protected float hp;//单位当前血量
+    public float hp;//单位当前血量
     protected float max_HP;//单位最大血量
 
     private void Awake()

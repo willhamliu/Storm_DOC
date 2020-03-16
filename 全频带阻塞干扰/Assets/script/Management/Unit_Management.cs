@@ -102,6 +102,7 @@ public class Unit_Management : MonoBehaviour
             {
                 ObjectPool.instance.Recycle_Hex();
                 ObjectPool.instance.Recycle_Enemytag();
+                Unit_Update();
                 if (hit.transform.tag== "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
@@ -142,17 +143,18 @@ public class Unit_Management : MonoBehaviour
             {
                 ObjectPool.instance.Recycle_Hex();
                 ObjectPool.instance.Recycle_Enemytag();
+                Unit_Update();
                 if (hit.transform.tag == "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
 
                     player_Script.BFS(Search_setting.Moverange);
                     player_Index = player_Script.unit_Position_Index;
-                    revocation_Button.transform.gameObject.SetActive(false);
+                    revocation.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Untagged")
                 {
-                    revocation_Button.transform.gameObject.SetActive(false);
+                    revocation.transform.gameObject.SetActive(false);
                 }
                 if (hit.transform.tag == "Map")
                 {
@@ -163,7 +165,7 @@ public class Unit_Management : MonoBehaviour
                 {
                     if (player_Script != null)
                     {
-                        revocation_Button.transform.gameObject.SetActive(false);
+                        revocation.transform.gameObject.SetActive(false);
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
                         player_Script.Attack(enemy_Script);
                     }
