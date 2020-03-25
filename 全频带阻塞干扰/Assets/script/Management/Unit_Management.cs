@@ -42,14 +42,14 @@ public class Unit_Management : MonoBehaviour
         revocation.transform.gameObject.SetActive(false);
         revocation_Button.onClick.AddListener(RevocationOnClick);
         home_Button.onClick.AddListener(ReturnHomeOnClick);
-        Unit_Update();
+        Unit_Update(null);
     }
 
     void Update()
     {
         Unit_Selected();
     }
-    public void Unit_Update()
+    public void Unit_Update(GameObject info)
     {
         GameObject[] Player_array_object = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] Enemy_array_object = GameObject.FindGameObjectsWithTag("Enemy");
@@ -62,6 +62,14 @@ public class Unit_Management : MonoBehaviour
         for (int i = 0; i < Enemy_array_object.Length; i++)
         {
             Enemy_List.Add(Enemy_array_object[i].GetComponent<Unit_Control>().unit_Position_Index, Enemy_array_object[i].GetComponent<Unit_Control>());
+        }
+        if (info!=null&&info.tag=="Player")
+        {
+            Player_List.Remove(info.GetComponent<Unit_Control>().unit_Position_Index);
+        }
+        else if(info != null && info.tag == "Enemy")
+        {
+            Enemy_List.Remove(info.GetComponent<Unit_Control>().unit_Position_Index);
         }
         Initial_Morale();
     }
@@ -83,6 +91,7 @@ public class Unit_Management : MonoBehaviour
     }
     private void ReturnHomeOnClick()
     {
+        EventManagement.Instance.CleanEvent();
         SceneManager.LoadScene("Home");
     }
     private void RevocationOnClick()
@@ -102,7 +111,6 @@ public class Unit_Management : MonoBehaviour
             {
                 ObjectPool.instance.Recycle_Hex();
                 ObjectPool.instance.Recycle_Enemytag();
-                Unit_Update();
                 if (hit.transform.tag== "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
@@ -143,7 +151,6 @@ public class Unit_Management : MonoBehaviour
             {
                 ObjectPool.instance.Recycle_Hex();
                 ObjectPool.instance.Recycle_Enemytag();
-                Unit_Update();
                 if (hit.transform.tag == "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();

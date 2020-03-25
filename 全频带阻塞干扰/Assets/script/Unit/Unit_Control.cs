@@ -29,7 +29,7 @@ public class Unit_Control : Unit_UI
         Attack_Range = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].iten_Range;
         Attack_Power = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_Attack;
     }
-
+  
     public void BFS(Unit_Management.Search_setting search_Setting)//显示移动和攻击范围范围
     {
         int search_Count=0;//搜索次数
@@ -157,7 +157,7 @@ public class Unit_Control : Unit_UI
     {
         transform.position= position_Array[unit_Revocation_Position_Index];
         unit_Position_Index = unit_Revocation_Position_Index;
-        Unit_Management.instance.Unit_Update();
+        Unit_Management.instance.Unit_Update(null);
         ObjectPool.instance.Recycle_Enemytag();
         Update_UnityUIPosition();
         this.BFS(Unit_Management.Search_setting.Moverange);
@@ -245,6 +245,14 @@ public class Unit_Control : Unit_UI
             reverse_Search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
         }
     }
+    private void Death()
+    {
+        Unit_Management.instance.Unit_Update(this.gameObject);
+        Destroy(this.gameObject);
+        Destroy(this.hp_Slider);
+        Destroy(this.morale);
+    }
+
     IEnumerator Hit()
     {
         while (effect.fillAmount > slider.value)
@@ -254,9 +262,7 @@ public class Unit_Control : Unit_UI
         }
         if (slider.value == 0)
         {
-            Destroy(this.gameObject);
-            Destroy(this.hp_Slider);
-            Destroy(this.morale);
+            Death();
         }
         effect.fillAmount = slider.value;
     }
@@ -275,7 +281,7 @@ public class Unit_Control : Unit_UI
                 yield return new WaitForSeconds(Time.deltaTime);
             }
         }
-        Unit_Management.instance.Unit_Update();
+        Unit_Management.instance.Unit_Update(null);
         Unit_Management.instance.Revocation_Allow();
 
         BFS(Unit_Management.Search_setting.Enemy);

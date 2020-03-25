@@ -21,7 +21,7 @@ public class Item_Panel : MonoBehaviour
 
     public GameObject data_Canvas;//控制描述淡入淡出的画布
 
-    public GameObject item_Temp;//模板
+    public GameObject toggleGroup;
 
     public Toggle camp_Rus;
     public Toggle camp_NATO;
@@ -71,76 +71,75 @@ public class Item_Panel : MonoBehaviour
         }
         for (int i = 0; i < all_Item.Count; i++)
         {
-            
             var item = Config_Item.Instance.item_List_All[i];
             var index = all_Item.IndexOf(all_Item[i]);
-            all_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) =>  { Data_toggleOnClick(value, index); });
+            all_Item[i].GetComponent<Toggle>().group = toggleGroup.GetComponent<ToggleGroup>();
+            all_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Data_toggleOnClick(value, index); });
         }
-
         all_Item[0].GetComponent<Toggle>().isOn = true;
     }
 
-
-    public GameObject Createitem(Item.Type type)
+    public void Createitem(Item.Type type,int index)
     {
-        if (type==Item.Type.建筑单位)
+        if (type == Item.Type.建筑单位)
         {
-            GameObject Building_Item_UI = GameObject.Instantiate(item_Temp, building_Item_Create);
-            return Building_Item_UI;
+            Resources_Management.Instance.Load<GameObject>("UI/unit", building_Item_Create, (item) =>
+            {
+                all_Item.Add(item);
+
+                Item_Info info = item.GetComponent<Item_Info>();//找到当前组件下的脚本，进行传参赋值
+                info.NameData(this.config_List_Building[index]);
+            });
         }
         if (type == Item.Type.步兵单位)
         {
-            GameObject People_Item_UI = GameObject.Instantiate(item_Temp, people_Item_Create);
-            return People_Item_UI;
+            Resources_Management.Instance.Load<GameObject>("UI/unit", people_Item_Create, (item) =>
+            {
+                all_Item.Add(item);
+
+                Item_Info info = item.GetComponent<Item_Info>();
+                info.NameData(this.config_List_People[index]);
+            });
         }
         if (type == Item.Type.装甲单位)
         {
-            GameObject Tank_Item_UI = GameObject.Instantiate(item_Temp, tank_Item_Create);
-            return Tank_Item_UI;
+            Resources_Management.Instance.Load<GameObject>("UI/unit", tank_Item_Create, (item) =>
+            {
+                all_Item.Add(item);
+
+                Item_Info info = item.GetComponent<Item_Info>();
+                info.NameData(this.config_List_Tank[index]);
+            });
         }
         if (type == Item.Type.飞行单位)
         {
-            GameObject Plane_Item_UI = GameObject.Instantiate(item_Temp, plane_Item_Create);
-            return Plane_Item_UI;
+            Resources_Management.Instance.Load<GameObject>("UI/unit", plane_Item_Create, (item) =>
+            {
+                 all_Item.Add(item);
+
+                 Item_Info info = item.GetComponent<Item_Info>();
+                 info.NameData(this.config_List_Plane[index]);
+            });
         }
-       
-        return null;
     }
-   
+
     public void CreateAllitem()
     {
-        item_Temp.SetActive(false);
         for (int i = 0; i < config_List_Building.Count; i++)
         {
-            GameObject Building_list_ui =Createitem(Item.Type.建筑单位);
-            all_Item.Add(Building_list_ui);
-
-            Item_Info info = Building_list_ui.GetComponent<Item_Info>();//找到当前组件下的脚本，进行传参赋值
-            info.NameData(this.config_List_Building[i]);
+            Createitem(Item.Type.建筑单位,i);
         }
         for (int i = 0; i < config_List_People.Count; i++)
         {
-            GameObject People_list_ui = Createitem(Item.Type.步兵单位);
-            all_Item.Add(People_list_ui);
-
-            Item_Info info = People_list_ui.GetComponent<Item_Info>();
-            info.NameData(this.config_List_People[i]);
+            Createitem(Item.Type.步兵单位, i);
         }
         for (int i = 0; i < config_List_Tank.Count; i++)
         {
-            GameObject Tank_list_ui = Createitem(Item.Type.装甲单位);
-            all_Item.Add(Tank_list_ui);
-
-            Item_Info info = Tank_list_ui.GetComponent<Item_Info>();
-            info.NameData(this.config_List_Tank[i]);
+            Createitem(Item.Type.装甲单位, i);
         }
         for (int i = 0; i < config_List_Plane.Count; i++)
         {
-            GameObject Plane_list_ui = Createitem(Item.Type.飞行单位);
-            all_Item.Add(Plane_list_ui);
-
-            Item_Info info = Plane_list_ui.GetComponent<Item_Info>();
-            info.NameData(this.config_List_Plane[i]);
+            Createitem(Item.Type.飞行单位, i);
         }
     }
 
@@ -172,7 +171,8 @@ public class Item_Panel : MonoBehaviour
             {
                 all_Item[last_Item_Index].GetComponent<Toggle>().isOn = false;
             }
-            if (gameObject.activeInHierarchy==true)
+          
+            if (last_Item_Index != index && gameObject.activeInHierarchy==true)
             {
                 Audio_Management.instance.SFXS_play("单位切换");
                 StartCoroutine(Data_Toggle(index, last_Item_Index));

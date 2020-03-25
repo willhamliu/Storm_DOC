@@ -12,6 +12,7 @@ public class Item_Info : MonoBehaviour {
     private Item item;
     public void NameData(Item item)
     {
+        
         if (item == null)
         {
             return;
