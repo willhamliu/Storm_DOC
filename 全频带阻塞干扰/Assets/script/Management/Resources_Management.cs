@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+/// <summary>
+/// 资源加载管理
+/// </summary>
 public class Resources_Management:InstanceNull<Resources_Management>
 {
-    public void Load<T>(string path,Transform createsite, UnityAction<T> acllback) where T:Object//同步加载
+    public void Load<T>(string path, UnityAction<T> acllback, Transform createsite = null) where T:Object//同步加载
     {
         T res= Resources.Load<T>(path);
         if (res is GameObject)
@@ -18,13 +20,13 @@ public class Resources_Management:InstanceNull<Resources_Management>
         }
     }
     
-    public void LoadAsync<T>(string path, Transform createsite, UnityAction<T> acllback)where T : Object//异步加载
+    public void LoadAsync<T>(string path, UnityAction<T> acllback, Transform createsite = null) where T : Object//异步加载
     {
-        MonoManagement.instance.Coroutine(RellyLoadAsync(path, createsite, acllback));
+        MonoManagement.instance.Coroutine(RellyLoadAsync(path, acllback, createsite));
     }
    
 
-    private IEnumerator RellyLoadAsync<T>(string path, Transform createsite, UnityAction<T> acllback) where T : Object
+    private IEnumerator RellyLoadAsync<T>(string path,  UnityAction<T> acllback, Transform createsite = null) where T : Object
     {
         ResourceRequest res = Resources.LoadAsync<T>(path);
         yield return res;

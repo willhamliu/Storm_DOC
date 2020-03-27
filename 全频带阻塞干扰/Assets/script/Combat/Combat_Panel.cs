@@ -134,7 +134,7 @@ public class Combat_Panel : MonoBehaviour
 
         if (last_Option_index != index && value == true)
         {
-            if (gameObject.activeInHierarchy == true)
+            if (option[index].gameObject.activeInHierarchy == true)
             {
                 Audio_Management.instance.SFXS_play("按钮点击");
                 StartCoroutine(Toggle_option(index));
@@ -147,7 +147,7 @@ public class Combat_Panel : MonoBehaviour
     {
         if (last_Level_index!=index && value == true)
         {
-            if (gameObject.activeInHierarchy == true)
+            if (level_All[index].activeInHierarchy == true)
             {
                 Audio_Management.instance.SFXS_play("单位切换");
                 StartCoroutine(Toggle_level(level));
@@ -160,7 +160,7 @@ public class Combat_Panel : MonoBehaviour
     {
         if (last_Upgrade_index!=index && value == true)
         {
-            if (gameObject.activeInHierarchy == true)
+            if (upgrade_All[index].gameObject.activeInHierarchy == true)
             {
 
                 Audio_Management.instance.SFXS_play("单位切换");

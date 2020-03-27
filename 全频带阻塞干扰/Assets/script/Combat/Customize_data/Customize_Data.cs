@@ -16,8 +16,6 @@ public class Customize_Data : MonoBehaviour
     public int purchase_Index;
 
     public Text buy_Panel_Name;
-    public Button buy_Bonfrim;
-    public Button buy_Cancel;
 
     public GameObject buy;
     public GameObject item_Price;
@@ -46,9 +44,9 @@ public class Customize_Data : MonoBehaviour
     }
     private void Start()
     {
-        buy.GetComponent<Button>().onClick.AddListener(PurchaseOnClick);
-        buy_Cancel.onClick.AddListener(Purchase_CanelOnClick);
-        buy_Bonfrim.onClick.AddListener(Purchase_ComfrimOnClick);
+        UI_Management.instance.GetControl<Button>("Buy_Button").onClick.AddListener(PurchaseOnClick);
+        UI_Management.instance.GetControl<Button>("cancel").onClick.AddListener(Purchase_CanelOnClick);
+        UI_Management.instance.GetControl<Button>("confrim").onClick.AddListener(Purchase_ComfrimOnClick);
     }
     public void PurchaseOnClick()
     {

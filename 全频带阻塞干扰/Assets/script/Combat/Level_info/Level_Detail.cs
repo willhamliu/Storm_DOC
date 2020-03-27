@@ -11,7 +11,6 @@ public class Level_Detail : MonoBehaviour
     public static Level_Detail instance;
     public Text desc;
     public Text point;
-    public Button star;
     private Level level;
     void Awake()
     {
@@ -22,7 +21,7 @@ public class Level_Detail : MonoBehaviour
     }
     void Start()
     {
-        star.onClick.AddListener(Send_levelOnClick);
+        UI_Management.instance.GetControl<Button>("Star_Button").onClick.AddListener(Send_levelOnClick);
     }
     public void SetData(Level level)
     {
