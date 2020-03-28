@@ -44,9 +44,9 @@ public class Customize_Data : MonoBehaviour
     }
     private void Start()
     {
-        UI_Management.instance.GetControl<Button>("Buy_Button").onClick.AddListener(PurchaseOnClick);
-        UI_Management.instance.GetControl<Button>("cancel").onClick.AddListener(Purchase_CanelOnClick);
-        UI_Management.instance.GetControl<Button>("confrim").onClick.AddListener(Purchase_ComfrimOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Buy_Button", PurchaseOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("cancel", Purchase_CanelOnClick, "返回", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("confrim", Purchase_ComfrimOnClick, "确认研发", Audio_Management.instance.SFXS_play);
     }
     public void PurchaseOnClick()
     {

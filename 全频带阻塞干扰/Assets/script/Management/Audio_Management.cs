@@ -90,16 +90,16 @@ public class Audio_Management : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void SFXS_play(string audio_name)
+    public void SFXS_play(string audioName)
     {
-        if (audio_SFXS.ContainsKey(audio_name))
+        if (audio_SFXS.ContainsKey(audioName))
         {
-            sfxs.clip = audio_SFXS[audio_name];
+            sfxs.clip = audio_SFXS[audioName];
             sfxs.Play();
         }
         else
         {
-            GameObject load = load_SFXS.LoadAsset<GameObject>(audio_name);
+            GameObject load = load_SFXS.LoadAsset<GameObject>(audioName);
 
             AudioClip AC = load.GetComponent<AudioSource>().clip;
 
@@ -110,16 +110,16 @@ public class Audio_Management : MonoBehaviour
         }
     }
 
-    public void BGM_play(string audio_name)
+    public void BGM_play(string audioName)
     {
-        if (audio_BGM.ContainsKey(audio_name))
+        if (audio_BGM.ContainsKey(audioName))
         {
-            bgm.clip = audio_BGM[audio_name];
+            bgm.clip = audio_BGM[audioName];
             bgm.Play();//播放背景音乐
         }
         else
         {
-            GameObject load = load_BGM.LoadAsset<GameObject>(audio_name);
+            GameObject load = load_BGM.LoadAsset<GameObject>(audioName);
 
             AudioClip AC = load.GetComponent<AudioSource>().clip;
 
@@ -129,9 +129,9 @@ public class Audio_Management : MonoBehaviour
             audio_BGM.Add(AC.name, AC);
         }
     }
-    public void BGM_stop(string audio_name)
+    public void BGM_stop(string audioName)
     {
-        bgm.clip = audio_BGM[audio_name];
+        bgm.clip = audio_BGM[audioName];
         bgm.Stop();//停止播放背景音乐
     }
 }

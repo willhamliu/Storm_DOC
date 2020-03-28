@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 /// <summary>
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 public class UI_Management : MonoBehaviour
 {
     public static UI_Management instance;
-    private Dictionary<string, List<UIBehaviour>> UIdict = new Dictionary<string, List<UIBehaviour>>();
+    public Dictionary<string, GameObject> UIdict = new Dictionary<string, GameObject>();
     void Awake()
     {
         if (instance==null)
@@ -22,33 +23,100 @@ public class UI_Management : MonoBehaviour
     {
         if (UIdict.ContainsKey(controlName))
         {
-            for (int i = 0; i < UIdict[controlName].Count; i++)
+            if (UIdict[controlName].GetComponent<T>())
             {
-                if (UIdict[controlName][i] is T)
-                {
-                    return UIdict[controlName][i] as T;
-                }
+                return UIdict[controlName].GetComponent<T>();
+            }
+            else
+            {
+                UIdict[controlName].AddComponent<T>();
+                return UIdict[controlName].GetComponent<T>();
             }
         }
         return null;
     }
-   
-    private void FindChildrenControl<T>() where T : UIBehaviour
+    /// <summary>
+    /// 添加按钮点击事件
+    /// </summary>
+    /// <typeparam name="T">UI类型</typeparam>
+    /// <param name="controlName">UI名字</param>
+    /// <param name="callBack">回调函数(逻辑)</param>    
+    /// /// <param name="audioName">音效名字</param>
+    /// <param name="callBackAudio">回调函数(音效)</param>
+    public void AddButtonEventTrigger<T>(string controlName, UnityAction callBack=null,string audioName=null, UnityAction<string> callBackAudio=null) where T: Button
     {
-        T[] button = this.GetComponentsInChildren<T>(true);
-        string objname;
-        for (int i = 0; i < button.Length; i++)
+        if (! UIdict.ContainsKey(controlName))
         {
-            objname = button[i].gameObject.name;
-            if (UIdict.ContainsKey(objname))
+            return;
+        }
+        if (UIdict[controlName])
+        {
+            EventTrigger trigger;
+            if (UIdict[controlName].GetComponent<EventTrigger>() != null)
             {
-                UIdict[objname].Add(button[i]);
-
+                trigger = UIdict[controlName].GetComponent<EventTrigger>();
             }
             else
             {
-                UIdict.Add(objname, new List<UIBehaviour>() { (button[i]) });
+                trigger = UIdict[controlName].AddComponent<EventTrigger>();
             }
+
+            if (callBack!=null)
+            {
+                EventTrigger.Entry onclick = new EventTrigger.Entry();
+                onclick.eventID = EventTriggerType.PointerUp;
+                onclick.callback.AddListener((BaseEventData value) => { callBack(); });
+                trigger.triggers.Add(onclick);
+            }
+            if (callBackAudio!=null)
+            {
+                EventTrigger.Entry upclick = new EventTrigger.Entry();
+                upclick.eventID = EventTriggerType.PointerDown;
+                upclick.callback.AddListener((BaseEventData value) => {callBackAudio(audioName);});
+                trigger.triggers.Add(upclick);
+            }
+        }
+    }
+
+    public void AddButtonEventTrigger(GameObject obj, UnityAction callBack = null, string audioName = null, UnityAction<string> callBackAudio = null)
+    {
+        EventTrigger trigger;
+        if (obj.GetComponent<EventTrigger>() != null)
+        {
+            trigger = obj.GetComponent<EventTrigger>();
+        }
+        else
+        {
+            trigger = obj.AddComponent<EventTrigger>();
+        }
+
+        if (callBack != null)
+        {
+            EventTrigger.Entry onclick = new EventTrigger.Entry();
+            onclick.eventID = EventTriggerType.PointerUp;
+            onclick.callback.AddListener((BaseEventData value) => { callBack(); });
+            trigger.triggers.Add(onclick);
+        }
+        if (callBackAudio != null)
+        {
+            EventTrigger.Entry upclick = new EventTrigger.Entry();
+            upclick.eventID = EventTriggerType.PointerDown;
+            upclick.callback.AddListener((BaseEventData value) => { callBackAudio(audioName); });
+            trigger.triggers.Add(upclick);
+        }
+    }
+
+
+    private void FindChildrenControl<T>() where T : UIBehaviour
+    {
+        T[] button = this.GetComponentsInChildren<T>(true);
+        for (int i = 0; i < button.Length; i++)
+        {
+            if (UIdict.ContainsKey(button[i].gameObject.name))
+            {
+                continue;
+            }
+            UIdict.Add(button[i].gameObject.name, button[i].gameObject);
         }
     }
 }

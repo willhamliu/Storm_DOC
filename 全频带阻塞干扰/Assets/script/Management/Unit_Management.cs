@@ -39,6 +39,7 @@ public class Unit_Management : MonoBehaviour
 
     void Start()
     {
+        EventManagement.Instance.AddEvent("单位死亡", Unit_Update);
         revocation.transform.gameObject.SetActive(false);
         revocation_Button.onClick.AddListener(RevocationOnClick);
         home_Button.onClick.AddListener(ReturnHomeOnClick);

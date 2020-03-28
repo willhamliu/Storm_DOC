@@ -68,12 +68,14 @@ public class Item_Panel : MonoBehaviour
             var index = camp.IndexOf(camp[i]);
             camp[i].GetComponent<Toggle>().group = camptoggleGroup.GetComponent<ToggleGroup>();
             camp[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Toggle_CampOnClick(value, index); });
+            UI_Management.instance.AddButtonEventTrigger(camp[i], audioName: "阵营切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
         for (int i = 0; i < all_Item.Count; i++)
         {
             var index = all_Item.IndexOf(all_Item[i]);
             all_Item[i].GetComponent<Toggle>().group = unittoggleGroup.GetComponent<ToggleGroup>();
             all_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Data_toggleOnClick(value, index); });
+            UI_Management.instance.AddButtonEventTrigger(all_Item[i], audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
         camp[0].GetComponent<Toggle>().isOn = true;
         all_Item[0].GetComponent<Toggle>().isOn = true;
@@ -149,7 +151,6 @@ public class Item_Panel : MonoBehaviour
         {
             if (camp[index].gameObject.activeInHierarchy == true)
             {
-                Audio_Management.instance.SFXS_play("阵营切换");
                 if (camp_Rus.isOn == true)
                 {
                     Camp_show(Camp_choose.RUS);
@@ -174,7 +175,6 @@ public class Item_Panel : MonoBehaviour
           
             if (last_Item_Index != index && all_Item[index].activeInHierarchy==true)
             {
-                Audio_Management.instance.SFXS_play("单位切换");
                 StartCoroutine(Data_Toggle(index, last_Item_Index));
             }
             last_Item_Index = index;

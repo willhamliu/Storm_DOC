@@ -247,7 +247,7 @@ public class Unit_Control : Unit_UI
     }
     private void Death()
     {
-        Unit_Management.instance.Unit_Update(this.gameObject);
+        EventManagement.Instance.EventTrigger("单位死亡",this.gameObject);
         Destroy(this.gameObject);
         Destroy(this.hp_Slider);
         Destroy(this.morale);

@@ -66,73 +66,66 @@ public class Home_Panel : MonoBehaviour
     void Start()
     {
         Audio_Management.instance.BGM_play("Home_BGM");
-        UI_Management.instance.GetControl<Button>("Combat").onClick.AddListener(Combat_OpenOnClick);
-        UI_Management.instance.GetControl<Button>("Demo").onClick.AddListener(DemoOnClick);
-        UI_Management.instance.GetControl<Button>("Setting").onClick.AddListener(Setting_OpenOnClick);
-        UI_Management.instance.GetControl<Button>("List").onClick.AddListener(List_OpenOnClick);
-        UI_Management.instance.GetControl<Button>("Quit").onClick.AddListener(QuitOnClick);
-        UI_Management.instance.GetControl<Button>("Combat_Close_Button").onClick.AddListener(Combat_CloseOnClick);
-        UI_Management.instance.GetControl<Button>("List_Close_Button").onClick.AddListener(List_CloseOnClick);
-        UI_Management.instance.GetControl<Button>("Setting_Close_Button").onClick.AddListener(Setting_CloseOnClick);
-        UI_Management.instance.GetControl<Button>("Quit_confrim").onClick.AddListener(Quit_ConfrimOnClick);
-        UI_Management.instance.GetControl<Button>("Quit_cancel").onClick.AddListener(Quit_CancelOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Combat", Combat_OpenOnClick,"按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Demo", DemoOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Setting", Setting_OpenOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("List", List_OpenOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Quit", QuitOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Combat_Close_Button", Combat_CloseOnClick, "返回", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("List_Close_Button", List_CloseOnClick, "返回", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Setting_Close_Button", Setting_CloseOnClick, "返回", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Quit_confrim", Quit_ConfrimOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Quit_cancel", Quit_CancelOnClick, "返回", Audio_Management.instance.SFXS_play);
     }
 
-
-    public void DemoOnClick()//打开Demo场景
-    {
-        SceneManager.LoadScene("Demo");
-    }
-
-    public void Setting_OpenOnClick()//打开设置
-    {
-        home_Canvas.SetActive(true);
-        setting_Insert = setting_Panel.DOLocalMoveX(insert_point.localPosition.x, 0.3f);
-    }
-    public void Setting_CloseOnClick()//关闭设置
-    {
-        Audio_Management.instance.SFXS_play("返回");
-        home_Canvas.SetActive(false);
-        setting_Insert = setting_Panel.DOLocalMoveX(raw_point.localPosition.x, 0.3f);
-    }
-
-
-    public void List_OpenOnClick()//打开图鉴
-    {
-        fx.SetActive(false);
-        StartCoroutine(List_ON());
-    }
-    public void List_CloseOnClick()//关闭图鉴
-    {
-        Audio_Management.instance.SFXS_play("返回");
-        StartCoroutine(List_OFF());
-    }
-
-
-    public void Combat_OpenOnClick()//开启战斗面板
+    private void Combat_OpenOnClick()//开启战斗面板
     {
         fx.SetActive(false);
         StartCoroutine(Combat_ON());
     }
-    public void Combat_CloseOnClick()//关闭战斗面板
+    private void Combat_CloseOnClick()//关闭战斗面板
     {
-        Audio_Management.instance.SFXS_play("返回");
         StartCoroutine(Combat_OFF());
     }
 
+    private void DemoOnClick()//打开Demo场景
+    {
+        SceneManager.LoadScene("Demo");
+    }
 
-    public void QuitOnClick()//退出
+    private void Setting_OpenOnClick()//打开设置
+    {
+        home_Canvas.SetActive(true);
+        setting_Insert = setting_Panel.DOLocalMoveX(insert_point.localPosition.x, 0.3f);
+    }
+    private void Setting_CloseOnClick()//关闭设置
+    {
+        home_Canvas.SetActive(false);
+        setting_Insert = setting_Panel.DOLocalMoveX(raw_point.localPosition.x, 0.3f);
+    }
+
+    private void List_OpenOnClick()//打开图鉴
+    {
+        fx.SetActive(false);
+        StartCoroutine(List_ON());
+    }
+    private void List_CloseOnClick()//关闭图鉴
+    {
+        StartCoroutine(List_OFF());
+    }
+
+    private void QuitOnClick()//退出
     {
         home_Canvas.SetActive(true);
         quit_Panel.SetActive(true);
     }
-    public void Quit_CancelOnClick()//取消退出
+    private void Quit_CancelOnClick()//取消退出
     {
         Audio_Management.instance.SFXS_play("按钮点击");
         home_Canvas.SetActive(false);
         quit_Panel.SetActive(false);
     }
-    public void Quit_ConfrimOnClick()//确认退出
+    private void Quit_ConfrimOnClick()//确认退出
     {
         Audio_Management.instance.BGM_stop("Home_BGM");
         Application.Quit();
