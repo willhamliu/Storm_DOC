@@ -36,7 +36,7 @@ public class UI_Management : MonoBehaviour
         return null;
     }
     /// <summary>
-    /// 添加按钮点击事件
+    /// 通过key添加按钮点击事件
     /// </summary>
     /// <typeparam name="T">UI类型</typeparam>
     /// <param name="controlName">UI名字</param>
@@ -78,6 +78,13 @@ public class UI_Management : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 通过GameObject添加按钮点击事件
+    /// </summary>
+    /// <param name="obj">UI对象</param>
+    /// <param name="callBack">回调函数(逻辑)</param>
+    /// <param name="audioName">音效名字</param>
+    /// <param name="callBackAudio">回调函数(音效)</param>
     public void AddButtonEventTrigger(GameObject obj, UnityAction callBack = null, string audioName = null, UnityAction<string> callBackAudio = null)
     {
         EventTrigger trigger;

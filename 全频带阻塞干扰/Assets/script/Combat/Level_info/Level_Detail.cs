@@ -21,7 +21,7 @@ public class Level_Detail : MonoBehaviour
     }
     void Start()
     {
-        UI_Management.instance.AddButtonEventTrigger<Button>("confrim", Send_levelOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Star_Button", Send_levelOnClick);
     }
     public void SetData(Level level)
     {

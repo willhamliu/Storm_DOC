@@ -50,20 +50,16 @@ public class Customize_Data : MonoBehaviour
     }
     public void PurchaseOnClick()
     {
-        Audio_Management.instance.SFXS_play("按钮点击");
         buy_Panel_Name.text = "是否研发\u3000" + this.customize.customize_Name.ToString();
         buy_Panel.SetActive(true);
     }
     public void Purchase_CanelOnClick()
     {
-        Audio_Management.instance.SFXS_play("返回");
         buy_Panel.SetActive(false);
     }
    
     public void Purchase_ComfrimOnClick()
     {
-        Audio_Management.instance.SFXS_play("确认研发");
-
         Config_Customize.Instance.Purchase_Status_Modify(purchase_Index);
         buy_Panel.SetActive(false);
         buy.SetActive(false);
