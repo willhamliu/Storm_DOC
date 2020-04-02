@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Item_Info : MonoBehaviour {
 
     public Text item_Name;
+    public Image blackImage;
     public string item_Camp;
     private Item item;
     public void NameData(Item item)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
@@ -8,7 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class Item_Panel : MonoBehaviour
 {
-
     public static Item_Panel instance;
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层
     List<GameObject> all_Item = new List<GameObject>();
@@ -153,11 +153,11 @@ public class Item_Panel : MonoBehaviour
             {
                 if (camp_Rus.isOn == true)
                 {
-                    Camp_show(Camp_choose.RUS);
+                    Camp_show(Camp_choose.RUS,true);
                 }
                 if (camp_NATO.isOn == true)
                 {
-                    Camp_show(Camp_choose.NATO);
+                    Camp_show(Camp_choose.NATO,true);
                 }
             }
             last_Camp_Index = index;
@@ -181,7 +181,7 @@ public class Item_Panel : MonoBehaviour
         }
     }
 
-    public void Camp_show( Camp_choose camp)//阵营显示
+    public void Camp_show( Camp_choose camp, bool isFidein)//阵营显示
     {
         if (camp == Camp_choose.RUS)
         {
@@ -189,26 +189,43 @@ public class Item_Panel : MonoBehaviour
             {
                 if (all_Item[i].GetComponent<Item_Info>().item_Camp == Item.Camp.俄罗斯.ToString())
                 {
-                   
                     all_Item[i].SetActive(true);
+                    if (isFidein)
+                    {
+                        StartCoroutine(Fidein(all_Item[i]));
+                    }
+                    else
+                    {
+                        all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 0);
+                    }
                 }
                 else
                 {
                     all_Item[i].SetActive(false);
+                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 1);
                 }
             }
         }
-        if (camp == Camp_choose.NATO)
+        else if (camp == Camp_choose.NATO)
         {
             for (int i = 0; i < all_Item.Count; i++)
             {
                 if (all_Item[i].GetComponent<Item_Info>().item_Camp == Item.Camp.北约.ToString())
                 {
                     all_Item[i].SetActive(true);
+                    if (isFidein)
+                    {
+                        StartCoroutine(Fidein(all_Item[i]));
+                    }
+                    else
+                    {
+                        all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 0);
+                    }
                 }
                 else
                 {
                     all_Item[i].SetActive(false);
+                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 1);
                 }
             }
         }
@@ -216,7 +233,7 @@ public class Item_Panel : MonoBehaviour
 
     public void Open_list()//打开图鉴
     {
-        Camp_show(Camp_choose.RUS);
+        Camp_show(Camp_choose.RUS,false);
         Item_Detail.instance.SetData(Config_Item.Instance.item_List_All[0]);
         Item_Model_Management.instance.Model_display(0, 0, "R_机场");
     }
@@ -228,6 +245,16 @@ public class Item_Panel : MonoBehaviour
         all_Item[0].GetComponent<Toggle>().isOn = true;
     }
 
+    public IEnumerator Fidein(GameObject obj)
+    {
+        float alpha = 1;
+        while (alpha>=0)
+        {
+            alpha -= Time.deltaTime*2;
+            obj.GetComponent<Item_Info>().blackImage.color= new Color(0,0,0, alpha);
+            yield return null;
+        }
+    }
 
     public IEnumerator Data_Toggle(int index, int last_index)//单位切换时的淡入淡出效果
     {
