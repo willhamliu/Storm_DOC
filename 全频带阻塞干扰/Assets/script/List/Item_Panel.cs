@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
@@ -12,7 +11,11 @@ public class Item_Panel : MonoBehaviour
     public static Item_Panel instance;
     //有2个管理所有兵种的列表，一个管理数据层，一个管理对象层
     List<GameObject> all_Item = new List<GameObject>();
-    List<GameObject> camp = new List<GameObject>();
+    List<GameObject> building_Item = new List<GameObject>();
+    List<GameObject> people_Item = new List<GameObject>();
+    List<GameObject> tank_Item = new List<GameObject>();
+    List<GameObject> plane_Item = new List<GameObject>();
+    List<Toggle> camp = new List<Toggle>();
 
     List<Item> config_List_Building;
     List<Item> config_List_People;
@@ -34,13 +37,7 @@ public class Item_Panel : MonoBehaviour
 
     int last_Item_Index=0;
     int last_Camp_Index = 0;
-    public enum Camp_choose
-    {
-        UnKown,
-        RUS,
-        NATO
-    }
-  
+    
     void Awake()
     {
         if (instance == null)
@@ -56,8 +53,8 @@ public class Item_Panel : MonoBehaviour
 
 
         data_Canvas.SetActive(false);
-        camp.Add(camp_Rus.gameObject);
-        camp.Add(camp_NATO.gameObject);
+        camp.Add(camp_Rus);
+        camp.Add(camp_NATO);
     }
 
     void Start()
@@ -66,18 +63,18 @@ public class Item_Panel : MonoBehaviour
         for (int i = 0; i < camp.Count; i++)
         {
             var index = camp.IndexOf(camp[i]);
-            camp[i].GetComponent<Toggle>().group = camptoggleGroup.GetComponent<ToggleGroup>();
-            camp[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Toggle_CampOnClick(value, index); });
-            UI_Management.instance.AddButtonEventTrigger(camp[i], audioName: "阵营切换", callBackAudio: Audio_Management.instance.SFXS_play);
+            camp[i].group = camptoggleGroup.GetComponent<ToggleGroup>();
+            camp[i].onValueChanged.AddListener((bool value) => { Toggle_CampOnClick(value, index); });
+            UI_Management.instance.AddButtonEventTrigger<Toggle>(camp[i].gameObject, audioName: "阵营切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
         for (int i = 0; i < all_Item.Count; i++)
         {
             var index = all_Item.IndexOf(all_Item[i]);
             all_Item[i].GetComponent<Toggle>().group = unittoggleGroup.GetComponent<ToggleGroup>();
             all_Item[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Data_toggleOnClick(value, index); });
-            UI_Management.instance.AddButtonEventTrigger(all_Item[i], audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
+            UI_Management.instance.AddButtonEventTrigger<Toggle>(all_Item[i], audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
-        camp[0].GetComponent<Toggle>().isOn = true;
+        camp[0].isOn = true;
         all_Item[0].GetComponent<Toggle>().isOn = true;
     }
  
@@ -88,6 +85,7 @@ public class Item_Panel : MonoBehaviour
             Resources_Management.Instance.Load<GameObject>("UI/unit", (item) =>
             {
                 all_Item.Add(item);
+                building_Item.Add(item);
 
                 Item_Info info = item.GetComponent<Item_Info>();//找到当前组件下的脚本，进行传参赋值
                 info.NameData(this.config_List_Building[index]);
@@ -98,6 +96,7 @@ public class Item_Panel : MonoBehaviour
             Resources_Management.Instance.Load<GameObject>("UI/unit", (item) =>
             {
                 all_Item.Add(item);
+                people_Item.Add(item);
 
                 Item_Info info = item.GetComponent<Item_Info>();
                 info.NameData(this.config_List_People[index]);
@@ -108,6 +107,7 @@ public class Item_Panel : MonoBehaviour
             Resources_Management.Instance.Load<GameObject>("UI/unit", (item) =>
             {
                 all_Item.Add(item);
+                tank_Item.Add(item);
 
                 Item_Info info = item.GetComponent<Item_Info>();
                 info.NameData(this.config_List_Tank[index]);
@@ -117,10 +117,11 @@ public class Item_Panel : MonoBehaviour
         {
             Resources_Management.Instance.Load<GameObject>("UI/unit", (item) =>
             {
-                 all_Item.Add(item);
+                all_Item.Add(item);
+                plane_Item.Add(item);     
 
-                 Item_Info info = item.GetComponent<Item_Info>();
-                 info.NameData(this.config_List_Plane[index]);
+                Item_Info info = item.GetComponent<Item_Info>();
+                info.NameData(this.config_List_Plane[index]);
             },plane_Item_Create);
         }
     }
@@ -149,15 +150,18 @@ public class Item_Panel : MonoBehaviour
     {
         if (last_Camp_Index !=index && value==true)
         {
+            camp[last_Camp_Index].interactable = true;
+            camp[index].interactable = false;
+
             if (camp[index].gameObject.activeInHierarchy == true)
             {
                 if (camp_Rus.isOn == true)
                 {
-                    Camp_show(Camp_choose.RUS,true);
+                    Camp_show(Item.Camp.俄罗斯, true);
                 }
                 if (camp_NATO.isOn == true)
                 {
-                    Camp_show(Camp_choose.NATO,true);
+                    Camp_show(Item.Camp.北约, true);
                 }
             }
             last_Camp_Index = index;
@@ -165,9 +169,11 @@ public class Item_Panel : MonoBehaviour
     }
     public void Data_toggleOnClick(bool value, int index)//信息面板切换
     {
-        //由于当toggle有变动时才会调用，所以不用担心由于切换阵营后ison关闭
         if (last_Item_Index != index && value==true)
         {
+            all_Item[last_Item_Index].GetComponent<Toggle>().interactable = true;
+            all_Item[index].GetComponent<Toggle>().interactable = false;
+
             if (all_Item[last_Item_Index].GetComponent<Toggle>().isOn == true && all_Item[last_Item_Index].activeInHierarchy == false)
             {
                 all_Item[last_Item_Index].GetComponent<Toggle>().isOn = false;
@@ -181,61 +187,13 @@ public class Item_Panel : MonoBehaviour
         }
     }
 
-    public void Camp_show( Camp_choose camp, bool isFidein)//阵营显示
-    {
-        if (camp == Camp_choose.RUS)
-        {
-            for (int i = 0; i < all_Item.Count; i++)
-            {
-                if (all_Item[i].GetComponent<Item_Info>().item_Camp == Item.Camp.俄罗斯.ToString())
-                {
-                    all_Item[i].SetActive(true);
-                    if (isFidein)
-                    {
-                        StartCoroutine(Fidein(all_Item[i]));
-                    }
-                    else
-                    {
-                        all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 0);
-                    }
-                }
-                else
-                {
-                    all_Item[i].SetActive(false);
-                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 1);
-                }
-            }
-        }
-        else if (camp == Camp_choose.NATO)
-        {
-            for (int i = 0; i < all_Item.Count; i++)
-            {
-                if (all_Item[i].GetComponent<Item_Info>().item_Camp == Item.Camp.北约.ToString())
-                {
-                    all_Item[i].SetActive(true);
-                    if (isFidein)
-                    {
-                        StartCoroutine(Fidein(all_Item[i]));
-                    }
-                    else
-                    {
-                        all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 0);
-                    }
-                }
-                else
-                {
-                    all_Item[i].SetActive(false);
-                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 1);
-                }
-            }
-        }
-    }
-
     public void Open_list()//打开图鉴
     {
-        Camp_show(Camp_choose.RUS,false);
+        Camp_show(Item.Camp.俄罗斯, false);
         Item_Detail.instance.SetData(Config_Item.Instance.item_List_All[0]);
         Item_Model_Management.instance.Model_display(0, 0, "R_机场");
+        all_Item[0].GetComponent<Toggle>().interactable = false;
+        camp[0].GetComponent<Toggle>().interactable = false;
     }
 
     public void Close_list()//关闭图鉴
@@ -245,13 +203,70 @@ public class Item_Panel : MonoBehaviour
         all_Item[0].GetComponent<Toggle>().isOn = true;
     }
 
-    public IEnumerator Fidein(GameObject obj)
+    public void Camp_show(Item.Camp camp, bool isFidein)
     {
-        float alpha = 1;
-        while (alpha>=0)
+        if (!isFidein)
         {
-            alpha -= Time.deltaTime*2;
-            obj.GetComponent<Item_Info>().blackImage.color= new Color(0,0,0, alpha);
+            for (int i = 0; i < all_Item.Count; i++)
+            {
+                if (all_Item[i].GetComponent<Item_Info>().item_Camp == camp.ToString())
+                {
+                    all_Item[i].SetActive(true);
+                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 0);
+                }
+                else
+                {
+                    all_Item[i].SetActive(false);
+                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 1);
+                }
+            }
+        }
+        else
+        {
+            int latencyTime_Building = 0;
+            int latencyTime_People = 0;
+            int latencyTime_Tank = 0;
+            int latencyTime_plane = 0;
+            for (int i = 0; i < all_Item.Count; i++)
+            {
+                if (all_Item[i].GetComponent<Item_Info>().item_Camp != camp.ToString())
+                {
+                    all_Item[i].SetActive(false);
+                    all_Item[i].GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, 1);
+                }
+            }
+            for (int i = 0; i < all_Item.Count/2; i++)
+            {
+                if (i < building_Item.Count && building_Item[i].GetComponent<Item_Info>().item_Camp == camp.ToString())
+                {
+                    StartCoroutine(Fading(building_Item[i],latencyTime_Building++));
+                }
+                if (i < people_Item.Count && people_Item[i].GetComponent<Item_Info>().item_Camp == camp.ToString())
+                {
+                    StartCoroutine(Fading(people_Item[i],latencyTime_People++));
+                }
+                if (i < tank_Item.Count && tank_Item[i].GetComponent<Item_Info>().item_Camp == camp.ToString())
+                {
+                    StartCoroutine(Fading(tank_Item[i],latencyTime_Tank++));
+
+                }
+                if (i < plane_Item.Count && plane_Item[i].GetComponent<Item_Info>().item_Camp == camp.ToString())
+                {
+                    StartCoroutine(Fading(plane_Item[i],latencyTime_plane++));
+                }
+            }
+        }
+    }
+
+    public IEnumerator Fading(GameObject obj,float latencyTime)
+    {
+        yield return new WaitForSeconds(latencyTime/15);
+        obj.SetActive(true);
+        float alpha = 1;
+        while (alpha >= 0)
+        {
+            alpha -= Time.deltaTime * 5;
+            obj.GetComponent<Item_Info>().blackImage.color = new Color(0, 0, 0, alpha);
             yield return null;
         }
     }

@@ -72,21 +72,21 @@ public class Combat_Panel : MonoBehaviour
         {
             var index = option.IndexOf(option[i]);
             option[i].onValueChanged.AddListener((bool value) => { Toggle_OptionOClick(value, index); });
-            UI_Management.instance.AddButtonEventTrigger(option[i].gameObject, audioName: "按钮点击", callBackAudio: Audio_Management.instance.SFXS_play);
+            UI_Management.instance.AddButtonEventTrigger<Toggle>(option[i].gameObject, audioName: "按钮点击", callBackAudio: Audio_Management.instance.SFXS_play);
         }
         for (int i = 0; i < level_All.Count; i++)
         {
             var level = Config_Level.Instance.level_DataAll[i];
             var index = level_All.IndexOf(level_All[i]);
             level_All[i].GetComponent<Toggle>().onValueChanged.AddListener((bool value) => { Toggle_levelOnClick(level, index, value); });
-            UI_Management.instance.AddButtonEventTrigger(level_All[i], audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
+            UI_Management.instance.AddButtonEventTrigger<Toggle>(level_All[i], audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
         for (int i = 0; i < upgrade_All.Count; i++)
         {
             var customize = Config_Customize.Instance.customize_DataAll[i];
             var index = upgrade_All.IndexOf(upgrade_All[i]);
             upgrade_All[i].onValueChanged.AddListener((bool value) => { Toggle_UpgradeOnClick(index, value); });
-            UI_Management.instance.AddButtonEventTrigger(upgrade_All[i].gameObject, audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
+            UI_Management.instance.AddButtonEventTrigger<Toggle>(upgrade_All[i].gameObject, audioName: "单位切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
         level_All[last_Level_index].GetComponent<Toggle>().isOn = true;
         upgrade_All[0].isOn = true;

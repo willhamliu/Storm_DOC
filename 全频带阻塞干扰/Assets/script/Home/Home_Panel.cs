@@ -67,7 +67,7 @@ public class Home_Panel : MonoBehaviour
     {
         Audio_Management.instance.BGM_play("Home_BGM");
         UI_Management.instance.AddButtonEventTrigger<Button>("Combat", Combat_OpenOnClick,"按钮点击", Audio_Management.instance.SFXS_play);
-        UI_Management.instance.AddButtonEventTrigger<Button>("Demo", DemoOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Demo", DemoOnClick);
         UI_Management.instance.AddButtonEventTrigger<Button>("Setting", Setting_OpenOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
         UI_Management.instance.AddButtonEventTrigger<Button>("List", List_OpenOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
         UI_Management.instance.AddButtonEventTrigger<Button>("Quit", QuitOnClick, "按钮点击", Audio_Management.instance.SFXS_play);
@@ -121,7 +121,6 @@ public class Home_Panel : MonoBehaviour
     }
     private void Quit_CancelOnClick()//取消退出
     {
-        Audio_Management.instance.SFXS_play("按钮点击");
         home_Canvas.SetActive(false);
         quit_Panel.SetActive(false);
     }

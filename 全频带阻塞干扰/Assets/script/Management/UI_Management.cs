@@ -43,7 +43,7 @@ public class UI_Management : MonoBehaviour
     /// <param name="callBack">回调函数(逻辑)</param>    
     /// /// <param name="audioName">音效名字</param>
     /// <param name="callBackAudio">回调函数(音效)</param>
-    public void AddButtonEventTrigger<T>(string controlName, UnityAction callBack=null,string audioName=null, UnityAction<string> callBackAudio=null) where T: Button
+    public void AddButtonEventTrigger<T>(string controlName, UnityAction callBack=null,string audioName=null, UnityAction<string,bool> callBackAudio=null) where T: Button
     {
         if (! UIdict.ContainsKey(controlName))
         {
@@ -72,7 +72,7 @@ public class UI_Management : MonoBehaviour
             {
                 EventTrigger.Entry upclick = new EventTrigger.Entry();
                 upclick.eventID = EventTriggerType.PointerDown;
-                upclick.callback.AddListener((BaseEventData value) => {callBackAudio(audioName);});
+                upclick.callback.AddListener((BaseEventData value) => {callBackAudio(audioName, false);});
                 trigger.triggers.Add(upclick);
             }
         }
@@ -85,7 +85,7 @@ public class UI_Management : MonoBehaviour
     /// <param name="callBack">回调函数(逻辑)</param>
     /// <param name="audioName">音效名字</param>
     /// <param name="callBackAudio">回调函数(音效)</param>
-    public void AddButtonEventTrigger(GameObject obj, UnityAction callBack = null, string audioName = null, UnityAction<string> callBackAudio = null)
+    public void AddButtonEventTrigger<T>(GameObject obj, UnityAction callBack = null, string audioName = null, UnityAction<string,bool> callBackAudio = null)where T: Toggle
     {
         EventTrigger trigger;
         if (obj.GetComponent<EventTrigger>() != null)
@@ -108,7 +108,10 @@ public class UI_Management : MonoBehaviour
         {
             EventTrigger.Entry upclick = new EventTrigger.Entry();
             upclick.eventID = EventTriggerType.PointerDown;
-            upclick.callback.AddListener((BaseEventData value) => { callBackAudio(audioName); });
+            upclick.callback.AddListener((BaseEventData value) => {
+                if (!obj.GetComponent<T>().interactable){ return;}
+                callBackAudio(audioName, obj.GetComponent<T>().isOn);
+            });
             trigger.triggers.Add(upclick);
         }
     }
