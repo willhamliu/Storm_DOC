@@ -90,12 +90,8 @@ public class Audio_Management : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void SFXS_play(string audioName,bool isPlay = false)
+    public void SFXS_play(string audioName)
     {
-        if (isPlay==true)
-        {
-            return;
-        }
         if (audio_SFXS.ContainsKey(audioName))
         {
             sfxs.clip = audio_SFXS[audioName];
