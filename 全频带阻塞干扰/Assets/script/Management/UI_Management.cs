@@ -20,7 +20,7 @@ public class UI_Management : MonoBehaviour
         FindChildrenControl<Button>();
     }
     public T GetControl<T>(string controlName) where T : UIBehaviour//获取UI对象
-    {
+    {   
         if (UIdict.ContainsKey(controlName))
         {
             if (UIdict[controlName].GetComponent<T>())

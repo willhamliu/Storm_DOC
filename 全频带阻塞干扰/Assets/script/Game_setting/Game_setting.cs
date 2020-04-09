@@ -21,15 +21,6 @@ public class Game_setting : MonoBehaviour
     public Toggle game_Toggle;
     public Toggle music_Toggle;
 
-    public Button setting_Open;
-    public Button setting_Close;
-    public Button level_Quit;
-    public Button level_Again;
-
-    public Button confrim;
-    public Button cancel;
-
-
     public GameObject game_Setting;
     public GameObject music_Setting;
     public GameObject setting_Canvas;
@@ -53,26 +44,24 @@ public class Game_setting : MonoBehaviour
         {
             int index = setting_Toggle.IndexOf(setting_Toggle[i]);
             setting_Toggle[i].onValueChanged.AddListener((bool value) => { Setting_ToggleOClick(value, index); });
+            UI_Management.instance.AddButtonEventTrigger<Toggle>(setting_Toggle[i].gameObject, audioName: "阵营切换", callBackAudio: Audio_Management.instance.SFXS_play);
         }
+        setting_Toggle[0].interactable = false;
 
-        setting_Open.onClick.AddListener(Setting_OpenOClick);
-        setting_Close.onClick.AddListener(Setting_CloseOClick);
-        level_Quit.onClick.AddListener(Level_QuitOClick);
-        level_Again.onClick.AddListener(Level_AgainOClick);
-
-        confrim.onClick.AddListener(ConfrimOClick);
-        cancel.onClick.AddListener(CancelOClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Stop_Button", Setting_OpenOClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Setting_Close_Button", Setting_CloseOClick, "返回", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Level_Quit_Button", Level_QuitOClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Level_Again_Button", Level_AgainOClick, "按钮点击", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("confrim", ConfrimOClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("cancel", CancelOClick, "按钮点击", Audio_Management.instance.SFXS_play);
     }
 
     void Setting_ToggleOClick(bool value, int index)
     {
-        if (insert==true)
-        {
-            Audio_Management.instance.SFXS_play("阵营切换");
-        }
-
         if (last_SettingToggle_Index != index && value ==true)
         {
+            setting_Toggle[last_SettingToggle_Index].interactable = true;
+            setting_Toggle[index].interactable = false;
             if (game_Toggle.isOn == true)
             {
                 game_Setting.SetActive(true);
@@ -94,7 +83,6 @@ public class Game_setting : MonoBehaviour
     }
     private void Level_AgainOClick()//重新开始
     {
-        Audio_Management.instance.SFXS_play("按钮点击");
         quit_Panel.SetActive(true);
         setting_Panel.gameObject.SetActive(false);
     }
@@ -105,7 +93,6 @@ public class Game_setting : MonoBehaviour
     }
     private void CancelOClick()
     {
-        Audio_Management.instance.SFXS_play("按钮点击");
         quit_Panel.SetActive(false);
         setting_Panel.gameObject.SetActive(true);
     }
@@ -128,7 +115,6 @@ public class Game_setting : MonoBehaviour
             return;
         }
         insert = false;
-        Audio_Management.instance.SFXS_play("返回");
         setting_Canvas.SetActive(false);
         setting_Raw = setting_Panel.DOLocalMoveX(raw_Point.localPosition.x, 0.3f);
         Invoke("Reduction",0.3f);

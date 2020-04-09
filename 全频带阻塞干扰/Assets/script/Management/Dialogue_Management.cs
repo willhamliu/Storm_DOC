@@ -44,11 +44,6 @@ public class Dialogue_Management : MonoBehaviour
     public Text main_TaskGoal_Text_TaskPanel;//首要目标(任务面板显示)
     public Text secondary_TaskGoal_Text_TaskPanel;//次要目标(任务面板显示)
 
-
-
-    public Button log_Button;//对话列表
-    public Button close_TaskPanel_Button;//关闭任务面板
-
     Tween log_Animation;
     Tween dialogue_Animation;
 
@@ -83,8 +78,8 @@ public class Dialogue_Management : MonoBehaviour
         main_TaskGoal_Text_SettingPanel.text =main_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Instance.main_TaskGoal.ToString();
         secondary_TaskGoal_Text_SettingPanel.text = secondary_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Instance.secondary_TaskGoal.ToString();
 
-        log_Button.onClick.AddListener(Log_StateOnClick);
-        close_TaskPanel_Button.onClick.AddListener(Close_TaskPanelOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Log_Button", Log_StateOnClick, "阵营切换", Audio_Management.instance.SFXS_play);
+        UI_Management.instance.AddButtonEventTrigger<Button>("close_TaskGoal_Panel", Close_TaskPanelOnClick);
     }
 
     void Update()
@@ -196,9 +191,6 @@ public class Dialogue_Management : MonoBehaviour
         {
             return;
         }
-        Audio_Management.instance.SFXS_play("阵营切换");
-
-       
         Log_Add();
        
         onClick_Count++;

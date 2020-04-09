@@ -27,6 +27,7 @@ public class Camera_Control : MonoBehaviour
     private Vector3 camera_Offset;//摄像机移动时偏移量
     private Vector3 camera_Zoom_Offset;//相机变焦时的偏移量
 
+    public float camera_MoneSped;
     public float scaleMIN_Y;//最低高度
     float scaleMAX_Y;//最高高度
     float camera_Height;//当前摄像机高度
@@ -49,7 +50,6 @@ public class Camera_Control : MonoBehaviour
     bool oldTouch_Update = false;//检测多指触碰时是否更新过旧的触摸点
 
 
-    //public Dialogue_Management Dialogue_management;
     float currentScale;
 
     void Start()
@@ -58,13 +58,11 @@ public class Camera_Control : MonoBehaviour
         map_Border =Map_Management.instance.boundary;
         Update_camera_FOV();
         MIX_scale();
-
 #if UNITY_ANDROID
         Input.multiTouchEnabled = true;//开启多点触碰
 #endif
     }
-
-    void LateUpdate()
+    private void FixedUpdate()
     {
         Control();
     }
@@ -86,51 +84,27 @@ public class Camera_Control : MonoBehaviour
         width = height * aspect;
     }
 
-    private void Control()//移动,改变视野(模拟量)
+    private void Control()//移动,改变视野
     {
 #if UNITY_EDITOR_WIN
-        if (Input.GetMouseButtonDown(0))
+        Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        if (mousePosition.x < 0.01f && transform.position.x - width > map_Border.x)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                Single_Touch = hit.point;
-                start_Single_Touch = hit.point;//避免在边缘处再次点击时old_moveTouch为上次结束触摸的位置
-            }
+            transform.Translate(-Vector3.right * Mathf.Abs(camera_Height)* camera_MoneSped * Time.deltaTime, Space.World);
         }
-        if (Input.GetMouseButton(0))//单指触碰
+        if (mousePosition.x > 1-0.01f && transform.position.x + width < -map_Border.x)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                camera_Offset = transform.position - hit.point;//偏移量
-
-                update_X = Mathf.Clamp(Single_Touch.x + camera_Offset.x, map_Border.x + (width), -map_Border.x - (width));
-                update_Y = Mathf.Clamp(Single_Touch.y + camera_Offset.y, map_Border.y + (height), -map_Border.y - (height) + Map_Management.instance.Innerradius);
-
-                if ((update_X == map_Border.x + (width) || update_X == -map_Border.x - (width) ||
-                  update_Y == map_Border.y + (height) || update_Y == -map_Border.y - (height) + Map_Management.instance.Innerradius))
-                {
-                    Single_Touch = start_Single_Touch;
-                    update_X = Mathf.Clamp(Single_Touch.x + camera_Offset.x, map_Border.x + (width), -map_Border.x - (width));
-                    update_Y = Mathf.Clamp(Single_Touch.y + camera_Offset.y, map_Border.y + (height), -map_Border.y - (height) + Map_Management.instance.Innerradius);
-                }
-                if (Vector3.Distance(transform.position, new Vector3(update_X, update_Y, transform.position.z)) > 1)
-                {
-                    Unit_Management.instance.Order_lock = true;
-                }
-                transform.position = new Vector3(update_X, update_Y, transform.position.z);
-            }
-            start_Single_Touch = transform.position - camera_Offset;
+            transform.Translate(Vector3.right * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
         }
-        if (Input.GetMouseButtonUp(0))
+        if (mousePosition.y < 0.01f && transform.position.y - height > map_Border.y)
         {
-            Unit_Management.instance.Order_lock = false;
+            transform.Translate(-Vector3.up * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
+        }
+        if (mousePosition.y > 1-0.01f && transform.position.y + height < -map_Border.y)
+        {
+            transform.Translate(Vector3.up * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
         }
 
-        currentScale = Input.GetAxis("Mouse ScrollWheel") * 50f;
 
         Ray ray3 = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit3;
@@ -142,42 +116,17 @@ public class Camera_Control : MonoBehaviour
             start_Zoom_Y = (touch_Middle.y - start_Position.y) / height;
         }
 
+        currentScale = Input.GetAxis("Mouse ScrollWheel");
         if (currentScale < 0)
         {
-            camera_Height = Mathf.Clamp(camera_Height - 1f, scaleMAX_Y, scaleMIN_Y);
-            Update_camera_FOV();//更新模拟高度
-            transform.position = new Vector3(touch_Middle.x - (width * start_Zoom_X), touch_Middle.y - (height * start_Zoom_Y), camera_Height);
-
-
-            if (transform.position.y + height >= -map_Border.y)//上边溢出
-            {
-                transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_Border.y) + Map_Management.instance.Innerradius)), camera_Height);
-            }
-            else if (transform.position.y - height <= map_Border.y)//下边溢出
-            {
-                transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y - height) + (Mathf.Abs(map_Border.y))), camera_Height);
-            }
-
-
-            if (transform.position.x + width >= -map_Border.x)//左边溢出
-            {
-                transform.position = new Vector3(transform.position.x - ((transform.position.x + width) - (Mathf.Abs(map_Border.x))), transform.position.y, camera_Height);
-            }
-            else if (transform.position.x - width <= map_Border.x)//右边溢出
-            {
-                transform.position = new Vector3(transform.position.x - ((transform.position.x - width) + (Mathf.Abs(map_Border.x))), transform.position.y, camera_Height);
-            }
+            StopCoroutine("FOV_Close");
+            StartCoroutine("FOV_Away", camera_Height);
         }
-        if (currentScale > 0 && camera_Height < scaleMIN_Y)
+        else if(currentScale > 0)
         {
-
-            camera_Height = Mathf.Clamp(camera_Height + 1, scaleMAX_Y, scaleMIN_Y);
-            Update_camera_FOV();
-            transform.position = new Vector3(touch_Middle.x - (width * start_Zoom_X), touch_Middle.y - (height * start_Zoom_Y), camera_Height);
+            StopCoroutine("FOV_Away");
+            StartCoroutine("FOV_Close", camera_Height);
         }
-
-
-
 #endif
 
 #if UNITY_ANDROID
@@ -260,7 +209,7 @@ public class Camera_Control : MonoBehaviour
 
                         if (transform.position.y + height >= -map_Border.y)//上边溢出
                         {
-                            transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_Border.y) + Map_Management.instance.Innerradius)), camera_Height);
+                            transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_Border.y - Map_Management.instance.Innerradius))), camera_Height);
                         }
                         else if (transform.position.y - height <= map_Border.y)//下边溢出
                         {
@@ -295,6 +244,50 @@ public class Camera_Control : MonoBehaviour
             Unit_Management.instance.Order_lock = false;
         }
 #endif
+    }
+    IEnumerator FOV_Away(float cameraheight)
+    {
+        float distance = 0;
+        float cameraheight_Simulation = Mathf.Clamp(cameraheight - 30f, scaleMAX_Y, scaleMIN_Y);
+        while (distance <= 1)
+        {
+            distance += 0.1f;
+            camera_Height = Mathf.Lerp(cameraheight, cameraheight_Simulation, distance);
+            Update_camera_FOV();
+            transform.position = new Vector3(touch_Middle.x - (width * start_Zoom_X), touch_Middle.y - (height * start_Zoom_Y), camera_Height);
+            if (transform.position.y + height > -map_Border.y)//上边溢出
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y + height) - (Mathf.Abs(map_Border.y - Map_Management.instance.Innerradius))), camera_Height);
+            }
+            else if (transform.position.y - height < map_Border.y)//下边溢出
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y - ((transform.position.y - height) + (Mathf.Abs(map_Border.y))), camera_Height);
+            }
+
+
+            if (transform.position.x + width > -map_Border.x)//左边溢出
+            {
+                transform.position = new Vector3(transform.position.x - ((transform.position.x + width) - (Mathf.Abs(map_Border.x))), transform.position.y, camera_Height);
+            }
+            else if (transform.position.x - width < map_Border.x)//右边溢出
+            {
+                transform.position = new Vector3(transform.position.x - ((transform.position.x - width) + (Mathf.Abs(map_Border.x))), transform.position.y, camera_Height);
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+    IEnumerator FOV_Close(float cameraheight)
+    {
+        float distance = 0;
+        float cameraheight_Simulation = Mathf.Clamp(cameraheight + 30f, scaleMAX_Y, scaleMIN_Y);
+        while (distance <= 1)
+        {
+            distance += 0.1f;
+            camera_Height = Mathf.Lerp(cameraheight, cameraheight_Simulation, distance);
+            Update_camera_FOV();
+            transform.position = new Vector3(touch_Middle.x - (width * start_Zoom_X), touch_Middle.y - (height * start_Zoom_Y), camera_Height);
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }
     

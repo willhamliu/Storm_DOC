@@ -193,13 +193,13 @@ public class Item_Panel : MonoBehaviour
         Item_Detail.instance.SetData(Config_Item.Instance.item_List_All[0]);
         Item_Model_Management.instance.Model_display(0, 0, "R_机场");
         all_Item[0].GetComponent<Toggle>().interactable = false;
-        camp[0].GetComponent<Toggle>().interactable = false;
+        camp[0].interactable = false;
     }
 
     public void Close_list()//关闭图鉴
     {
-        camp[0].GetComponent<Toggle>().isOn = true;
-        camp[1].GetComponent<Toggle>().isOn = false;
+        camp[0].isOn = true;
+        camp[1].isOn = false;
         all_Item[0].GetComponent<Toggle>().isOn = true;
     }
 

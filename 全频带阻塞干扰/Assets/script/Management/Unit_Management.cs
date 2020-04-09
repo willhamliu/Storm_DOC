@@ -11,8 +11,6 @@ public class Unit_Management : MonoBehaviour
 {
     public static Unit_Management instance;
     public Transform revocation;
-    public Button home_Button;
-    public Button revocation_Button;
     public bool Order_lock { get; set; } = false;
     int move_Target;//移动目标
     private int player_Index = -1;//选中单位索引
@@ -41,8 +39,9 @@ public class Unit_Management : MonoBehaviour
     {
         EventManagement.Instance.AddEvent("单位死亡", Unit_Update);
         revocation.transform.gameObject.SetActive(false);
-        revocation_Button.onClick.AddListener(RevocationOnClick);
-        home_Button.onClick.AddListener(ReturnHomeOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Home_Button", ReturnHomeOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("Revocat_Button", RevocationOnClick);
+       
         Unit_Update(null);
     }
 

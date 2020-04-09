@@ -110,6 +110,9 @@ public class Combat_Panel : MonoBehaviour
 
         Level_Detail.instance.SetData(Config_Level.Instance.level_DataAll[last_Level_index]);
         Customize_Data.instance.SetData (ref customize, ref star_index);
+        level_All[0].GetComponent<Toggle>().interactable = false;
+        upgrade_All[0].interactable = false;
+        option[0].interactable = false;
 
         mission_Content.SetActive(true);
         customize_Content.SetActive(false);
@@ -137,6 +140,8 @@ public class Combat_Panel : MonoBehaviour
 
         if (last_Option_index != index && value == true)
         {
+            option[last_Option_index].interactable = true;
+            option[index].interactable = false;
             if (option[index].gameObject.activeInHierarchy == true)
             {
                 StartCoroutine(Toggle_option(index));
@@ -149,6 +154,8 @@ public class Combat_Panel : MonoBehaviour
     {
         if (last_Level_index!=index && value == true)
         {
+            level_All[last_Level_index].GetComponent<Toggle>().interactable = true;
+            level_All[index].GetComponent<Toggle>().interactable = false;
             if (level_All[index].activeInHierarchy == true)
             {
                 StartCoroutine(Toggle_level(level));
@@ -161,6 +168,8 @@ public class Combat_Panel : MonoBehaviour
     {
         if (last_Upgrade_index!=index && value == true)
         {
+            upgrade_All[last_Upgrade_index].interactable = true;
+            upgrade_All[index].interactable = false;
             if (upgrade_All[index].gameObject.activeInHierarchy == true)
             {
                 StartCoroutine(Upgrade_level(index));
