@@ -20,7 +20,7 @@ public class Config_Dialogue:InstanceNull<Config_Dialogue>
     {
         string file_Name = Level_Radio.Instance.Dialogue_name;
 
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         dialogue_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Dialogue/" + file_Name+ ".json", Encoding.GetEncoding("UTF-8")));
 #endif
 

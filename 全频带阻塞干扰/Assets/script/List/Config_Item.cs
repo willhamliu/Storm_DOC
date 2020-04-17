@@ -29,7 +29,7 @@ public class Config_Item:InstanceNull<Config_Item>
 
     public void Config_Item_Json()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         item_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Item_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 
@@ -137,7 +137,7 @@ public class Config_Item:InstanceNull<Config_Item>
             return -1;
         }
     }
-  
+
     public void Upgrade(string upgradeProject, Item.Type upgradeType, int upgradeValue)//批量升级
     {
         FileInfo file;
@@ -148,7 +148,7 @@ public class Config_Item:InstanceNull<Config_Item>
                 item_JsonData[Upgrade_item.Key][upgradeProject] = (int)item_JsonData[Upgrade_item.Key][upgradeProject] + upgradeValue;
             }
         }
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         file = new FileInfo(Application.streamingAssetsPath + "/Item_Json.json");
 #endif
 
@@ -177,7 +177,7 @@ public class Config_Item:InstanceNull<Config_Item>
             upgrade_Item.TryGetValue(upgradeName, out index);
             item_JsonData[index][upgradeProject] = (int)item_JsonData[index][upgradeProject] + upgradeValue;
         }
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         file = new FileInfo(Application.streamingAssetsPath + "/Item_Json.json");
 #endif
 

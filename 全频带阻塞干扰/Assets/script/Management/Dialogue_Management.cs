@@ -84,7 +84,7 @@ public class Dialogue_Management : MonoBehaviour
 
     void Update()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))&& Level_Radio.Instance.IsLevel_again == false)
         {
             if (isdialogue_End==true|| text_Index == 0)//必须显示第一个字之后才可提前显示

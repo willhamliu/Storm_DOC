@@ -17,6 +17,8 @@ public class Unit_Control : Unit_UI
     private List<int> path_List = new List<int>();
     private List<bool> enemy_Exist = new List<bool>();
     private bool ismorale;
+    public bool isAttack=true;//是否可以攻击
+    public bool isMove=true;//是否可以移动
 
     void Start()
     {
@@ -24,7 +26,6 @@ public class Unit_Control : Unit_UI
         HP_Start();
         Create_UnityUI();
         graph = Map_Management.instance.hex_Graph;
-
         AP = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_AP;
         Attack_Range = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].iten_Range;
         Attack_Power = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_Attack;

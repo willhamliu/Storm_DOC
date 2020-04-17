@@ -86,13 +86,13 @@ public class Camera_Control : MonoBehaviour
 
     private void Control()//移动,改变视野
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         if (mousePosition.x < 0.01f && transform.position.x - width > map_Border.x)
         {
-            transform.Translate(-Vector3.right * Mathf.Abs(camera_Height)* camera_MoneSped * Time.deltaTime, Space.World);
+            transform.Translate(-Vector3.right * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
         }
-        if (mousePosition.x > 1-0.01f && transform.position.x + width < -map_Border.x)
+        if (mousePosition.x > 1 - 0.01f && transform.position.x + width < -map_Border.x)
         {
             transform.Translate(Vector3.right * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
         }
@@ -100,7 +100,7 @@ public class Camera_Control : MonoBehaviour
         {
             transform.Translate(-Vector3.up * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
         }
-        if (mousePosition.y > 1-0.01f && transform.position.y + height < -map_Border.y)
+        if (mousePosition.y > 1 - 0.01f && transform.position.y + height < -map_Border.y)
         {
             transform.Translate(Vector3.up * Mathf.Abs(camera_Height) * camera_MoneSped * Time.deltaTime, Space.World);
         }

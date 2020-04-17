@@ -31,7 +31,7 @@ public class Item_Model_Management : MonoBehaviour
 
     public void AB_path()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         load_Model = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/ui/model.unity3d"));
 #endif
 #if UNITY_ANDROID

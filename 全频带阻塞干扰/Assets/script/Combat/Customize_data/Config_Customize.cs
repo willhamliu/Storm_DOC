@@ -16,7 +16,7 @@ public class Config_Customize:InstanceNull<Config_Customize>
 
     public void Confing_Customize_Json()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         customize_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Upgrade_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 
@@ -73,7 +73,7 @@ public class Config_Customize:InstanceNull<Config_Customize>
     {
         FileInfo file;
         customize_JsonData[index]["Customize_Purchase_Status"] = true;
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         file = new FileInfo(Application.streamingAssetsPath + "/Upgrade_Json.json");
 #endif
 

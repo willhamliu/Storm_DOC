@@ -16,7 +16,7 @@ public class Config_Level:InstanceNull<Config_Level>
    
     public void Config_Level_Json()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         level_JsonData = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Level_Json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 

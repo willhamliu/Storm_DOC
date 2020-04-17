@@ -15,7 +15,7 @@ public class Config_Prompt:InstanceNull<Config_Prompt>
    
     public void Config_Prompt_Json()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         prompt = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/Level_load_prompt_json.json", Encoding.GetEncoding("UTF-8")));
 #endif
 

@@ -18,7 +18,6 @@ public class CreateAssetsBundle
         Directory.CreateDirectory(assetBundleDirectory);
         AssetDatabase.Refresh();//刷新刚删除了旧资源的文件夹
 
-
 #if UNITY_EDITOR_WIN
         BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
 #endif

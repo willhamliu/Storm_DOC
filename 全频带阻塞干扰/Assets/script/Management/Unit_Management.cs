@@ -10,10 +10,11 @@ using UnityEngine.SceneManagement;
 public class Unit_Management : MonoBehaviour
 {
     public static Unit_Management instance;
-    public Transform revocation;
     public bool Order_lock { get; set; } = false;
     int move_Target;//移动目标
     private int player_Index = -1;//选中单位索引
+    public GameObject revocation;
+    public GameObject EndRound_Panel;//结束回合确认面板
     private Unit_Control player_Script;
     private Unit_Control enemy_Script;
     public Dictionary<int, Unit_Control> Player_List { get; private set; } = new Dictionary<int, Unit_Control>();
@@ -38,10 +39,14 @@ public class Unit_Management : MonoBehaviour
     void Start()
     {
         EventManagement.Instance.AddEvent("单位死亡", Unit_Update);
-        revocation.transform.gameObject.SetActive(false);
         UI_Management.instance.AddButtonEventTrigger<Button>("Home_Button", ReturnHomeOnClick);
         UI_Management.instance.AddButtonEventTrigger<Button>("Revocat_Button", RevocationOnClick);
-       
+        UI_Management.instance.AddButtonEventTrigger<Button>("EndRound_Button", EndRoundOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("EndRoundCancel_Button", EndRoundCancelOnClick);
+        UI_Management.instance.AddButtonEventTrigger<Button>("EndRoundConfirm_Button", EndRoundConfirmOnClick);
+
+        revocation.SetActive(false);
+        EndRound_Panel.SetActive(false);
         Unit_Update(null);
     }
 
@@ -85,9 +90,9 @@ public class Unit_Management : MonoBehaviour
         }
     }
 
-    public void Revocation_Allow()//允许撤销
+    public void Revocation_Allow()//显示撤销按钮
     {
-        revocation.transform.gameObject.SetActive(true);
+        revocation.SetActive(true);
     }
     private void ReturnHomeOnClick()
     {
@@ -96,13 +101,57 @@ public class Unit_Management : MonoBehaviour
     }
     private void RevocationOnClick()
     {
-        revocation.transform.gameObject.SetActive(false);
+        revocation.SetActive(false);
+        player_Script.isMove = true;
         player_Script.Revocation();
     }
-   
+    private void EndRoundOnClick()
+    {
+        int unableActPlayerCount = 0;//无法行动的玩家数量
+        foreach (var item in Player_List)
+        {
+            if (!item.Value.isAttack&& !item.Value.isMove)
+            {
+                unableActPlayerCount++;
+            }
+        }
+        if (unableActPlayerCount == Player_List.Count)
+        {
+            foreach (var item in Player_List)
+            {
+                item.Value.isAttack = true;
+                item.Value.isMove = true;
+            }
+        }
+        else
+        {
+            EndRound_Panel.SetActive(true);
+        }
+    }
+    /// <summary>
+    /// 继续这次回合
+    /// </summary>
+    private void EndRoundCancelOnClick()
+    {
+        EndRound_Panel.SetActive(false);
+    }
+    /// <summary>
+    /// 确认结束回合
+    /// </summary>
+    private void EndRoundConfirmOnClick()
+    {
+        foreach (var item in Player_List)
+        {
+            item.Value.isAttack = true;
+            item.Value.isMove = true;
+        }
+        EndRound_Panel.SetActive(false);
+    }
+
+
     private void Unit_Selected()
     {
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
         if (Input.GetMouseButtonUp(0)&& EventSystem.current.IsPointerOverGameObject() == false&& Order_lock==false)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -111,32 +160,42 @@ public class Unit_Management : MonoBehaviour
             {
                 ObjectPool.instance.Recycle_Hex();
                 ObjectPool.instance.Recycle_Enemytag();
-                if (hit.transform.tag== "Player")
+                Transform hitObj = hit.transform;
+                if (hitObj.tag== "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
-
-                    player_Script.BFS(Search_setting.Moverange);
-                    player_Index = player_Script.unit_Position_Index;
-                    revocation.transform.gameObject.SetActive(false);
+                    if (player_Script.isMove)
+                    {
+                        player_Script.BFS(Search_setting.Moverange);
+                        player_Index = player_Script.unit_Position_Index;
+                    }
+                    if (player_Script.isAttack)
+                    {
+                        player_Script.BFS(Search_setting.Enemy);
+                    }
+                    revocation.SetActive(false);
                 }
-                if (hit.transform.tag == "Untagged")
+                if (hitObj.tag == "Untagged")
                 {
-                    revocation.transform.gameObject.SetActive(false);
+                    revocation.SetActive(false);
                 }
-                if (hit.transform.tag == "Map")
+                if (hitObj.tag == "Map"&& player_Script.isMove)
                 {
                     move_Target = hit.transform.GetComponent<Hex_Info>().index;
                     player_Script.Move(player_Index, move_Target);
+                    player_Script.isMove = false;
                 }
-                if (hit.transform.tag == "Enemy")
+                if (hitObj.tag == "Enemy"&& player_Script.isAttack)
                 {
-                    if (player_Script != null)
+                    if (player_Script != null && player_Script.isAttack)
                     {
-                        revocation.transform.gameObject.SetActive(false);
+                        revocation.SetActive(false);
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
                         player_Script.Attack( enemy_Script);
+                        player_Script.isAttack = false;
+                        player_Script.isMove = false;
+                        player_Script = null;
                     }
-                    player_Script = null;
                 }
             }
         }
@@ -151,32 +210,43 @@ public class Unit_Management : MonoBehaviour
             {
                 ObjectPool.instance.Recycle_Hex();
                 ObjectPool.instance.Recycle_Enemytag();
-                if (hit.transform.tag == "Player")
+                Transform hitObj = hit.transform;
+
+                if (hitObj.tag == "Player")
                 {
                     player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
-
-                    player_Script.BFS(Search_setting.Moverange);
-                    player_Index = player_Script.unit_Position_Index;
-                    revocation.transform.gameObject.SetActive(false);
+                    if (player_Script.isMove)
+                    {
+                        player_Script.BFS(Search_setting.Moverange);
+                        player_Index = player_Script.unit_Position_Index;
+                    }
+                    if (player_Script.isAttack)
+                    {
+                        player_Script.BFS(Search_setting.Enemy);
+                    }
+                    revocation.SetActive(false);
                 }
-                if (hit.transform.tag == "Untagged")
+                if (hitObj.tag == "Untagged")
                 {
-                    revocation.transform.gameObject.SetActive(false);
+                    revocation.SetActive(false);
                 }
-                if (hit.transform.tag == "Map")
+                if (hitObj.tag == "Map" && player_Script.isMove)
                 {
                     move_Target = hit.transform.GetComponent<Hex_Info>().index;
                     player_Script.Move(player_Index, move_Target);
+                    player_Script.isMove = false;
                 }
-                if (hit.transform.tag == "Enemy")
+                if (hitObj.tag == "Enemy" && player_Script.isAttack)
                 {
-                    if (player_Script != null)
+                    if (player_Script != null && player_Script.isAttack)
                     {
-                        revocation.transform.gameObject.SetActive(false);
+                        revocation.SetActive(false);
                         enemy_Script = hit.transform.GetComponent<Unit_Control>();
                         player_Script.Attack(enemy_Script);
+                        player_Script.isAttack = false;
+                        player_Script.isMove = false;
+                        player_Script = null;
                     }
-                    player_Script = null;
                 }
             }
         }

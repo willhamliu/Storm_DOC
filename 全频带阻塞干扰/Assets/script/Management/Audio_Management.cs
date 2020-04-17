@@ -37,7 +37,7 @@ public class Audio_Management : MonoBehaviour
         {
             notload = false;
 
-#if UNITY_EDITOR_WIN
+#if UNITY_STANDALONE
             load_BGM = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/bgm.audio"));
             load_SFXS = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath + "/StreamingAssets/AssetBundles/audio/sfxs.audio"));
 #endif

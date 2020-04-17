@@ -65,12 +65,12 @@ public class Customize_Data : MonoBehaviour
         buy.SetActive(false);
         item_Price.SetActive(false);
         point_Buy = point - customize.customize_Price;
-        StartCoroutine(use_point());
+        StartCoroutine(Use_point());
 
-        PlayerPrefs.SetInt("point", point);
+        PlayerPrefs.SetInt("point", point_Buy);
         PlayerPrefs.Save();
     }
-    IEnumerator use_point()
+    IEnumerator Use_point()
     {
         while (point > point_Buy)
         {
