@@ -10,26 +10,20 @@ using UnityEngine.SceneManagement;
 public class Unit_Management : MonoBehaviour
 {
     public static Unit_Management instance;
-    public bool Order_lock { get; set; } = false;
-    int move_Target;//移动目标
-    private int player_Index = -1;//选中单位索引
-    public GameObject revocation;
-    public GameObject EndRound_Panel;//结束回合确认面板
-    private Unit_Control player_Script;
-    private Unit_Control enemy_Script;
-    public Dictionary<int, Unit_Control> Player_List { get; private set; } = new Dictionary<int, Unit_Control>();
-    public Dictionary<int, Unit_Control> Enemy_List { get; private set; } = new Dictionary<int, Unit_Control>();
+    public Camera_Control camera_Control;
 
-    public enum Search_setting
-    {
-        Enemy,
-        Moverange,
-        Morale
-    }
+    public GameObject endRoundPanel;//结束回合确认面板
+    public GameObject revocationPanel;
+    public Dictionary<Vector2Int, GameObject> enemyCoordinate = new Dictionary<Vector2Int, GameObject>();
+    public Dictionary<Vector2Int, GameObject> friendlyCoordinate = new Dictionary<Vector2Int, GameObject>();
+
+    bool unableChoose;
+    Unit_Control selectedUnit;
+
 
     void Awake()
     {
-        Config_Item.Instance.Config_Item_Json();///
+        Config_Item.Instance.Config_Item_Json();//打包时记得注释
         if (instance == null)
         {
             instance = this;
@@ -38,218 +32,92 @@ public class Unit_Management : MonoBehaviour
 
     void Start()
     {
-        EventManagement.Instance.AddEvent("单位死亡", Unit_Update);
         UI_Management.instance.AddButtonEventTrigger<Button>("Home_Button", ReturnHomeOnClick);
         UI_Management.instance.AddButtonEventTrigger<Button>("Revocat_Button", RevocationOnClick);
-        UI_Management.instance.AddButtonEventTrigger<Button>("EndRound_Button", EndRoundOnClick);
-        UI_Management.instance.AddButtonEventTrigger<Button>("EndRoundCancel_Button", EndRoundCancelOnClick);
-        UI_Management.instance.AddButtonEventTrigger<Button>("EndRoundConfirm_Button", EndRoundConfirmOnClick);
+        //UI_Management.instance.AddButtonEventTrigger<Button>("EndRound_Button", EndRoundOnClick);
+        //UI_Management.instance.AddButtonEventTrigger<Button>("EndRoundCancel_Button", EndRoundCancelOnClick);
+        //UI_Management.instance.AddButtonEventTrigger<Button>("EndRoundConfirm_Button", EndRoundConfirmOnClick);
 
-        revocation.SetActive(false);
-        EndRound_Panel.SetActive(false);
-        Unit_Update(null);
-    }
-
-    void Update()
-    {
-        Unit_Selected();
-    }
-    public void Unit_Update(GameObject info)
-    {
-        GameObject[] Player_array_object = GameObject.FindGameObjectsWithTag("Player");
-        GameObject[] Enemy_array_object = GameObject.FindGameObjectsWithTag("Enemy");
-        Player_List.Clear();
-        for (int i = 0; i < Player_array_object.Length; i++)
-        {
-            Player_List.Add(Player_array_object[i].GetComponent<Unit_Control>().unit_Position_Index, Player_array_object[i].GetComponent<Unit_Control>());
-        }
-        Enemy_List.Clear();
-        for (int i = 0; i < Enemy_array_object.Length; i++)
-        {
-            Enemy_List.Add(Enemy_array_object[i].GetComponent<Unit_Control>().unit_Position_Index, Enemy_array_object[i].GetComponent<Unit_Control>());
-        }
-        if (info!=null&&info.tag=="Player")
-        {
-            Player_List.Remove(info.GetComponent<Unit_Control>().unit_Position_Index);
-        }
-        else if(info != null && info.tag == "Enemy")
-        {
-            Enemy_List.Remove(info.GetComponent<Unit_Control>().unit_Position_Index);
-        }
-        Initial_Morale();
-    }
-    public void Initial_Morale()
-    {
-        foreach (var playerScript in Player_List)
-        {
-            playerScript.Value.BFS(Search_setting.Morale);
-        }
-        foreach (var enemyScript in Enemy_List)
-        {
-            enemyScript.Value.BFS(Search_setting.Morale);
-        }
+        camera_Control.cameraDrag = () => { unableChoose = true; };
+        camera_Control.cameraDragEnd = () => { unableChoose = false; };
+        endRoundPanel.SetActive(false);
+        revocationPanel.SetActive(false);
     }
 
-    public void Revocation_Allow()//显示撤销按钮
+    public void Unit_Selected(Unit_Control unit_Control)
     {
-        revocation.SetActive(true);
+        if (unableChoose || unit_Control.transform.tag == "Enemy") return;
+        selectedUnit = unit_Control;
+        if (selectedUnit.isCanMove)
+            selectedUnit.MovePointDisplay();
+
+        if (selectedUnit.isCanAttack)
+            selectedUnit.AttackTargetDisplay();
     }
-    private void ReturnHomeOnClick()
+
+    public void Unit_Move(Vector2Int target)
     {
-        EventManagement.Instance.CleanEvent();
+        selectedUnit.Unit_Move(target);
+    }
+
+    public void RevocationPanelDisPlay()//显示撤消面板
+    {
+        revocationPanel.SetActive(true);
+    }
+
+    void RevocationOnClick()
+    {
+        selectedUnit.Revocation();
+        revocationPanel.SetActive(false);
+    }
+
+    void ReturnHomeOnClick()
+    {
         SceneManager.LoadScene("Home");
     }
-    private void RevocationOnClick()
+
+    void EndRoundOnClick()
     {
-        revocation.SetActive(false);
-        player_Script.isMove = true;
-        player_Script.Revocation();
+        //int unableActPlayerCount = 0;//无法行动的玩家数量
+        //foreach (var item in Player_List)
+        //{
+        //    if (!item.Value.isCanAttack&& !item.Value.isCanMove)
+        //    {
+        //        unableActPlayerCount++;
+        //    }
+        //}
+        //if (unableActPlayerCount == Player_List.Count)
+        //{
+        //    foreach (var item in Player_List)
+        //    {
+        //        item.Value.isCanAttack = true;
+        //        item.Value.isCanMove = true;
+        //    }
+        //}
+        //else
+        //{
+        //    endRoundPanel.SetActive(true);
+        //}
     }
-    private void EndRoundOnClick()
-    {
-        int unableActPlayerCount = 0;//无法行动的玩家数量
-        foreach (var item in Player_List)
-        {
-            if (!item.Value.isAttack&& !item.Value.isMove)
-            {
-                unableActPlayerCount++;
-            }
-        }
-        if (unableActPlayerCount == Player_List.Count)
-        {
-            foreach (var item in Player_List)
-            {
-                item.Value.isAttack = true;
-                item.Value.isMove = true;
-            }
-        }
-        else
-        {
-            EndRound_Panel.SetActive(true);
-        }
-    }
+
     /// <summary>
     /// 继续这次回合
     /// </summary>
-    private void EndRoundCancelOnClick()
+    void EndRoundCancelOnClick()
     {
-        EndRound_Panel.SetActive(false);
+        endRoundPanel.SetActive(false);
     }
+
     /// <summary>
     /// 确认结束回合
     /// </summary>
-    private void EndRoundConfirmOnClick()
+    void EndRoundConfirmOnClick()
     {
-        foreach (var item in Player_List)
-        {
-            item.Value.isAttack = true;
-            item.Value.isMove = true;
-        }
-        EndRound_Panel.SetActive(false);
-    }
-
-
-    private void Unit_Selected()
-    {
-#if UNITY_STANDALONE
-        if (Input.GetMouseButtonUp(0)&& EventSystem.current.IsPointerOverGameObject() == false&& Order_lock==false)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                ObjectPool.instance.Recycle_Hex();
-                ObjectPool.instance.Recycle_Enemytag();
-                Transform hitObj = hit.transform;
-                if (hitObj.tag== "Player")
-                {
-                    player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
-                    if (player_Script.isMove)
-                    {
-                        player_Script.BFS(Search_setting.Moverange);
-                        player_Index = player_Script.unit_Position_Index;
-                    }
-                    if (player_Script.isAttack)
-                    {
-                        player_Script.BFS(Search_setting.Enemy);
-                    }
-                    revocation.SetActive(false);
-                }
-                if (hitObj.tag == "Untagged")
-                {
-                    revocation.SetActive(false);
-                }
-                if (hitObj.tag == "Map"&& player_Script.isMove)
-                {
-                    move_Target = hit.transform.GetComponent<Hex_Info>().index;
-                    player_Script.Move(player_Index, move_Target);
-                    player_Script.isMove = false;
-                }
-                if (hitObj.tag == "Enemy"&& player_Script.isAttack)
-                {
-                    if (player_Script != null && player_Script.isAttack)
-                    {
-                        revocation.SetActive(false);
-                        enemy_Script = hit.transform.GetComponent<Unit_Control>();
-                        player_Script.Attack( enemy_Script);
-                        player_Script.isAttack = false;
-                        player_Script.isMove = false;
-                        player_Script = null;
-                    }
-                }
-            }
-        }
-#endif
-
-#if UNITY_ANDROID
-        if (Input.touches[0].phase == TouchPhase.Began&& EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)//在开始触摸时要更新固定点(首次触摸位置)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                ObjectPool.instance.Recycle_Hex();
-                ObjectPool.instance.Recycle_Enemytag();
-                Transform hitObj = hit.transform;
-
-                if (hitObj.tag == "Player")
-                {
-                    player_Script = hit.transform.gameObject.GetComponent<Unit_Control>();
-                    if (player_Script.isMove)
-                    {
-                        player_Script.BFS(Search_setting.Moverange);
-                        player_Index = player_Script.unit_Position_Index;
-                    }
-                    if (player_Script.isAttack)
-                    {
-                        player_Script.BFS(Search_setting.Enemy);
-                    }
-                    revocation.SetActive(false);
-                }
-                if (hitObj.tag == "Untagged")
-                {
-                    revocation.SetActive(false);
-                }
-                if (hitObj.tag == "Map" && player_Script.isMove)
-                {
-                    move_Target = hit.transform.GetComponent<Hex_Info>().index;
-                    player_Script.Move(player_Index, move_Target);
-                    player_Script.isMove = false;
-                }
-                if (hitObj.tag == "Enemy" && player_Script.isAttack)
-                {
-                    if (player_Script != null && player_Script.isAttack)
-                    {
-                        revocation.SetActive(false);
-                        enemy_Script = hit.transform.GetComponent<Unit_Control>();
-                        player_Script.Attack(enemy_Script);
-                        player_Script.isAttack = false;
-                        player_Script.isMove = false;
-                        player_Script = null;
-                    }
-                }
-            }
-        }
-#endif
+        //foreach (var item in Player_List)
+        //{
+        //    item.Value.isCanAttack = true;
+        //    item.Value.isCanMove = true;
+        //}
+        //endRoundPanel.SetActive(false);
     }
 }

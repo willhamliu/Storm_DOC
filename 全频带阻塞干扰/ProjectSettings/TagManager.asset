@@ -5,11 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ui_Button
-  - Item
-  - Unit
-  - Map
   - Enemy
-  - Enemytag
+  - Friendly
   layers:
   - Default
   - TransparentFX

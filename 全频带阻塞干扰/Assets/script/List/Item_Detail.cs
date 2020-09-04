@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Item_Detail : MonoBehaviour {
 
     public static Item_Detail instance;
+    public MeshFilter model;
     public Text camp;
     public Text target;
 
@@ -35,6 +36,7 @@ public class Item_Detail : MonoBehaviour {
             return;
         }
         this.item = item;
+        this.model.mesh = Item_Model.Instance.Model_display(this.item.item_Model);
         this.camp.text =this.item.Item_Camp.ToString();
         this.ap.text = this.item.item_AP.ToString();
         this.attack.text = this.item.item_Attack.ToString();

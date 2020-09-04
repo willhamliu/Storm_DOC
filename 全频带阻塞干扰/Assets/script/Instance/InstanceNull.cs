@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InstanceNull<T>
-where T:new()
+public class InstanceNull<T> where T : new()
 {
     private static T instance;
     public static T Instance
@@ -16,10 +15,5 @@ where T:new()
             }
             return instance;
         }
-    }
-
-    protected InstanceNull()
-    {
-
     }
 }

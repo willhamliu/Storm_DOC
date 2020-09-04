@@ -1,10 +1,6 @@
 ﻿using DG.Tweening;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 /// <summary>
@@ -59,7 +55,16 @@ public class Home_Panel : MonoBehaviour
             fx.SetActive(false);
             list_Main_Canvas.SetActive(false);
 
-            StartCoroutine(Level_Quit());
+            combat_Main_Canvas.SetActive(true);
+            combat_Canvas.SetActive(true);
+            combat_Content.SetActive(true);
+            combat_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, 255 / 255);
+            combat_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 0), 0.15f).OnComplete(() =>
+            {
+                Combat_Panel.instance.Open_Combat();
+                combat_Canvas.SetActive(false);
+            });
+
             Level_Radio.Instance.IsLevel_quit = false;
         }
     }
@@ -81,11 +86,31 @@ public class Home_Panel : MonoBehaviour
     private void Combat_OpenOnClick()//开启战斗面板
     {
         fx.SetActive(false);
-        StartCoroutine(Combat_ON());
+        combat_Main_Canvas.SetActive(true);
+        combat_Main_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 1), 0.15f).OnComplete(() =>
+        {
+            combat_Content.SetActive(true);
+            Combat_Panel.instance.Open_Combat();
+            combat_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 0), 0.15f).OnComplete(()=> 
+            {
+                combat_Canvas.SetActive(false);
+            });
+        });
     }
     private void Combat_CloseOnClick()//关闭战斗面板
     {
-        StartCoroutine(Combat_OFF());
+        combat_Canvas.SetActive(true);
+        combat_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 1), 0.15f).OnComplete(() =>
+        {
+            Combat_Panel.instance.Close_Combat();
+            combat_Canvas.SetActive(false);
+            combat_Content.SetActive(false);
+            fx.SetActive(true);
+            combat_Main_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 0), 0.15f).OnComplete(()=> 
+            {
+                combat_Main_Canvas.SetActive(false);
+            });
+        });
     }
 
     private void DemoOnClick()//打开Demo场景
@@ -107,11 +132,32 @@ public class Home_Panel : MonoBehaviour
     private void List_OpenOnClick()//打开图鉴
     {
         fx.SetActive(false);
-        StartCoroutine(List_ON());
+        list_Main_Canvas.SetActive(true);
+        list_Main_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 1), 0.15f).OnComplete(() =>
+        {
+            list_Canvas.SetActive(true);
+            list_Content.SetActive(true);
+            Item_Panel.instance.Open_list();
+            list_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 0), 0.15f).OnComplete(() =>
+            {
+                list_Canvas.SetActive(false);
+            });
+        });
     }
     private void List_CloseOnClick()//关闭图鉴
     {
-        StartCoroutine(List_OFF());
+        list_Canvas.SetActive(true);
+        list_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 1), 0.15f).OnComplete(() =>
+        {
+            Item_Panel.instance.Close_list();
+            list_Canvas.SetActive(false);
+            list_Content.SetActive(false);
+            fx.SetActive(true);
+            list_Main_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 0), 0.15f).OnComplete(() =>
+            {
+                list_Main_Canvas.SetActive(false);
+            });
+        });
     }
 
     private void QuitOnClick()//退出
@@ -128,150 +174,5 @@ public class Home_Panel : MonoBehaviour
     {
         Audio_Management.instance.BGM_stop("Home_BGM");
         Application.Quit();
-    }
-
-    public IEnumerator Combat_ON()
-    {
-        combat_Main_Canvas.SetActive(true);
-        float a = 0;
-        float b = 255;
-        while (b >= 0)
-        {
-            a = a + 25;
-            combat_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
-            combat_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
-
-            if (a > 225)
-            {
-                b = b - 25;
-                if (a == 250)
-                {
-                    combat_Canvas.SetActive(true);
-                    combat_Content.SetActive(true);
-                    Combat_Panel.instance.Open_Combat();
-                }
-            }
-            if (b < 0)
-            {
-                combat_Canvas.SetActive(false);
-            }
-            yield return null;
-        }
-    }
-    public IEnumerator Combat_OFF()
-    {
-        combat_Canvas.SetActive(true);
-        float a = 255;
-        float b = 0;
-        while (a >= 0)
-        {
-            b = b + 25;
-            combat_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
-            combat_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
-           
-            if (b > 225)
-            {
-                a = a - 25;
-                if (b == 250)
-                {
-                    combat_Canvas.SetActive(false);
-                    combat_Content.SetActive(false);
-                    fx.SetActive(true);
-                }
-            }
-
-            if (a < 0)
-            {
-                combat_Main_Canvas.SetActive(false);
-                Combat_Panel.instance.Close_Combat();
-            }
-            yield return null;
-        }
-    }
-
-    public IEnumerator List_ON()
-    {
-        list_Main_Canvas.SetActive(true);
-        float a = 0;
-        float b = 255;
-        while (b >= 0)
-        {
-            a = a + 25;
-            list_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
-            list_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
-           
-            if (a > 225)
-            {
-                b = b - 25;
-                if (a == 250)
-                {
-                    list_Canvas.SetActive(true);
-                    list_Content.SetActive(true);
-                    Item_Panel.instance.Open_list();
-                }
-            }
-            if (b < 0)
-            {
-                list_Canvas.SetActive(false);
-            }
-            yield return null;
-        }
-    }
-    public IEnumerator List_OFF()
-    {
-        list_Canvas.SetActive(true);
-        float a = 255;
-        float b = 0;
-        while (a >= 0)
-        {
-            b = b + 25;
-            list_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
-            list_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
-           
-            if (b>225)
-            {
-                a = a - 25;
-                if (b == 250)
-                {
-                    list_Canvas.SetActive(false);
-                    list_Content.SetActive(false);
-                    fx.SetActive(true);
-                }
-            }
-
-            if (a<0)
-            {
-                list_Main_Canvas.SetActive(false);
-                Item_Panel.instance.Close_list();
-                Item_Model_Management.instance.Close_list();
-            }
-            yield return null;
-        }
-    }
-
-    public IEnumerator Level_Quit()
-    {
-        combat_Main_Canvas.SetActive(true);
-        combat_Canvas.SetActive(true);
-        combat_Content.SetActive(true);
-        combat_Main_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, 255 / 255);
-
-        float b = 255;
-
-        while (b >= 0)
-        {
-            combat_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, b / 255);
-
-            b = b - 25;
-            if (b == 205)
-            {
-                Combat_Panel.instance.Open_Combat();
-            }
-            if (b < 0)
-            {
-                combat_Canvas.SetActive(false);
-            }
-            yield return null;
-        }
     }
 }

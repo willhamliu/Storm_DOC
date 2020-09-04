@@ -39,6 +39,7 @@ public class Item {
     public Camp Item_Camp=Camp.UnKown;
 
     public string item_Name;//名字
+    public int item_Index;//下标
     public int item_AP;//行动点数
     public int item_Attack;//攻击力
 
@@ -51,7 +52,7 @@ public class Item {
     public int item_Vision;//视野范围
     public string item_Desc;//描述信息
 
-    public Item(string item_Model, string item_Number, int item_Type, int item_Target, int item_Camp, string item_Name, int item_AP, int item_Attack, int item_Defense,
+    public Item(string item_Model, string item_Number, int item_Type, int item_Target, int item_Camp, string item_Name,int item_Index, int item_AP, int item_Attack, int item_Defense,
                 int iten_Range, int item_Price, int item_HP, int item_Vision, string item_Desc)
     {
         this.item_Model = item_Model;
@@ -116,6 +117,7 @@ public class Item {
                 break;
         }
         this.item_Name = item_Name;
+        this.item_Index = item_Index;
         this.item_AP = item_AP;
         this.item_Attack = item_Attack;
         this.item_Defense = item_Defense;

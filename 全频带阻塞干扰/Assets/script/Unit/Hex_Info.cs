@@ -6,10 +6,15 @@ using UnityEngine;
 /// </summary>
 public class Hex_Info : MonoBehaviour
 {
-    public int index;
+    public Vector2Int coordinate;
    
-    public void Hex_data(int index)
+    public void SetMapData(Vector2Int coordinate)
     {
-        this.index = index;
+        this.coordinate = coordinate;
+    }
+
+    void OnMouseDown()
+    {
+        Unit_Management.instance.Unit_Move(coordinate);
     }
 }

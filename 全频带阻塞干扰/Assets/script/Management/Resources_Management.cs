@@ -7,12 +7,12 @@ using UnityEngine.Events;
 /// </summary>
 public class Resources_Management:InstanceNull<Resources_Management>
 {
-    public void Load<T>(string path, UnityAction<T> acllback, Transform createsite = null) where T:Object//同步加载
+    public void Load<T>(string path, Transform creatParent, UnityAction<T> acllback) where T:Object//同步加载
     {
         T res= Resources.Load<T>(path);
         if (res is GameObject)
         {
-            acllback(GameObject.Instantiate(res, createsite) as T);
+            acllback(GameObject.Instantiate(res, creatParent) as T);
         }
         else
         {

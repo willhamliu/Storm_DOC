@@ -5,169 +5,241 @@ using UnityEngine;
 /// <summary>
 /// 对指定单位实现搜索，攻击，移动，扣血，死亡...
 /// </summary>
-public class Unit_Control : Unit_UI
+public class Unit_Control : Unit_Info
 {
-    private int unit_Revocation_Position_Index;//执行撤销指令时的下标
-    private int AP;//行动点数
-    private int Attack_Range;//射程
-    private int Attack_Power;//攻击力
-    private bool reverse_Search = false;
+    enum SearchModel
+    {
+        Attack,
+        Move,
+    }
+    public GameObject targetedIcon;//被瞄准提示图标
 
-    private Dictionary<int, List<int>> graph = new Dictionary<int, List<int>>();
-    private List<int> path_List = new List<int>();
-    private List<bool> enemy_Exist = new List<bool>();
-    private bool ismorale;
-    public bool isAttack=true;//是否可以攻击
-    public bool isMove=true;//是否可以移动
+    public bool isCanAttack=true;//是否可以攻击
+    public bool isCanMove=true;//是否可以移动
+
+    bool isMorale;//是否被包围
+    int AP;//行动点数
+    int Attack_Range;//射程
+    int Attack_Power;//攻击力
+    Vector2Int lastCoordinate;//上一个坐标
+    List<Vector2Int> canMoveList = new List<Vector2Int>();//可移动的坐标
+    List<Vector2Int> canAttackTargetList = new List<Vector2Int>();//可攻击的坐标
+    List<Vector2Int> path_List = new List<Vector2Int>();//移动路径
+    Dictionary<Vector2Int, Vector2Int> parentNodeDic = new Dictionary<Vector2Int, Vector2Int>();//可移动点父节点
 
     void Start()
     {
-        Postition_Start();
-        HP_Start();
-        Create_UnityUI();
-        graph = Map_Management.instance.hex_Graph;
-        AP = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_AP;
-        Attack_Range = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].iten_Range;
-        Attack_Power = Config_Item.Instance.item_List_All[Config_Item.Instance.Config_unity_info(unit_Name)].item_Attack;
+        SetPostition();
+        SetUnitData();
+        SetHP();
+        targetedIcon.SetActive(false);
+        morale_Panel.SetActive(false);
+        GetComponent<MeshRenderer>().sortingOrder = 10;
+        AP = Config_Item.Instance.GetItemInfo(unit_Name).item_AP;
+        Attack_Range = Config_Item.Instance.GetItemInfo(unit_Name).iten_Range;
+        Attack_Power = Config_Item.Instance.GetItemInfo(unit_Name).item_Attack;
     }
-  
-    public void BFS(Unit_Management.Search_setting search_Setting)//显示移动和攻击范围范围
+
+    void OnMouseDown()
     {
-        int search_Count=0;//搜索次数
-        int search_Range=0;
-        List<int> open_List = new List<int>();
-        Queue<int> open_Queue = new Queue<int>();
-        open_Queue.Enqueue(unit_Position_Index);//入队
-        open_List.Add(unit_Position_Index);
-        int adjacent_Count = 0;//每层网格相邻的非重叠的网格数量(作为下次需要遍历的网格数量)
-        int hex_Count = 1;//每一层需要遍历的网格数量
-        if (search_Setting == Unit_Management.Search_setting.Moverange)
+        Unit_Management.instance.Unit_Selected(this);
+    }
+
+    /// <summary>
+    /// 更改单位坐标信息
+    /// </summary>
+    void SetUnitData()
+    {
+        Dictionary<Vector2Int, GameObject> setDictonary =new Dictionary<Vector2Int, GameObject>();
+        if (this.transform.tag == "Friendly")
         {
-            unit_Revocation_Position_Index = unit_Position_Index;
-            search_Range = AP;
+            setDictonary = Unit_Management.instance.friendlyCoordinate;
         }
-        else if(search_Setting == Unit_Management.Search_setting.Enemy)
+        else if (this.transform.tag == "Enemy")
         {
-            search_Range = Attack_Range;
-        }
-        else if (search_Setting == Unit_Management.Search_setting.Morale)
-        {
-            search_Range = 1;
-            ismorale = false;
+            setDictonary = Unit_Management.instance.enemyCoordinate;
         }
 
-        while (search_Count < search_Range)
+        if (setDictonary.ContainsKey(this.lastCoordinate))
         {
-            for (int floor = 0; floor < hex_Count; floor++)
+            setDictonary.Remove(lastCoordinate);
+            setDictonary.Add(coordinate, this.gameObject);
+        }
+        else
+            setDictonary.Add(coordinate, this.gameObject);
+    }
+
+    /// <summary>
+    /// 撤消
+    /// </summary>
+    public void Revocation()
+    {
+        var lastCoordinate = coordinate;
+        coordinate = this.lastCoordinate;
+        this.lastCoordinate = lastCoordinate;
+        SetPostition();
+        SetUnitData();
+        MovePointDisplay();
+        AttackTargetDisplay();
+        Morale_Inspection();
+    }
+
+    /// <summary>
+    /// 显示可移动的格子
+    /// </summary>
+    public void MovePointDisplay()
+    {
+        BFS(SearchModel.Move, AP);
+        for (int i = 1; i < canMoveList.Count; i++)
+        {
+            if (Unit_Management.instance.friendlyCoordinate.ContainsKey(canMoveList[i])) continue;
+            var mapPrefab = ObjectPool.instance.Get_Map();
+            mapPrefab.GetComponent<Hex_Info>().SetMapData(canMoveList[i]) ;
+            mapPrefab.transform.position = MapData.Instance.GetPoint(canMoveList[i]);
+            mapPrefab.SetActive(true);
+        }
+    }
+    /// <summary>
+    /// 显示可以攻击的目标
+    /// </summary>
+    public void AttackTargetDisplay()
+    {
+        BFS(SearchModel.Attack, Attack_Range);
+        for (int i = 0; i < canAttackTargetList.Count; i++)
+        {
+            if (Unit_Management.instance.enemyCoordinate.ContainsKey(canAttackTargetList[i]))
             {
-                for (int i = 0; i < graph[open_Queue.Peek()].Count; i++)
+                Unit_Management.instance.enemyCoordinate[canAttackTargetList[i]].GetComponent<Unit_Control>().targetedIcon.SetActive(true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 单位移动
+    /// </summary>
+    /// <param name="target"></param>
+    public void Unit_Move(Vector2Int target)
+    {
+        lastCoordinate = coordinate;
+        Vector2Int parentNode = parentNodeDic[target];
+        path_List.Clear();
+        path_List.Add(target);
+
+        while (parentNode != coordinate)
+        {
+            path_List.Add(parentNode);
+            parentNode = parentNodeDic[parentNode];
+        }
+        ObjectPool.instance.Recycle_Hex();
+
+        StartCoroutine(Move());
+        IEnumerator Move()
+        {
+            for (int i = path_List.Count - 1; i >= 0; i--)
+            {
+                Vector3 present_poision = transform.position;
+                float move_T = 0;
+                while (move_T < 1)
                 {
-                    if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting== Unit_Management.Search_setting.Moverange)//遍历附近的节点，如果重复则跳过
-                    {
-                        if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
-                        {
-                            continue;
-                        }
-                        else if (Unit_Management.instance.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == false)
-                        {
-                            GameObject hex = ObjectPool.instance.Get_Hex();
-                            hex.transform.position = position_Array[graph[open_Queue.Peek()][i]];
-                            hex.GetComponent<Hex_Info>().Hex_data(graph[open_Queue.Peek()][i]);
-                        }
-
-                        open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
-                        open_List.Add(graph[open_Queue.Peek()][i]);
-                        adjacent_Count++;
-                    }
-
-                    else if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting == Unit_Management.Search_setting.Enemy)
-                    {
-                        if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
-                        {
-                            GameObject enemytag = ObjectPool.instance.Get_Enemytag();
-                            enemytag.transform.position = position_Array[graph[open_Queue.Peek()][i]];
-                        }
-                        open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
-                        open_List.Add(graph[open_Queue.Peek()][i]);
-                        adjacent_Count++;
-                    }
-                    else if (open_List.Contains(graph[open_Queue.Peek()][i]) == false && search_Setting == Unit_Management.Search_setting.Morale)
-                    {
-                        if (this.tag == "Player")
-                        {
-                            if (Unit_Management.instance.Enemy_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
-                            {
-                                enemy_Exist.Add(true);
-                            }
-                            else
-                            {
-                                enemy_Exist.Add(false);
-                            }
-                        }
-                        else if (this.tag == "Enemy")
-                        {
-                            if (Unit_Management.instance.Player_List.ContainsKey(graph[open_Queue.Peek()][i]) == true)
-                            {
-                                enemy_Exist.Add(true);
-                            }
-                            else
-                            {
-                                enemy_Exist.Add(false);
-                            }
-                        }
-                        open_Queue.Enqueue(graph[open_Queue.Peek()][i]);
-                        open_List.Add(graph[open_Queue.Peek()][i]);
-                        adjacent_Count++;
-                    }
+                    move_T += Time.deltaTime * 5;
+                    transform.position = Vector3.Lerp(present_poision, MapData.Instance.GetPoint(path_List[i]), move_T);
+                    yield return null;
                 }
-                open_Queue.Dequeue();
             }
-            hex_Count = adjacent_Count;
-            adjacent_Count = 0;//赋值后要把当前层的网格数量归零
-            search_Count++;
-        }
-        if (search_Setting == Unit_Management.Search_setting.Moverange)
-        {
-            BFS(Unit_Management.Search_setting.Enemy);
-        }
-        else if (search_Setting == Unit_Management.Search_setting.Morale)
-        {
+            coordinate = target;
             Morale_Inspection();
+            AttackTargetDisplay();
+            SetUnitData();
+            Unit_Management.instance.RevocationPanelDisPlay();
         }
     }
-
-    public void Morale_Inspection()//检查自身是否被包围
+    /// <summary>
+    /// 检查自身是否被包围
+    /// </summary>
+    public void Morale_Inspection()
     {
-        for (int i = 0; i < 3; i++)
+        List<Vector2Int> adjacentList = MapData.Instance.GetAdjacentMap(coordinate);
+        List<int> bearing = new List<int>();
+        int moraleCount = 0;
+        for (int i = 0; i < adjacentList.Count; i++)
         {
-            if (enemy_Exist[i]==true&& enemy_Exist[i+3]==true)
+            if (Unit_Management.instance.enemyCoordinate.ContainsKey(adjacentList[i]))
             {
-                morale.SetActive(true);
-                ismorale = true;
-            }
-            if (ismorale==false)
-            {
-                morale.SetActive(false);
+                bearing.Add(i);
             }
         }
-        enemy_Exist.Clear();
+        if(adjacentList.Count == bearing.Count)
+        {
+            morale_Panel.SetActive(true);
+            moraleCount = -2;
+            isMorale = true;
+            return;
+        }
+        for (int i = 0; i < bearing.Count/2; i++)
+        {
+            if (bearing.Contains(bearing[i]+3))
+            {
+                morale_Panel.SetActive(true);
+                moraleCount--;
+                isMorale = true;
+            }
+        }
     }
-   
 
-    public void Revocation()//撤销命令
+    void BFS(SearchModel searchModel,int searchRange) 
     {
-        transform.position= position_Array[unit_Revocation_Position_Index];
-        unit_Position_Index = unit_Revocation_Position_Index;
-        Unit_Management.instance.Unit_Update(null);
-        ObjectPool.instance.Recycle_Enemytag();
-        Update_UnityUIPosition();
-        this.BFS(Unit_Management.Search_setting.Moverange);
+        int needSearchMapCount =1;//每层搜索次数
+        int adjacentMapCount =0;//每层的相邻地块数量
+        int searchCount =0;
+        Queue<Vector2Int> searchQueue = new Queue<Vector2Int>();
+        searchQueue.Enqueue(coordinate);
+        if (searchModel == SearchModel.Move)
+        {
+            parentNodeDic.Clear();
+            canMoveList.Clear();
+            canMoveList.Add(coordinate);
+        }
+        else
+        {
+            canAttackTargetList.Clear();
+            canAttackTargetList.Add(coordinate);
+        }
+        List<Vector2Int> adjacentList;
+
+        while (searchCount < searchRange)
+        {
+            searchCount++;
+
+            for (int i = 0; i < needSearchMapCount; i++)
+            {
+                var parentNode = searchQueue.Peek();
+                adjacentList = MapData.Instance.GetAdjacentMap(searchQueue.Dequeue());
+                for (int j = 0; j < adjacentList.Count; j++)
+                {
+                    if (searchModel == SearchModel.Move)
+                    {
+                        if (canMoveList.Contains(adjacentList[j]) || Unit_Management.instance.enemyCoordinate.ContainsKey(adjacentList[j])) continue;
+                        canMoveList.Add(adjacentList[j]);
+                        parentNodeDic.Add(adjacentList[j], parentNode);
+                    }
+                    else
+                    {
+                        if (canAttackTargetList.Contains(adjacentList[j])) continue;
+                        canAttackTargetList.Add(adjacentList[j]);
+                    }
+                    searchQueue.Enqueue(adjacentList[j]);
+                    adjacentMapCount++;
+                }
+            }
+            needSearchMapCount = adjacentMapCount;
+            adjacentMapCount = 0;
+        }
     }
 
     public void Attack(Unit_Control target)
     {
         int hit=0;
-        if (ismorale)
+        if (isMorale)
         {
             hit = Attack_Power/2;
         }
@@ -176,115 +248,5 @@ public class Unit_Control : Unit_UI
             hit = Attack_Power;
         }
         target.Be_Hit(hit);
-    }
-
-    public void Be_Hit(int damage)
-    {
-        hp -= damage;
-        Update_HP();
-        StartCoroutine(Hit());
-    }
-
-    public void Move(int startposition_index, int targetposition_index)//前往目标位置
-    {
-        ismorale = false;
-        morale.SetActive(false);
-
-        path_List.Clear();
-
-        int move_count = 0;//移动次数
-        int move_path = -1;//最短路径下标
-      
-        Queue<int> move_queue = new Queue<int>();
-        move_queue.Enqueue(startposition_index);
-        while (move_count < AP)
-        {
-            move_count++;
-            int shortest_hex = 0;//最近网格(模拟量)
-            for (int i = 1; i < graph[move_queue.Peek()].Count; i++)
-            {
-                if (Vector3.Distance(position_Array[graph[move_queue.Peek()][shortest_hex]], position_Array[targetposition_index]) <
-                    Vector3.Distance(position_Array[graph[move_queue.Peek()][     i      ]], position_Array[targetposition_index])&&
-                    Unit_Management.instance.Enemy_List.ContainsKey(graph[move_queue.Peek()][shortest_hex]) == false)
-                //当指定网格与终点的距离小于当前遍历网格与终点距离并且指定网格上无敌方单位时，这个网格的下标就会成为这次遍历中的最短路径
-                {
-                    move_path = graph[move_queue.Peek()][shortest_hex];
-                }
-                else if (Unit_Management.instance.Enemy_List.ContainsKey(graph[move_queue.Peek()][i]) == false)
-                {
-                    shortest_hex = i;
-                    move_path = graph[move_queue.Peek()][shortest_hex];
-                }
-            }
-            move_queue.Enqueue(move_path);
-            path_List.Add(move_path);
-            move_queue.Dequeue();
-            if (move_path == targetposition_index)
-            {
-
-                if (reverse_Search == false)
-                {
-                    unit_Position_Index = targetposition_index;
-                    StartCoroutine(Way());
-                    break;
-                }
-                else
-                {
-                    unit_Position_Index = startposition_index;//当切换为倒序搜索时，找到终点后，单位下标为起点下标
-                    path_List.Reverse();
-                    path_List.RemoveAt(0);
-                    path_List.Add(startposition_index);
-                    StartCoroutine(Way());
-                }
-            }
-        }
-
-        if (move_count == AP && move_path != targetposition_index)//当正序搜索无法找到终点时使用倒序搜索
-        {
-            reverse_Search = true;
-            Move(targetposition_index, startposition_index);
-            reverse_Search = false;//当切换为倒序搜索时，找到终点后，需要重置搜索设置，以保证下次搜索时能使用正确的搜索设置
-        }
-    }
-    private void Death()
-    {
-        EventManagement.Instance.EventTrigger("单位死亡",this.gameObject);
-        Destroy(this.gameObject);
-        Destroy(this.hp_Slider);
-        Destroy(this.morale);
-    }
-
-    IEnumerator Hit()
-    {
-        while (effect.fillAmount > slider.value)
-        {
-            effect.fillAmount -= Hurtspeed;
-            yield return null;
-        }
-        if (slider.value == 0)
-        {
-            Death();
-        }
-        effect.fillAmount = slider.value;
-    }
-
-    IEnumerator Way()
-    {
-        for (int i = 0; i < path_List.Count; i++)
-        {
-            Vector3 present_poision = transform.position;
-            float move_T = 0;
-            while (move_T < 1)
-            {
-                move_T = move_T + 0.1f;
-                transform.position = Vector3.Lerp(present_poision, position_Array[path_List[i]], move_T);
-                Update_UnityUIPosition();
-                yield return new WaitForSeconds(Time.deltaTime);
-            }
-        }
-        Unit_Management.instance.Unit_Update(null);
-        Unit_Management.instance.Revocation_Allow();
-
-        BFS(Unit_Management.Search_setting.Enemy);
     }
 }

@@ -14,6 +14,7 @@ public class Dialogue_Management : MonoBehaviour
     string log_String;
     string link = null;
 
+    bool islog_AnimPlayEnd = true;
     bool islog_Open = false;//文本查看状态
     bool istext_Ponit_Start = false;//逐字显示状态
     bool isdialogue_End  = false;
@@ -25,9 +26,7 @@ public class Dialogue_Management : MonoBehaviour
     int onClick_Count=0;
 
     public RectTransform dialogue_Image;
-    public RectTransform dialogue_Image_Background;
     public RectTransform log_Image;
-    public RectTransform log_Image_Background;
     public GameObject log_Panel;
     public GameObject task_Panel;
 
@@ -44,10 +43,6 @@ public class Dialogue_Management : MonoBehaviour
     public Text main_TaskGoal_Text_TaskPanel;//首要目标(任务面板显示)
     public Text secondary_TaskGoal_Text_TaskPanel;//次要目标(任务面板显示)
 
-    Tween log_Animation;
-    Tween dialogue_Animation;
-
-
     void Awake()
     {
         scene_Canvas.SetActive(true);
@@ -62,20 +57,21 @@ public class Dialogue_Management : MonoBehaviour
     }
     void Start()
     {
+        scene_Canvas.GetComponent<Image>().DOColor(new Color(0, 0, 0, 0), 0.6f).OnComplete(()=> 
+        {
+            scene_Canvas.SetActive(false);
+            if (!Level_Radio.Instance.IsLevel_again) Log_Start();
+        });
         if (Level_Radio.Instance.IsLevel_again == false)
         {
-            dialogue_Animation = dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 350), 0.3f);
-            dialogue_Animation = dialogue_Image_Background.DOSizeDelta(new Vector2(dialogue_Image_Background.sizeDelta.x, 330), 0.3f);
-            Invoke("Log_Start", 0.8f);//为了满足渐变效果延迟调用
+            dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 350), 0.3f);
         }
         else
         {
             isdialogue_End = true;
             dialogue_Image.gameObject.SetActive(false);
-            dialogue_Image_Background.gameObject.SetActive(false);
         }
-        StartCoroutine(Scene_Initialization());
-        main_TaskGoal_Text_SettingPanel.text =main_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Instance.main_TaskGoal.ToString();
+        main_TaskGoal_Text_SettingPanel.text =main_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Instance.secondary_TaskGoal.ToString();
         secondary_TaskGoal_Text_SettingPanel.text = secondary_TaskGoal_Text_TaskPanel.text =Config_Dialogue.Instance.secondary_TaskGoal.ToString();
 
         UI_Management.instance.AddButtonEventTrigger<Button>("Log_Button", Log_StateOnClick, "阵营切换", Audio_Management.instance.SFXS_play);
@@ -85,7 +81,7 @@ public class Dialogue_Management : MonoBehaviour
     void Update()
     {
 #if UNITY_STANDALONE
-        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))&& Level_Radio.Instance.IsLevel_again == false)
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)))
         {
             if (isdialogue_End==true|| text_Index == 0)//必须显示第一个字之后才可提前显示
             {
@@ -130,45 +126,48 @@ public class Dialogue_Management : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-        if (Input.touches[0].phase== TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)==false && Level_Radio.Instance.IsLevel_again == false)
+        if (Input.touchCount == 1)
         {
-            if (isdialogue_End==true|| text_Index == 0)
+            if (Input.touches[0].phase == TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
             {
-                return;
-            }
-            if (islog_Open == false && dialogues_Index + 1 < dialogues.Count && istext_Ponit_Start == false)
-            {
-                dialogues_Index++;
-                speaker_Text.text = dialogues[dialogues_Index].speaker;
-                StartCoroutine(Show_Text(dialogues[dialogues_Index].dialogue_Desc.Length));
-            }
-            else if (istext_Ponit_Start == true)
-            {
-                istext_Ponit_Start = false;
-                string desc = null;
-                for (int i = 0; i < dialogues[dialogues_Index].dialogue_Desc.Length; i++)
+                if (isdialogue_End == true || text_Index == 0)
                 {
-                    if ((dialogues[dialogues_Index].dialogue_Desc)[i].ToString() == "/")
+                    return;
+                }
+                if (islog_Open == false && dialogues_Index + 1 < dialogues.Count && istext_Ponit_Start == false)
+                {
+                    dialogues_Index++;
+                    speaker_Text.text = dialogues[dialogues_Index].speaker;
+                    StartCoroutine(Show_Text(dialogues[dialogues_Index].dialogue_Desc.Length));
+                }
+                else if (istext_Ponit_Start == true)
+                {
+                    istext_Ponit_Start = false;
+                    string desc = null;
+                    for (int i = 0; i < dialogues[dialogues_Index].dialogue_Desc.Length; i++)
                     {
-                        desc = desc + "\r\n";
+                        if ((dialogues[dialogues_Index].dialogue_Desc)[i].ToString() == "/")
+                        {
+                            desc = desc + "\r\n";
+                        }
+                        else
+                        {
+                            desc = desc + (dialogues[dialogues_Index].dialogue_Desc)[i].ToString();
+                        }
+                    }
+                    if (dialogues_Index == 0)
+                    {
+                        dialogue_Text.text = desc;
                     }
                     else
                     {
-                        desc = desc + (dialogues[dialogues_Index].dialogue_Desc)[i].ToString();
+                        dialogue_Text.text = "\u3000\u3000" + desc;
                     }
                 }
-                if (dialogues_Index==0)
+                else if (islog_Open == false && dialogues_Index + 1 == dialogues.Count)
                 {
-                    dialogue_Text.text = desc;
+                    End_Dialogue();
                 }
-                else
-                {
-                    dialogue_Text.text = "\u3000\u3000" + desc;
-                }
-            }
-            else if (islog_Open == false && dialogues_Index + 1 == dialogues.Count)
-            {
-                End_Dialogue();
             }
         }
 #endif
@@ -184,32 +183,41 @@ public class Dialogue_Management : MonoBehaviour
         interface_Canvas.SetActive(true);
     }
 
+    public void Log_Start()
+    {
+        speaker_Text.text = dialogues[0].speaker;
+
+        StartCoroutine(Show_Text(dialogues[0].dialogue_Desc.Length));
+    }
 
     public void Log_StateOnClick()
     {
-        if ((log_Animation != null&& log_Animation.IsPlaying() == true) || istext_Ponit_Start == true)
+        if (!islog_AnimPlayEnd || istext_Ponit_Start == true)
         {
             return;
         }
-        Log_Add();
-       
+
+        islog_AnimPlayEnd = false;
         onClick_Count++;
         if (onClick_Count % 2 == 0)
         {
             if(isdialogue_End == false)
             {
                 log_Panel.SetActive(false);
-                log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 350), 0.3f);
-                log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 330), 0.3f);
-                Invoke("Log_Close", 0.4f);
+                log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 350), 0.3f).OnComplete(() =>
+                {
+                    islog_AnimPlayEnd = true;
+                    Log_Close();
+                });
             }
             else
             {
                 log_Panel.SetActive(false);
-                log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 0), 0.4f);
-                log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 0), 0.36f);
-
-                Invoke("Log_Close", 0.5f);
+                log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 0), 0.4f).OnComplete(()=> 
+                {
+                    islog_AnimPlayEnd = true;
+                    Log_Close();
+                });
             }
         }
         if (onClick_Count % 2 != 0)
@@ -220,48 +228,32 @@ public class Dialogue_Management : MonoBehaviour
             dialogue_Image.gameObject.SetActive(false);
             log_Image.gameObject.SetActive(true);
 
-            log_Animation = log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 780), 0.3f);
-            log_Animation = log_Image_Background.DOSizeDelta(new Vector2(log_Image_Background.sizeDelta.x, 760), 0.34f);
-
-
-            Invoke("Log_Open", 0.4f);
+            log_Image.DOSizeDelta(new Vector2(log_Image.sizeDelta.x, 780), 0.3f).OnComplete(() =>
+            {
+                islog_AnimPlayEnd = true;
+                Log_Open();
+            });
         }
     }
 
     private void Log_Close()//关闭目录
     {
-        if (isdialogue_End==false&& log_Animation.IsPlaying() == false)
+        if (isdialogue_End==false)
         {
             log_Image.gameObject.SetActive(false);
             dialogue_Image.gameObject.SetActive(true);
             speaker_Text.gameObject.SetActive(true);
-            islog_Open = false;
         }
-        else if(isdialogue_End == true&& log_Animation.IsPlaying() == false)
+        else if(isdialogue_End == true)
         {
             log_Image.gameObject.SetActive(false);
-            islog_Open = false;
         }
+        islog_Open = false;
     }
 
-    private void Log_Open()//打开目录
+    public void Log_Open()//打开目录
     {
-        if (log_Animation.IsPlaying() == false)
-        {
-            log_Panel.SetActive(true);
-        }
-    }
-   
-
-    public void Log_Start()
-    {
-        speaker_Text.text = dialogues[0].speaker;
-
-        StartCoroutine(Show_Text(dialogues[0].dialogue_Desc.Length));
-    }
-
-    public void Log_Add()
-    {
+        log_Panel.SetActive(true);
         int updateCount;
         if (Level_Radio.Instance.IsLevel_again == false)
         {
@@ -271,7 +263,7 @@ public class Dialogue_Management : MonoBehaviour
         {
             updateCount = dialogues.Count;//重新开始时直接更新所有对话
         }
-        for (int i = index; i < updateCount; i++)//防止每次打开调用时都会遍历造成字符串重复，因此作用域 (i) 不能是0
+        for (int i = index; i < updateCount; i++)//防止每次打开对话列表时都会遍历造成字符串重复，因此作用域 (i) 为上次显示的对话下标
         {
             if (index == 0)
             {
@@ -290,14 +282,12 @@ public class Dialogue_Management : MonoBehaviour
     private void End_Dialogue()//结束对话
     {
         speaker_Text.gameObject.SetActive(false);
-        dialogue_Animation = dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 0), 0.3f);
-        dialogue_Animation = dialogue_Image_Background.DOSizeDelta(new Vector2(dialogue_Image_Background.sizeDelta.x, 0), 0.26f);
-
         log_Image.sizeDelta = new Vector2(log_Image.sizeDelta.x, 0);
-        log_Image_Background.sizeDelta = new Vector2(log_Image_Background.sizeDelta.x, 0);
-
-        isdialogue_End = true;
-        Invoke("Open_TaskPanel",0.4f);//打开任务目标面板
+        dialogue_Image.DOSizeDelta(new Vector2(dialogue_Image.sizeDelta.x, 0), 0.3f).OnComplete(()=> 
+        {
+            Open_TaskPanel();
+            isdialogue_End = true;
+        });
     }
 
     IEnumerator Show_Text(int Dialogue_Length)
@@ -335,17 +325,5 @@ public class Dialogue_Management : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         istext_Ponit_Start = false;
-    }
-
-    IEnumerator Scene_Initialization()
-    {
-        float a = 255;
-        while (a >= 0)
-        {
-            a = a - 15;
-            scene_Canvas.GetComponent<Image>().color = new Color(0, 0, 0, a / 255);
-            yield return null;
-        }
-        scene_Canvas.SetActive(false);
     }
 }

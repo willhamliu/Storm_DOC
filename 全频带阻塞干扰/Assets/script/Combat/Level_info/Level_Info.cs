@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class Level_Info : MonoBehaviour
 {
     public Text lecel_Name;
-    public Image blackImage;
     private Level level;
     public void Namedata(Level level)
     {
